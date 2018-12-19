@@ -26,11 +26,43 @@ class CardsBody extends StatefulWidget {
 }
 
 class _CardsBodyState extends State<CardsBody> {
+  bool _error(CardsState state) => state.errorMessage != null;
+
+  bool _success(CardsState state) => state.word != null;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.bloc.loadWord();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CardsEvent, CardsState>(
       bloc: widget.bloc,
-      builder: (BuildContext context, CardsState state) => Container(),
+      builder: (BuildContext context, CardsState state) {
+        Widget toRender = _renderInitial();
+        if (_error(state)) {
+          toRender = _renderError(state);
+        }
+        if (_success(state)) {
+          toRender = _renderSuccess(state);
+        }
+        return toRender;
+      },
+    );
+  }
+
+  Widget _renderInitial() => Container();
+
+  Widget _renderError(CardsState state) => Center(child: Text(state.errorMessage));
+
+  Widget _renderSuccess(CardsState state) {
+    return Container(
+      color: state.word.color,
+      child: Center(
+        child: Text(state.word.value),
+      ),
     );
   }
 }
