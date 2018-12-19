@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cards/blocs/cards/cards_bloc.dart';
 import 'package:flutter_cards/blocs/cards/cards_event.dart';
 import 'package:flutter_cards/blocs/cards/cards_state.dart';
+import 'package:flutter_cards/ui/widgets/box/drag_box.dart';
+import 'package:flutter_cards/ui/widgets/box/target_box.dart';
 import 'package:flutter_cards/ui/widgets/platform/platform_scaffold.dart';
 
 class CardsPage extends StatelessWidget {
@@ -58,10 +60,14 @@ class _CardsBodyState extends State<CardsBody> {
   Widget _renderError(CardsState state) => Center(child: Text(state.errorMessage));
 
   Widget _renderSuccess(CardsState state) {
-    return Container(
-      color: state.word.color,
-      child: Center(
-        child: Text(state.word.value),
+    return SafeArea(
+      child: Scaffold(
+        body: Stack(
+          children: <Widget>[
+            DragBox(initPosition: Offset(160.0, 150.0), word: state.word),
+            TargetBox(initPosition: Offset(160.0, 400.0), word: state.word),
+          ],
+        ),
       ),
     );
   }
