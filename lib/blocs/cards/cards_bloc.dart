@@ -14,15 +14,15 @@ class CardsBloc extends Bloc<CardsEvent, CardsState> {
 
   CardsState get initialState => CardsState.initial();
 
-  void loadWord() async {
-    dispatch(LoadWord());
+  void loadWords(int level) async {
+    dispatch(LoadWords(level));
   }
 
   @override
   Stream<CardsState> mapEventToState(CardsState state, CardsEvent event) async* {
     try {
-      final word = await repository.getWord();
-      yield CardsState.success(word);
+      final words = await repository.getWords((event as LoadWords).level);
+      yield CardsState.success(words);
     } catch (exception) {
       yield CardsState.error(exception.toString());
     }

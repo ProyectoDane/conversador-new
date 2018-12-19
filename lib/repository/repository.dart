@@ -8,5 +8,5 @@ class Repository {
 
   Repository.internal();
 
-  Future<Word> getWord() async => Future.value(RandomFactory.getRandomWord());
+  Future<List<Word>> getWords(int level) async => Future.value(RandomFactory.getRandomWords(level));
 }

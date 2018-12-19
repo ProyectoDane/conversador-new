@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cards/blocs/cards/cards_bloc.dart';
 import 'package:flutter_cards/blocs/cards/cards_event.dart';
 import 'package:flutter_cards/blocs/cards/cards_state.dart';
+import 'package:flutter_cards/model/word.dart';
+import 'package:flutter_cards/repository/utils/random_factory.dart';
 import 'package:flutter_cards/ui/widgets/box/drag_box.dart';
 import 'package:flutter_cards/ui/widgets/box/target_box.dart';
 import 'package:flutter_cards/ui/widgets/platform/platform_scaffold.dart';
@@ -28,14 +30,14 @@ class CardsBody extends StatefulWidget {
 }
 
 class _CardsBodyState extends State<CardsBody> {
-  bool _error(CardsState state) => state.errorMessage != null;
+  bool _error(CardsState state) => state.errorMessage.isNotEmpty;
 
-  bool _success(CardsState state) => state.word != null;
+  bool _success(CardsState state) => state.words.isNotEmpty;
 
   @override
   void initState() {
     super.initState();
-    widget.bloc.loadWord();
+    widget.bloc.loadWords(3);
   }
 
   @override
@@ -63,12 +65,25 @@ class _CardsBodyState extends State<CardsBody> {
     return SafeArea(
       child: Scaffold(
         body: Stack(
-          children: <Widget>[
-            DragBox(initPosition: Offset(160.0, 150.0), word: state.word),
-            TargetBox(initPosition: Offset(160.0, 400.0), word: state.word),
-          ],
+          children: _buildBoxesAndTargets(state.words),
         ),
       ),
     );
+  }
+
+  List<Widget> _buildBoxesAndTargets(List<Word> words) {
+    final List<double> dragPositions = RandomFactory.generateXPositions(context, words.length);
+    final List<double> targetPositions = RandomFactory.generateXPositions(context, words.length);
+    final List<Widget> dragBoxes = [];
+    final List<Widget> targetBoxes = [];
+    words.forEach((word) {
+      final xDragPosition = dragPositions.removeLast();
+      final xTargetPosition = targetPositions.removeLast();
+
+      dragBoxes.add(DragBox(initPosition: Offset(xDragPosition, 20.0), word: word));
+      targetBoxes.add(TargetBox(initPosition: Offset(xTargetPosition, 220.0), word: word));
+    });
+
+    return List.from(dragBoxes)..addAll(targetBoxes);
   }
 }

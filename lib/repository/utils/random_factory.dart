@@ -4,7 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cards/model/word.dart';
 
 class RandomFactory {
-  static Word getRandomWord() {
+  static List<Word> getRandomWords(int amount) {
+    final List<Word> words = [];
+    for (int i = 0; i < amount; i++) {
+      words.add(_getRandomWord());
+    }
+    return words;
+  }
+
+  static Word _getRandomWord() {
     return Word(
       id: _getRandomId(),
       value: _getRandomText(),
@@ -46,5 +54,17 @@ class RandomFactory {
     ];
     words.shuffle();
     return words.removeLast();
+  }
+
+  static List<double> generateXPositions(BuildContext context, int numberOfBoxes) {
+    final width = MediaQuery.of(context).size.width;
+    final distance = width / numberOfBoxes;
+
+    final List<double> results = [];
+    for (int i = 0; i < numberOfBoxes; i++) {
+      results.add(distance * (i + 1 / 3));
+    }
+    results.shuffle();
+    return results;
   }
 }
