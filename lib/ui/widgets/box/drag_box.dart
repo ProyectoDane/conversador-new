@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cards/ui/widgets/box/box.dart';
 import 'package:flutter_cards/ui/utils/constants.dart';
+import 'package:audioplayers/audio_cache.dart';
 
 class DragBox extends Box {
   DragBox({
@@ -19,6 +20,8 @@ class _DragBoxState extends State<DragBox> with TickerProviderStateMixin {
 
   AnimationController _controller;
   Animation<Offset> offsetTween;
+
+  final audioCache = AudioCache();
 
   @override
   void initState() {
@@ -58,26 +61,36 @@ class _DragBoxState extends State<DragBox> with TickerProviderStateMixin {
       data: widget.word,
       child: widget.buildBox(size: DRAGGABLE_BOX_SIZE, fontSize: FONT_SIZE, boxColor: _color),
       onDraggableCanceled: (velocity, offset) {
-        updatePosition(offset);
+        goBackLastPosition(offset);
       },
       onDragCompleted: () {
-        updateColor();
+        success();
       },
       feedback: widget.buildBox(size: DRAGGABLE_BOX_SIZE_FEEDBACK, fontSize: FONT_SIZE_FEEDBACK, boxColor: _color.withOpacity(0.5)),
     );
   }
 
-  void updatePosition(Offset position) {
+  void goBackLastPosition(Offset position) {
     setState(() {
       _position = position;
     });
     setUpAnimation();
     _controller.forward();
+    playFailure();
   }
 
-  void updateColor() {
+  void success() {
     setState(() {
       _color = _color.withOpacity(0.2);
     });
+    playSuccessful();
+  }
+
+  void playSuccessful() {
+    audioCache.play('sounds/successful.mp3');
+  }
+
+  void playFailure() {
+    audioCache.play('sounds/failure.mp3');
   }
 }
