@@ -21,8 +21,16 @@ class _TargetBoxState extends State<TargetBox>
   @override
   void initState() {
     super.initState();
-    _selectedColor = Colors.grey.shade300;
+    setUp();
   }
+
+  @override
+  void didUpdateWidget(Widget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    setUp();
+  }
+
+  void setUp() => _selectedColor = Colors.grey.shade300;
 
   @override
   Widget build(BuildContext context) {
@@ -32,17 +40,9 @@ class _TargetBoxState extends State<TargetBox>
       child: DragTarget(
         onWillAccept: (word) => word.id == widget.word.id,
         onAccept: (Word word) => _selectedColor = word.color,
-        builder: (BuildContext context, List<dynamic> accepted,
-                List<dynamic> rejected) =>
-            checkAccepted(accepted),
+        builder: (context, accepted, rejected) => checkAccepted(accepted),
       ),
     );
-  }
-
-  @override
-  void didUpdateWidget(Widget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    _selectedColor = Colors.grey.shade300;
   }
 
   Widget checkAccepted(List<dynamic> accepted) {

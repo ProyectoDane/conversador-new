@@ -1,6 +1,7 @@
 abstract class CardsEvent {}
 
-class LoadWords extends CardsEvent {
-  final level;
-  LoadWords(this.level);
-}
+class StartGame extends CardsEvent {}
+
+class BoxSuccess extends CardsEvent {}
+
+class LevelCompleted extends CardsEvent {}

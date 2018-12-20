@@ -1,20 +1,24 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_cards/model/word.dart';
 
 class CardsState {
   final List<Word> words;
   final String errorMessage;
+  final bool waiting;
 
   CardsState({
-    @required this.words,
-    @required this.errorMessage,
+    this.words = const [],
+    this.errorMessage = "",
+    this.waiting = false,
   });
 
-  factory CardsState.initial() => CardsState(words: [], errorMessage: "");
+  factory CardsState.initial() => CardsState();
 
-  factory CardsState.error(String errorMessage) => CardsState(words: [], errorMessage: errorMessage);
+  factory CardsState.error(String errorMessage) =>
+      CardsState(errorMessage: errorMessage);
 
-  factory CardsState.success(List<Word> words) => CardsState(words: words, errorMessage: "");
+  factory CardsState.waitingForNextLevel() => CardsState(waiting: true);
+
+  factory CardsState.nextLevel(List<Word> words) => CardsState(words: words);
 
   @override
   bool operator ==(Object other) =>

@@ -31,13 +31,12 @@ class CardsBody extends StatefulWidget {
 
 class _CardsBodyState extends State<CardsBody> {
   bool _error(CardsState state) => state.errorMessage.isNotEmpty;
-
-  bool _success(CardsState state) => state.words.isNotEmpty;
+  bool _nextLevel(CardsState state) => state.words.isNotEmpty;
+  bool _waitingForNextLevel(CardsState state) => state.waiting;
 
   @override
   void initState() {
     super.initState();
-    widget.bloc.loadWords(3);
   }
 
   @override
@@ -49,19 +48,38 @@ class _CardsBodyState extends State<CardsBody> {
         if (_error(state)) {
           toRender = _renderError(state);
         }
-        if (_success(state)) {
-          toRender = _renderSuccess(state);
+
+        if (_nextLevel(state)) {
+          toRender = _renderNextLevel(state);
+        }
+
+        if (_waitingForNextLevel(state)) {
+          toRender = _renderWaitingForNextLevel();
         }
         return toRender;
       },
     );
   }
 
-  Widget _renderInitial() => Container();
+  Widget _renderInitial() => Center(
+        child: Container(
+          child: RaisedButton(
+            child: Text("START GAME"),
+            onPressed: widget.bloc.loadWords,
+          ),
+        ),
+      );
 
-  Widget _renderError(CardsState state) => Center(child: Text(state.errorMessage));
+  Widget _renderError(CardsState state) =>
+      Center(child: Text(state.errorMessage));
 
-  Widget _renderSuccess(CardsState state) {
+  Widget _renderWaitingForNextLevel() {
+    Future.delayed(
+        const Duration(seconds: 2), () => widget.bloc.levelCompleted());
+    return Center(child: CircularProgressIndicator());
+  }
+
+  Widget _renderNextLevel(CardsState state) {
     return SafeArea(
       child: Scaffold(
         body: Stack(
@@ -72,16 +90,25 @@ class _CardsBodyState extends State<CardsBody> {
   }
 
   List<Widget> _buildBoxesAndTargets(List<Word> words) {
-    final List<double> dragPositions = RandomFactory.generateXPositions(context, words.length);
-    final List<double> targetPositions = RandomFactory.generateXPositions(context, words.length);
+    final List<double> dragPositions =
+        RandomFactory.generateXPositions(context, words.length);
+    final List<double> targetPositions =
+        RandomFactory.generateXPositions(context, words.length);
     final List<Widget> dragBoxes = [];
     final List<Widget> targetBoxes = [];
     words.forEach((word) {
       final xDragPosition = dragPositions.removeLast();
       final xTargetPosition = targetPositions.removeLast();
 
-      dragBoxes.add(DragBox(initPosition: Offset(xDragPosition, 20.0), word: word));
-      targetBoxes.add(TargetBox(initPosition: Offset(xTargetPosition, 220.0), word: word));
+      dragBoxes.add(BlocProvider(
+        bloc: widget.bloc,
+        child: DragBox(
+          initPosition: Offset(xDragPosition, 20.0),
+          word: word,
+        ),
+      ));
+      targetBoxes.add(
+          TargetBox(initPosition: Offset(xTargetPosition, 220.0), word: word));
     });
 
     return List.from(dragBoxes)..addAll(targetBoxes);

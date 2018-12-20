@@ -11,3 +11,6 @@ const double TARGET_BOX_SIZE_COMPLETE = TARGET_BOX_SIZE * GROW_PERCENTAGE;
 const double TARGET_BOX_SIZE_START = TARGET_BOX_SIZE * 0.6;
 const double DRAGGABLE_BOX_SIZE = _BOX_SIZE;
 const double DRAGGABLE_BOX_SIZE_FEEDBACK = DRAGGABLE_BOX_SIZE * GROW_PERCENTAGE;
+
+const String SUCCESSFUL_SOUND = 'sounds/successful.mp3';
+const String FAILURE_SOUND = 'sounds/failure.mp3';
