@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cards/model/word.dart';
 import 'package:flutter_cards/ui/widgets/animation/target_animation.dart';
 import 'package:flutter_cards/ui/widgets/box/box.dart';
-import 'package:flutter_cards/ui/utils/constants.dart';
 
 class TargetBox extends Box {
   TargetBox({
@@ -49,8 +48,8 @@ class _TargetBoxState extends State<TargetBox>
     return accepted.isEmpty
         ? TargetAnimation(label: widget.word.value, color: _selectedColor)
         : widget.buildBox(
-            size: TARGET_BOX_SIZE_COMPLETE,
-            fontSize: FONT_SIZE_FEEDBACK,
+            size: Box.TARGET_BOX_SIZE_COMPLETE,
+            fontSize: Box.FONT_SIZE_FEEDBACK,
             boxColor: _selectedColor);
   }
 }

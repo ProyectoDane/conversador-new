@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cards/blocs/cards/cards_bloc.dart';
 import 'package:flutter_cards/ui/widgets/box/box.dart';
-import 'package:flutter_cards/ui/utils/constants.dart';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,6 +17,9 @@ class DragBox extends Box {
 }
 
 class _DragBoxState extends State<DragBox> with TickerProviderStateMixin {
+  static const String SUCCESSFUL_SOUND = 'sounds/successful.mp3';
+  static const String FAILURE_SOUND = 'sounds/failure.mp3';
+
   CardsBloc _bloc;
   Offset _origin;
   Offset _position;
@@ -74,12 +76,14 @@ class _DragBoxState extends State<DragBox> with TickerProviderStateMixin {
     return Draggable(
       data: widget.word,
       child: widget.buildBox(
-          size: DRAGGABLE_BOX_SIZE, fontSize: FONT_SIZE, boxColor: _color),
+          size: Box.DRAGGABLE_BOX_SIZE,
+          fontSize: Box.FONT_SIZE,
+          boxColor: _color),
       onDraggableCanceled: (_, offset) => goBackLastPosition(offset),
       onDragCompleted: success,
       feedback: widget.buildBox(
-          size: DRAGGABLE_BOX_SIZE_FEEDBACK,
-          fontSize: FONT_SIZE_FEEDBACK,
+          size: Box.DRAGGABLE_BOX_SIZE_FEEDBACK,
+          fontSize: Box.FONT_SIZE_FEEDBACK,
           boxColor: _color.withOpacity(0.5)),
     );
   }
@@ -94,7 +98,8 @@ class _DragBoxState extends State<DragBox> with TickerProviderStateMixin {
   void success() async {
     setState(() => _color = _color.withOpacity(0.2));
     playSuccessful();
-    await Future.delayed(const Duration(milliseconds: 1500), () => _bloc.boxSuccess());
+    await Future.delayed(
+        const Duration(milliseconds: Box.ANIMATION_DURATION_MS), () => _bloc.boxSuccess());
   }
 
   void playSuccessful() => widget.audioCache.play(SUCCESSFUL_SOUND);

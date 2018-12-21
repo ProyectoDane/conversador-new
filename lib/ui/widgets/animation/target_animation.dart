@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cards/ui/utils/constants.dart';
+import 'package:flutter_cards/ui/widgets/box/box.dart';
 
 class TargetAnimation extends StatefulWidget {
   final String label;
@@ -23,15 +23,15 @@ class _TargetAnimationState extends State<TargetAnimation> with TickerProviderSt
   }
 
   void setUpAnimation() {
-    _controller = AnimationController(duration: const Duration(milliseconds: 1500), vsync: this)
+    _controller = AnimationController(duration: const Duration(milliseconds: Box.ANIMATION_DURATION_MS), vsync: this)
       ..addStatusListener((status) {});
 
-    transitionTween = Tween<double>(begin: TARGET_BOX_SIZE_START, end: TARGET_BOX_SIZE_COMPLETE).animate(
+    transitionTween = Tween<double>(begin: Box.TARGET_BOX_SIZE_START, end: Box.TARGET_BOX_SIZE_COMPLETE).animate(
       CurvedAnimation(parent: _controller, curve: Curves.elasticInOut),
     );
 
     borderRadius =
-        BorderRadiusTween(begin: BorderRadius.circular(TARGET_BOX_SIZE_COMPLETE), end: BorderRadius.circular(5.0))
+        BorderRadiusTween(begin: BorderRadius.circular(Box.TARGET_BOX_SIZE_COMPLETE), end: BorderRadius.circular(5.0))
             .animate(
           CurvedAnimation(parent: _controller, curve: Curves.elasticInOut),
         );
@@ -48,7 +48,7 @@ class _TargetAnimationState extends State<TargetAnimation> with TickerProviderSt
           child: Stack(
             alignment: Alignment.center,
             children: <Widget>[
-              Center(child: Container(width: TARGET_BOX_SIZE, height: TARGET_BOX_SIZE, color: Colors.black12)),
+              Center(child: Container(width: Box.TARGET_BOX_SIZE, height: Box.TARGET_BOX_SIZE, color: Colors.black12)),
               Center(
                 child: Container(
                   width: transitionTween.value,

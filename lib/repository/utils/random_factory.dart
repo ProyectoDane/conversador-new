@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_cards/model/word.dart';
-import 'package:flutter_cards/ui/utils/constants.dart';
+import 'package:flutter_cards/ui/widgets/box/box.dart';
 
 class RandomFactory {
   static List<Word> getRandomWords(int amount) {
@@ -63,7 +63,7 @@ class RandomFactory {
 
     final List<double> results = [];
     for (int i = 0; i < numberOfBoxes; i++) {
-      results.add((distance * (i + 1 / 2)) - BOX_SIZE / 2);
+      results.add((distance * (i + 1 / 2)) - Box.BOX_SIZE / 2);
     }
     results.shuffle();
     return results;
