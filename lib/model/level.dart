@@ -12,6 +12,9 @@ class Level {
 
   bool isLevelCompleted() => amountOfSuccessful == amountOfWords;
 
+  factory Level.initial() =>
+      Level(value: 1, amountOfSuccessful: 0, amountOfWords: 1);
+
   factory Level.updateProgressLevel(Level level) => Level(
         value: level.value,
         amountOfSuccessful: level.amountOfSuccessful + 1,

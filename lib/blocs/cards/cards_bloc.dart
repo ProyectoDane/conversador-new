@@ -12,7 +12,7 @@ class CardsBloc extends Bloc<CardsEvent, CardsState> {
 
   CardsBloc({this.repository}) {
     this.repository = repository != null ? repository : Repository();
-    this.level = Level(value: 1, amountOfSuccessful: 0, amountOfWords: 1);
+    this.level = Level.initial();
   }
 
   CardsState get initialState => CardsState.initial();
@@ -45,7 +45,9 @@ class CardsBloc extends Bloc<CardsEvent, CardsState> {
       }
 
       if (event is LevelCompleted) {
-        yield await _buildNextLevel();
+        yield hasToRestart()
+            ? await _buildNextLevel(restart: true)
+            : await _buildNextLevel();
       }
     } catch (exception) {
       yield CardsState.error(exception.toString());
@@ -57,9 +59,13 @@ class CardsBloc extends Bloc<CardsEvent, CardsState> {
     return CardsState.nextLevel(words);
   }
 
-  Future<CardsState> _buildNextLevel() async {
-    level = Level.nextLevel(level);
+  Future<CardsState> _buildNextLevel({bool restart = false}) async {
+    level = restart ? Level.initial() : Level.nextLevel(level);
     final words = await repository.getWords(level.amountOfWords);
     return CardsState.nextLevel(words);
+  }
+
+  bool hasToRestart() {
+    return level.value == 3;
   }
 }
