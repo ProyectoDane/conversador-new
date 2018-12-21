@@ -56,16 +56,4 @@ class RandomFactory {
     words.shuffle();
     return words.removeLast();
   }
-
-  static List<double> generateXPositions(BuildContext context, int numberOfBoxes) {
-    final width = MediaQuery.of(context).size.width;
-    final distance = width / numberOfBoxes;
-
-    final List<double> results = [];
-    for (int i = 0; i < numberOfBoxes; i++) {
-      results.add((distance * (i + 1 / 2)) - Box.BOX_SIZE / 2);
-    }
-    results.shuffle();
-    return results;
-  }
 }

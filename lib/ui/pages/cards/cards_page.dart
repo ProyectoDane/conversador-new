@@ -5,6 +5,7 @@ import 'package:flutter_cards/blocs/cards/cards_event.dart';
 import 'package:flutter_cards/blocs/cards/cards_state.dart';
 import 'package:flutter_cards/model/word.dart';
 import 'package:flutter_cards/repository/utils/random_factory.dart';
+import 'package:flutter_cards/ui/widgets/box/box.dart';
 import 'package:flutter_cards/ui/widgets/box/drag_box.dart';
 import 'package:flutter_cards/ui/widgets/box/target_box.dart';
 import 'package:flutter_cards/ui/widgets/platform/platform_scaffold.dart';
@@ -83,34 +84,42 @@ class _CardsBodyState extends State<CardsBody> {
     return SafeArea(
       child: Scaffold(
         body: Stack(
-          children: _buildBoxesAndTargets(state.words),
+          children: _buildDraggableAndTargets(state.words),
         ),
       ),
     );
   }
 
-  List<Widget> _buildBoxesAndTargets(List<Word> words) {
-    final List<double> dragPositions =
-        RandomFactory.generateXPositions(context, words.length);
-    final List<double> targetPositions =
-        RandomFactory.generateXPositions(context, words.length);
-    final List<Widget> dragBoxes = [];
-    final List<Widget> targetBoxes = [];
-    words.forEach((word) {
-      final xDragPosition = dragPositions.removeLast();
-      final xTargetPosition = targetPositions.removeLast();
-
-      dragBoxes.add(BlocProvider(
-        bloc: widget.bloc,
-        child: DragBox(
-          initPosition: Offset(xDragPosition, 20.0),
-          word: word,
-        ),
-      ));
-      targetBoxes.add(
-          TargetBox(initPosition: Offset(xTargetPosition, 220.0), word: word));
-    });
-
+  List<Widget> _buildDraggableAndTargets(List<Word> words) {
+    List<Widget> targetBoxes = _buildBoxes(words: words, isTarget: true);
+    List<Widget> dragBoxes = _buildBoxes(words: words);
     return List.from(dragBoxes)..addAll(targetBoxes);
+  }
+
+  List<Widget> _buildBoxes({List<Word> words, bool isTarget = false}) {
+    final List<double> positions = generateXPositions(words.length);
+    final List<Widget> boxes = [];
+    words.forEach((word) {
+      final xPosition = positions.removeLast();
+      boxes.add(isTarget
+          ? TargetBox(initPosition: Offset(xPosition, 220.0), word: word)
+          : BlocProvider(
+              bloc: widget.bloc,
+              child:
+                  DragBox(initPosition: Offset(xPosition, 20.0), word: word)));
+    });
+    return boxes;
+  }
+
+  List<double> generateXPositions(int numberOfBoxes) {
+    final width = MediaQuery.of(context).size.width;
+    final distance = width / numberOfBoxes;
+
+    final List<double> results = [];
+    for (int i = 0; i < numberOfBoxes; i++) {
+      results.add((distance * (i + 1 / 2)) - Box.BOX_SIZE / 2);
+    }
+    results.shuffle();
+    return results;
   }
 }
