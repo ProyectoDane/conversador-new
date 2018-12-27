@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_cards/blocs/cards/cards_event.dart';
 import 'package:flutter_cards/blocs/cards/cards_state.dart';
 import 'package:flutter_cards/model/level.dart';
+import 'package:flutter_cards/model/word.dart';
 import 'package:flutter_cards/repository/repository.dart';
 
 class CardsBloc extends Bloc<CardsEvent, CardsState> {
@@ -29,9 +30,12 @@ class CardsBloc extends Bloc<CardsEvent, CardsState> {
     dispatch(LevelCompleted());
   }
 
+  void failedAttempt(Word word, int attempts) async {
+    dispatch(FailedAttempt(word, attempts));
+  }
+
   @override
-  Stream<CardsState> mapEventToState(
-      CardsState state, CardsEvent event) async* {
+  Stream<CardsState> mapEventToState(CardsState state, CardsEvent event) async* {
     try {
       if (event is StartGame) {
         yield await _buildStartGame();
@@ -45,9 +49,11 @@ class CardsBloc extends Bloc<CardsEvent, CardsState> {
       }
 
       if (event is LevelCompleted) {
-        yield hasToRestart()
-            ? await _buildNextLevel(restart: true)
-            : await _buildNextLevel();
+        yield hasToRestart() ? await _buildNextLevel(restart: true) : await _buildNextLevel();
+      }
+
+      if (event is FailedAttempt) {
+        yield CardsState.failedAttempt(event.word, event.attempts);
       }
     } catch (exception) {
       yield CardsState.error(exception.toString());

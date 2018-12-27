@@ -4,7 +4,6 @@ import 'package:flutter_cards/blocs/cards/cards_bloc.dart';
 import 'package:flutter_cards/blocs/cards/cards_event.dart';
 import 'package:flutter_cards/blocs/cards/cards_state.dart';
 import 'package:flutter_cards/model/word.dart';
-import 'package:flutter_cards/repository/utils/random_factory.dart';
 import 'package:flutter_cards/ui/widgets/box/box.dart';
 import 'package:flutter_cards/ui/widgets/box/drag_box.dart';
 import 'package:flutter_cards/ui/widgets/box/target_box.dart';
@@ -31,13 +30,19 @@ class CardsBody extends StatefulWidget {
 }
 
 class _CardsBodyState extends State<CardsBody> {
+  // TODO move to state
   bool _error(CardsState state) => state.errorMessage.isNotEmpty;
+
   bool _nextLevel(CardsState state) => state.words.isNotEmpty;
+
   bool _waitingForNextLevel(CardsState state) => state.waiting;
+
+  Widget _toRender;
 
   @override
   void initState() {
     super.initState();
+    _toRender = _renderInitial();
   }
 
   @override
@@ -45,19 +50,19 @@ class _CardsBodyState extends State<CardsBody> {
     return BlocBuilder<CardsEvent, CardsState>(
       bloc: widget.bloc,
       builder: (BuildContext context, CardsState state) {
-        Widget toRender = _renderInitial();
+        // TODO is it necessary another bloc?
         if (_error(state)) {
-          toRender = _renderError(state);
+          _toRender = _renderError(state);
         }
 
         if (_nextLevel(state)) {
-          toRender = _renderNextLevel(state);
+          _toRender = _renderNextLevel(state);
         }
 
         if (_waitingForNextLevel(state)) {
-          toRender = _renderWaitingForNextLevel();
+          _toRender = _renderWaitingForNextLevel();
         }
-        return toRender;
+        return _toRender;
       },
     );
   }
@@ -71,12 +76,10 @@ class _CardsBodyState extends State<CardsBody> {
         ),
       );
 
-  Widget _renderError(CardsState state) =>
-      Center(child: Text(state.errorMessage));
+  Widget _renderError(CardsState state) => Center(child: Text(state.errorMessage));
 
   Widget _renderWaitingForNextLevel() {
-    Future.delayed(
-        const Duration(seconds: 2), () => widget.bloc.levelCompleted());
+    Future.delayed(const Duration(seconds: 2), () => widget.bloc.levelCompleted());
     return Center(child: CircularProgressIndicator());
   }
 
@@ -101,14 +104,17 @@ class _CardsBodyState extends State<CardsBody> {
     final List<Widget> boxes = [];
     words.forEach((word) {
       final xPosition = positions.removeLast();
-      boxes.add(isTarget
-          ? TargetBox(initPosition: Offset(xPosition, 220.0), word: word)
-          : BlocProvider(
-              bloc: widget.bloc,
-              child:
-                  DragBox(initPosition: Offset(xPosition, 20.0), word: word)));
+      boxes.add(_getBox(isTarget, xPosition, word));
     });
     return boxes;
+  }
+
+  Widget _getBox(bool isTarget, double xPosition, Word word) {
+    return BlocProvider(
+        bloc: widget.bloc,
+        child: isTarget
+            ? TargetBox(initPosition: Offset(xPosition, 220.0), word: word)
+            : DragBox(initPosition: Offset(xPosition, 20.0), word: word));
   }
 
   List<double> generateXPositions(int numberOfBoxes) {

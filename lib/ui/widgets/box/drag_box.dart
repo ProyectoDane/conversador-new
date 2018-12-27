@@ -1,8 +1,8 @@
+import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cards/blocs/cards/cards_bloc.dart';
 import 'package:flutter_cards/ui/widgets/box/box.dart';
-import 'package:audioplayers/audio_cache.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DragBox extends Box {
   final audioCache = AudioCache();
@@ -17,9 +17,7 @@ class DragBox extends Box {
 }
 
 class _DragBoxState extends State<DragBox> with TickerProviderStateMixin {
-  static const String SUCCESSFUL_SOUND = 'sounds/successful.mp3';
-  static const String FAILURE_SOUND = 'sounds/failure.mp3';
-
+  int _attempts = 0;
   CardsBloc _bloc;
   Offset _origin;
   Offset _position;
@@ -31,32 +29,31 @@ class _DragBoxState extends State<DragBox> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    setUp();
+    _setUp();
   }
 
   @override
   void didUpdateWidget(DragBox oldWidget) {
     super.didUpdateWidget(oldWidget);
-    setUp();
+    _setUp();
   }
 
-  void setUp() {
+  void _setUp() {
     _bloc = BlocProvider.of(context);
-    setUpPositions();
+    _setUpPositions();
     _color = widget.word.color;
-    setUpAnimation();
+    _setUpAnimation();
   }
 
-  void setUpPositions() {
+  void _setUpPositions() {
     _origin = widget.initPosition;
     _position = widget.initPosition;
   }
 
-  void setUpAnimation() {
-    _controller =
-        AnimationController(duration: const Duration(seconds: 1), vsync: this);
-    offsetTween = Tween<Offset>(begin: _position, end: _origin).animate(
-        CurvedAnimation(parent: _controller, curve: Curves.elasticOut));
+  void _setUpAnimation() {
+    _controller = AnimationController(duration: const Duration(seconds: 1), vsync: this);
+    offsetTween = Tween<Offset>(begin: _position, end: _origin)
+        .animate(CurvedAnimation(parent: _controller, curve: Curves.elasticOut));
   }
 
   @override
@@ -67,42 +64,65 @@ class _DragBoxState extends State<DragBox> with TickerProviderStateMixin {
           return Positioned(
             left: offsetTween.value.dx,
             top: offsetTween.value.dy,
-            child: buildDraggable(),
+            child: _buildDraggable(),
           );
         });
   }
 
-  Widget buildDraggable() {
+  Widget _buildDraggable() {
     return Draggable(
       data: widget.word,
-      child: widget.buildBox(
-          size: Box.DRAGGABLE_BOX_SIZE,
-          fontSize: Box.FONT_SIZE,
-          boxColor: _color),
-      onDraggableCanceled: (_, offset) => goBackLastPosition(offset),
-      onDragCompleted: success,
+      child: widget.buildBox(size: Box.DRAGGABLE_BOX_SIZE, fontSize: Box.FONT_SIZE, boxColor: _color),
+      onDraggableCanceled: (_, offset) {
+        _render(Operator.failure(() {
+          _position = offset;
+        }));
+      },
+      onDragCompleted: () {
+        _render(Operator.success(() {
+          _color = _color.withOpacity(0.2);
+          // TODO use events not a timer
+          Future.delayed(const Duration(milliseconds: Box.ANIMATION_DURATION_MS), () => _bloc.boxSuccess());
+        }));
+      },
       feedback: widget.buildBox(
-          size: Box.DRAGGABLE_BOX_SIZE_FEEDBACK,
-          fontSize: Box.FONT_SIZE_FEEDBACK,
-          boxColor: _color.withOpacity(0.5)),
+          size: Box.DRAGGABLE_BOX_SIZE_FEEDBACK, fontSize: Box.FONT_SIZE_FEEDBACK, boxColor: _color.withOpacity(0.5)),
     );
   }
 
-  void goBackLastPosition(Offset position) {
-    setState(() => _position = position);
-    setUpAnimation();
+  void _render(Operator operator) {
+    setState(operator.action);
+    widget.audioCache.play(operator.sound);
+    _setUpAnimation();
     _controller.forward();
-    playFailure();
+    _notifyFailure(operator.shouldNotifyFailure);
   }
 
-  void success() async {
-    setState(() => _color = _color.withOpacity(0.2));
-    playSuccessful();
-    await Future.delayed(
-        const Duration(milliseconds: Box.ANIMATION_DURATION_MS), () => _bloc.boxSuccess());
+  void _notifyFailure(bool shouldNotify) {
+    if (shouldNotify) {
+      _attempts = _attempts + 1;
+      _bloc.failedAttempt(widget.word, _attempts);
+      if (_attempts == 2) {
+        setState(() => _color = _color.withOpacity(0.2));
+        // TODO use events not a timer
+        Future.delayed(const Duration(milliseconds: Box.ANIMATION_DURATION_MS), () => _bloc.boxSuccess());
+      }
+    }
   }
+}
 
-  void playSuccessful() => widget.audioCache.play(SUCCESSFUL_SOUND);
+// TODO remove operator
+class Operator {
+  static const String SUCCESSFUL_SOUND = 'sounds/successful.mp3';
+  static const String FAILURE_SOUND = 'sounds/failure.mp3';
 
-  void playFailure() => widget.audioCache.play(FAILURE_SOUND);
+  String sound;
+  Function action;
+  bool shouldNotifyFailure;
+
+  Operator({this.sound, this.action, this.shouldNotifyFailure = false});
+
+  factory Operator.success(action) => Operator(sound: SUCCESSFUL_SOUND, action: action);
+
+  factory Operator.failure(action) => Operator(sound: FAILURE_SOUND, action: action, shouldNotifyFailure: true);
 }
