@@ -19,27 +19,25 @@ class TargetBox extends Box {
 
 class _TargetBoxState extends State<TargetBox> with SingleTickerProviderStateMixin {
   bool _thisTargetFailed(Word word) => widget.word == word;
-
   bool _isCompleted = false;
-
   Color _selectedColor;
   CardsBloc _bloc;
 
   @override
   void initState() {
     super.initState();
-    setUp();
+    _setUp();
+  }
+
+  void _setUp() {
+    _bloc = BlocProvider.of(context);
+    _selectedColor = Colors.grey.shade300;
   }
 
   @override
   void didUpdateWidget(Widget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    setUp();
-  }
-
-  void setUp() {
-    _bloc = BlocProvider.of(context);
-    _selectedColor = Colors.grey.shade300;
+    _setUp();
   }
 
   @override
@@ -87,7 +85,7 @@ class _TargetBoxState extends State<TargetBox> with SingleTickerProviderStateMix
   }
 
   Widget _checkAccepted() {
-    return (_isCompleted)
+    return _isCompleted
         ? TargetAnimation(label: widget.word.value, color: _selectedColor)
         : widget.buildBox(
             size: Box.TARGET_BOX_SIZE_COMPLETE, fontSize: Box.FONT_SIZE_FEEDBACK, boxColor: _selectedColor);

@@ -9,11 +9,10 @@ import 'package:flutter_cards/repository/repository.dart';
 
 class CardsBloc extends Bloc<CardsEvent, CardsState> {
   Repository repository;
-  Level level;
+  Level _level = Level.initial();
 
   CardsBloc({this.repository}) {
     this.repository = repository != null ? repository : Repository();
-    this.level = Level.initial();
   }
 
   CardsState get initialState => CardsState.initial();
@@ -38,18 +37,18 @@ class CardsBloc extends Bloc<CardsEvent, CardsState> {
   Stream<CardsState> mapEventToState(CardsState state, CardsEvent event) async* {
     try {
       if (event is StartGame) {
-        yield await _buildStartGame();
+        yield await _buildLevel();
       }
 
       if (event is BoxSuccess) {
-        level = Level.updateProgressLevel(level);
-        if (level.isLevelCompleted()) {
+        _level = Level.updateProgressLevel(_level);
+        if (_level.isLevelCompleted()) {
           yield CardsState.waitingForNextLevel();
         }
       }
 
       if (event is LevelCompleted) {
-        yield hasToRestart() ? await _buildNextLevel(restart: true) : await _buildNextLevel();
+        yield _hasToRestart() ? await _buildNextLevel(restart: true) : await _buildNextLevel();
       }
 
       if (event is FailedAttempt) {
@@ -60,18 +59,17 @@ class CardsBloc extends Bloc<CardsEvent, CardsState> {
     }
   }
 
-  Future<CardsState> _buildStartGame() async {
-    final words = await repository.getWords(this.level.amountOfWords);
+  Future<CardsState> _buildLevel() async {
+    final words = await repository.getWords(this._level.amountOfWords);
     return CardsState.nextLevel(words);
+  }
+
+  bool _hasToRestart() {
+    return _level.value == 3;
   }
 
   Future<CardsState> _buildNextLevel({bool restart = false}) async {
-    level = restart ? Level.initial() : Level.nextLevel(level);
-    final words = await repository.getWords(level.amountOfWords);
-    return CardsState.nextLevel(words);
-  }
-
-  bool hasToRestart() {
-    return level.value == 3;
+    _level = restart ? Level.initial() : Level.nextLevel(_level);
+    return _buildLevel();
   }
 }

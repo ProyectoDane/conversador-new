@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cards/ui/widgets/platform/platform_base.dart';
 
 class PlatformScaffold extends PlatformBase<CupertinoPageScaffold, Scaffold> {
-  final String title;
-  final Widget child;
-  final Key key;
+  final title;
+  final child;
+  final key;
 
   PlatformScaffold({@required this.title, @required this.child, this.key}) : super(key);
 
@@ -19,6 +19,9 @@ class PlatformScaffold extends PlatformBase<CupertinoPageScaffold, Scaffold> {
 
   @override
   CupertinoPageScaffold buildIOSWidget(BuildContext context) {
-    return CupertinoPageScaffold(navigationBar: CupertinoNavigationBar(middle: Text(title)), child: child);
+    return CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(middle: Text(title)),
+      child: child,
+    );
   }
 }

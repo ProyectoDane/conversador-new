@@ -13,28 +13,26 @@ class TargetAnimation extends StatefulWidget {
 
 class _TargetAnimationState extends State<TargetAnimation> with TickerProviderStateMixin {
   AnimationController _controller;
-  Animation<double> transitionTween;
-  Animation<BorderRadius> borderRadius;
+  Animation<double> _transitionTween;
+  Animation<BorderRadius> _borderRadius;
 
   @override
   void initState() {
     super.initState();
-    setUpAnimation();
+    _setUpAnimation();
   }
 
-  void setUpAnimation() {
+  void _setUpAnimation() {
     _controller = AnimationController(duration: const Duration(milliseconds: Box.ANIMATION_DURATION_MS), vsync: this)
       ..addStatusListener((status) {});
 
-    transitionTween = Tween<double>(begin: Box.TARGET_BOX_SIZE_START, end: Box.TARGET_BOX_SIZE_COMPLETE).animate(
+    _transitionTween = Tween<double>(begin: Box.TARGET_BOX_SIZE_START, end: Box.TARGET_BOX_SIZE_COMPLETE).animate(
       CurvedAnimation(parent: _controller, curve: Curves.elasticInOut),
     );
 
-    borderRadius =
+    _borderRadius =
         BorderRadiusTween(begin: BorderRadius.circular(Box.TARGET_BOX_SIZE_COMPLETE), end: BorderRadius.circular(5.0))
-            .animate(
-          CurvedAnimation(parent: _controller, curve: Curves.elasticInOut),
-        );
+            .animate(CurvedAnimation(parent: _controller, curve: Curves.elasticInOut));
 
     _controller.forward();
   }
@@ -51,9 +49,9 @@ class _TargetAnimationState extends State<TargetAnimation> with TickerProviderSt
               Center(child: Container(width: Box.TARGET_BOX_SIZE, height: Box.TARGET_BOX_SIZE, color: Colors.black12)),
               Center(
                 child: Container(
-                  width: transitionTween.value,
-                  height: transitionTween.value,
-                  decoration: BoxDecoration(color: widget.color, borderRadius: borderRadius.value),
+                  width: _transitionTween.value,
+                  height: _transitionTween.value,
+                  decoration: BoxDecoration(color: widget.color, borderRadius: _borderRadius.value),
                   child: Center(
                     child: Text(
                       widget.label,

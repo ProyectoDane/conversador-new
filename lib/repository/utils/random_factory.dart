@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_cards/model/word.dart';
-import 'package:flutter_cards/ui/widgets/box/box.dart';
 
 class RandomFactory {
   static List<Word> getRandomWords(int amount) {

@@ -16,10 +16,7 @@ abstract class Box extends StatefulWidget {
   final Offset initPosition;
   final Word word;
 
-  Box({
-    @required this.initPosition,
-    @required this.word,
-  });
+  Box({@required this.initPosition, @required this.word});
 
   Widget buildBox({@required double size, @required double fontSize, Color boxColor}) {
     return Container(

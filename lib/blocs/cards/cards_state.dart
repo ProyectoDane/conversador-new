@@ -26,6 +26,12 @@ class CardsState {
 
   factory CardsState.failedAttempt(Word word, int attempts) => CardsState(word: word, attempts: attempts);
 
+  bool isError() => this.errorMessage.isNotEmpty;
+
+  bool isNextLevel() => this.words.isNotEmpty;
+
+  bool isWaitingForNextLevel() => this.waiting;
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

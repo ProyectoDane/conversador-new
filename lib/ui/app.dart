@@ -8,9 +8,8 @@ class CardsApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-    ]);
+    _setOrientation();
+
     return MaterialApp(
       title: 'Flutter Cards',
       theme: ThemeData(),
@@ -18,5 +17,11 @@ class CardsApp extends StatelessWidget {
         '/': (BuildContext context) => CardsPage(_cardsBloc),
       },
     );
+  }
+
+  void _setOrientation() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+    ]);
   }
 }
