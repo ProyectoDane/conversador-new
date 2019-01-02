@@ -6,7 +6,7 @@ import 'package:flutter_cards/blocs/cards/cards_bloc.dart';
 import 'package:flutter_cards/blocs/cards/cards_event.dart';
 import 'package:flutter_cards/blocs/cards/cards_state.dart';
 import 'package:flutter_cards/model/word.dart';
-import 'package:flutter_cards/ui/pages/cards/positions_helper.dart';
+import 'package:flutter_cards/ui/pages/cards/util/positions_helper.dart';
 import 'package:flutter_cards/ui/widgets/box/drag_box.dart';
 import 'package:flutter_cards/ui/widgets/box/target_box.dart';
 import 'package:flutter_cards/ui/widgets/platform/platform_scaffold.dart';
@@ -45,7 +45,7 @@ class _CardsBodyState extends State<_CardsBody> {
       child: Container(
         child: RaisedButton(
           child: Text("START GAME"),
-          onPressed: widget.bloc.loadWords,
+          onPressed: widget.bloc.startLevel,
         ),
       ),
     );
@@ -60,27 +60,22 @@ class _CardsBodyState extends State<_CardsBody> {
   }
 
   Widget _render(CardsState state) {
-    // TODO is it necessary another bloc?
-    if (state.isError()) {
+    if (state is ErrorState) {
       _toRender = _renderError(state);
     }
 
-    if (state.isNextLevel()) {
+    if (state is NextLevelState) {
       _toRender = _renderNextLevel(state);
-    }
-
-    if (state.isWaitingForNextLevel()) {
-      _toRender = _renderWaitingForNextLevel();
     }
 
     return _toRender;
   }
 
-  Widget _renderError(CardsState state) {
+  Widget _renderError(ErrorState state) {
     return Center(child: Text(state.errorMessage));
   }
 
-  Widget _renderNextLevel(CardsState state) {
+  Widget _renderNextLevel(NextLevelState state) {
     return SafeArea(
       child: Stack(
         children: _buildDraggableAndTargets(state.words),
@@ -109,11 +104,5 @@ class _CardsBodyState extends State<_CardsBody> {
           ? TargetBox(initPosition: Offset(xPosition, 220.0), word: word)
           : DragBox(initPosition: Offset(xPosition, 20.0), word: word),
     );
-  }
-
-  Widget _renderWaitingForNextLevel() {
-    // TODO there is a bug here. Cancel it
-    Timer(const Duration(seconds: 2), () => widget.bloc.levelCompleted());
-    return Center(child: CircularProgressIndicator());
   }
 }

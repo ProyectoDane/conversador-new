@@ -5,12 +5,13 @@ class Operator {
   static const String FAILURE_SOUND = 'sounds/failure.mp3';
 
   final String sound;
-  final Function action;
+  final Function newState;
   final bool shouldNotifyFailure;
 
-  Operator({@required this.sound, @required this.action, this.shouldNotifyFailure = false});
+  Operator({@required this.sound, @required this.newState, this.shouldNotifyFailure = false});
 
-  factory Operator.success(action) => Operator(sound: SUCCESSFUL_SOUND, action: action);
+  factory Operator.success({@required newState}) => Operator(sound: SUCCESSFUL_SOUND, newState: newState);
 
-  factory Operator.failure(action) => Operator(sound: FAILURE_SOUND, action: action, shouldNotifyFailure: true);
+  factory Operator.failure({@required newState}) =>
+      Operator(sound: FAILURE_SOUND, newState: newState, shouldNotifyFailure: true);
 }

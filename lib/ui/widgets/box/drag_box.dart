@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +6,8 @@ import 'package:flutter_cards/ui/widgets/box/box.dart';
 import 'package:flutter_cards/ui/widgets/box/util/operators.dart';
 
 class DragBox extends Box {
+  static const int ANIMATION_TIME_MS = 1500;
+  static const Duration DURATION = const Duration(milliseconds: ANIMATION_TIME_MS);
   final audioCache = AudioCache();
 
   DragBox({@required initPosition, @required word}) : super(initPosition: initPosition, word: word);
@@ -17,13 +17,14 @@ class DragBox extends Box {
 }
 
 class _DragBoxState extends State<DragBox> with TickerProviderStateMixin {
-  int _attempts = 0;
   CardsBloc _bloc;
+  int _attempts;
   Offset _origin;
   Offset _position;
   Color _color;
+  bool _isDisabled;
   AnimationController _controller;
-  Animation<Offset> _offsetTween;
+  Animation<Offset> _movementAnimation;
 
   @override
   void initState() {
@@ -33,33 +34,35 @@ class _DragBoxState extends State<DragBox> with TickerProviderStateMixin {
 
   void _setUp() {
     _bloc = BlocProvider.of(context);
+    _attempts = 0;
     _origin = widget.initPosition;
     _position = widget.initPosition;
     _color = widget.word.color;
+    _isDisabled = false;
     _setUpAnimation();
   }
 
-  @override
-  void didUpdateWidget(DragBox oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    _setUp();
+  void _setUpAnimation() {
+    _controller = AnimationController(duration: DragBox.DURATION, vsync: this);
+    _movementAnimation = Tween<Offset>(begin: _position, end: _origin)
+        .animate(CurvedAnimation(parent: _controller, curve: Curves.elasticOut));
   }
 
-  void _setUpAnimation() {
-    _controller = AnimationController(duration: const Duration(seconds: 1), vsync: this);
-    _offsetTween = Tween<Offset>(begin: _position, end: _origin)
-        .animate(CurvedAnimation(parent: _controller, curve: Curves.elasticOut));
+  @override
+  void didUpdateWidget(Widget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _setUp();
   }
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: _controller,
+      animation: _movementAnimation,
       builder: (BuildContext context, Widget child) {
         return Positioned(
-          left: _offsetTween.value.dx,
-          top: _offsetTween.value.dy,
-          child: _buildDraggable(),
+          left: _movementAnimation.value.dx,
+          top: _movementAnimation.value.dy,
+          child: _isDisabled ? widget.buildBox(boxColor: _color) : _buildDraggable(),
         );
       },
     );
@@ -68,41 +71,54 @@ class _DragBoxState extends State<DragBox> with TickerProviderStateMixin {
   Widget _buildDraggable() {
     return Draggable(
       data: widget.word,
-      child: widget.buildBox(size: Box.DRAGGABLE_BOX_SIZE, fontSize: Box.FONT_SIZE, boxColor: _color),
+      child: widget.buildBox(boxColor: _color),
       onDraggableCanceled: (_, offset) {
-        _render(Operator.failure(() {
-          _position = offset;
-        }));
+        _render(Operator.failure(
+          newState: () {
+            _position = offset;
+          },
+        ));
       },
       onDragCompleted: () {
-        _render(Operator.success(() {
-          _color = _color.withOpacity(0.2);
-          // TODO use events not a timer
-          Timer(const Duration(milliseconds: Box.ANIMATION_DURATION_MS), () => _bloc.boxSuccess());
-        }));
+        _render(Operator.success(
+          newState: () {
+            _color = _color.withOpacity(0.2);
+            _bloc.boxSuccess(widget.word);
+            _isDisabled = true;
+          },
+        ));
       },
-      feedback: widget.buildBox(
-          size: Box.DRAGGABLE_BOX_SIZE_FEEDBACK, fontSize: Box.FONT_SIZE_FEEDBACK, boxColor: _color.withOpacity(0.5)),
+      feedback: widget.buildBox(boxColor: _color.withOpacity(0.5)),
     );
   }
 
   void _render(Operator operator) {
-    setState(operator.action);
+    setState(operator.newState);
     widget.audioCache.play(operator.sound);
-    _setUpAnimation();
-    _controller.forward();
+    _playAnimation();
     _notifyFailure(operator.shouldNotifyFailure);
   }
 
+  void _playAnimation() {
+    _setUpAnimation();
+    _controller.forward();
+  }
+
   void _notifyFailure(bool shouldNotify) {
-    if (shouldNotify) {
-      _attempts = _attempts + 1;
+    if (!shouldNotify) {
+      return;
+    }
+
+    _attempts = _attempts + 1;
+    if (_attempts == 1 || _attempts == 2) {
       _bloc.failedAttempt(widget.word, _attempts);
-      if (_attempts == 2) {
-        setState(() => _color = _color.withOpacity(0.2));
-        // TODO use events not a timer
-        Future.delayed(const Duration(milliseconds: Box.ANIMATION_DURATION_MS), () => _bloc.boxSuccess());
-      }
+    }
+    if (_attempts == 3) {
+      setState(() {
+        _color = _color.withOpacity(0.2);
+        _isDisabled = true;
+      });
+      _bloc.boxSuccess(widget.word);
     }
   }
 }
