@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cards/ui/widgets/piece/piece.dart';
+import 'package:flutter_syntactic_sorter/ui/widgets/piece/piece.dart';
 
 class PositionHelper {
-  static List<double> generateEquidistantPositions(BuildContext context, int numberOfBoxes) {
+  static List<double> generateEquidistantPositions(BuildContext context, int numberOfPieces) {
     final width = MediaQuery.of(context).size.width;
-    final distance = width / numberOfBoxes;
+    final distance = width / numberOfPieces;
 
     final List<double> positions = [];
-    for (int i = 0; i < numberOfBoxes; i++) {
+    for (int i = 0; i < numberOfPieces; i++) {
       positions.add((distance * (i + 1 / 2)) - (Piece.SIZE / 2));
     }
     positions.shuffle();

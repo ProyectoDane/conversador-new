@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cards/ui/widgets/platform/platform_base.dart';
+import 'package:flutter_syntactic_sorter/ui/widgets/platform/platform_base.dart';
 
 class PlatformScaffold extends PlatformBase<CupertinoPageScaffold, Scaffold> {
   final title;

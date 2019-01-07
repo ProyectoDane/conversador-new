@@ -1,31 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_cards/blocs/cards/cards_bloc.dart';
-import 'package:flutter_cards/blocs/cards/cards_event.dart';
-import 'package:flutter_cards/blocs/cards/cards_state.dart';
-import 'package:flutter_cards/model/word.dart';
-import 'package:flutter_cards/ui/widgets/piece/piece.dart';
+import 'package:flutter_syntactic_sorter/blocs/game/game_bloc.dart';
+import 'package:flutter_syntactic_sorter/blocs/game/game_event.dart';
+import 'package:flutter_syntactic_sorter/blocs/game/game_state.dart';
+import 'package:flutter_syntactic_sorter/model/word.dart';
+import 'package:flutter_syntactic_sorter/ui/widgets/piece/piece.dart';
 
-class TargetBox extends Piece {
+class TargetPiece extends Piece {
   static const int _ANIMATION_TIME_MS = 1500;
   static const int _ANIMATION_TIME_FAST_MS = _ANIMATION_TIME_MS ~/ 2;
   static const Duration NORMAL = const Duration(milliseconds: _ANIMATION_TIME_MS);
   static const Duration FAST = const Duration(milliseconds: _ANIMATION_TIME_FAST_MS);
 
-  TargetBox({@required initPosition, @required word}) : super(initPosition: initPosition, word: word);
+  TargetPiece({@required initPosition, @required word}) : super(initPosition: initPosition, word: word);
 
   @override
-  State<StatefulWidget> createState() => _TargetBoxState();
+  State<StatefulWidget> createState() => _TargetPieceState();
 }
 
-class _TargetBoxState extends State<TargetBox> with TickerProviderStateMixin {
+class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin {
   Widget _toRender;
   AnimationController _sizeController;
   AnimationController _opacityController;
   Animation<double> _sizeAnimation;
   Animation<double> _opacityAnimation;
   Color _color;
-  CardsBloc _bloc;
+  GameBloc _bloc;
 
   @override
   void initState() {
@@ -41,9 +41,9 @@ class _TargetBoxState extends State<TargetBox> with TickerProviderStateMixin {
   }
 
   void _setUpAnimation() {
-    _sizeController = AnimationController(duration: TargetBox.NORMAL, vsync: this);
+    _sizeController = AnimationController(duration: TargetPiece.NORMAL, vsync: this);
     _sizeAnimation = Tween(begin: 0.0, end: Piece.SIZE).animate(_sizeController);
-    _opacityController = AnimationController(duration: TargetBox.FAST, vsync: this);
+    _opacityController = AnimationController(duration: TargetPiece.FAST, vsync: this);
     _opacityAnimation = CurvedAnimation(parent: _opacityController, curve: Curves.decelerate);
   }
 
@@ -53,15 +53,21 @@ class _TargetBoxState extends State<TargetBox> with TickerProviderStateMixin {
     _setUp();
   }
 
+  void dispose() {
+    _sizeController.dispose();
+    _opacityController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CardsEvent, CardsState>(
+    return BlocBuilder<GameEvent, GameState>(
       bloc: _bloc,
-      builder: (BuildContext context, CardsState state) => _render(state),
+      builder: (BuildContext context, GameState state) => _render(state),
     );
   }
 
-  Widget _render(CardsState state) {
+  Widget _render(GameState state) {
     if (state is FailState) {
       _renderFail(state);
     }
@@ -74,7 +80,8 @@ class _TargetBoxState extends State<TargetBox> with TickerProviderStateMixin {
   }
 
   void _renderFail(FailState state) {
-    if (_shouldNotAnimate(state.word, state.attempts)) {
+    final shouldNotAnimate = widget.word != state.word || state.attempts <= 1;
+    if (shouldNotAnimate) {
       return;
     }
 
@@ -89,16 +96,13 @@ class _TargetBoxState extends State<TargetBox> with TickerProviderStateMixin {
     }
   }
 
-  bool _shouldNotAnimate(Word word, int attempts) => widget.word != word || attempts <= 1;
-
   void _renderWaitingForAnimation(WaitingForAnimationState state) {
-    if (_hasToAnimate(state.word)) {
+    final hasToAnimate = widget.word == state.word;
+    if (hasToAnimate) {
       _color = state.word.shape.color;
       _sizeController.forward().whenComplete(_bloc.animationCompleted);
     }
   }
-
-  bool _hasToAnimate(Word word) => widget.word == word;
 
   Widget _renderInitial() {
     return Positioned(

@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_cards/model/shape.dart';
-import 'package:flutter_cards/model/word.dart';
+import 'package:flutter_syntactic_sorter/model/shape.dart';
+import 'package:flutter_syntactic_sorter/model/word.dart';
 
 class PieceFactory {
   static List<Word> getRandomWords(int amount) {

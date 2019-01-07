@@ -1,5 +1,5 @@
-import 'package:flutter_cards/model/word.dart';
-import 'package:flutter_cards/repository/utils/piece_factory.dart';
+import 'package:flutter_syntactic_sorter/model/word.dart';
+import 'package:flutter_syntactic_sorter/repository/utils/piece_factory.dart';
 
 class Repository {
   static var _instance = Repository.internal();

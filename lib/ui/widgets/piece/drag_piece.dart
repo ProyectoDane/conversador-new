@@ -1,23 +1,23 @@
 import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_cards/blocs/cards/cards_bloc.dart';
-import 'package:flutter_cards/ui/widgets/piece/piece.dart';
-import 'package:flutter_cards/ui/widgets/piece/util/operators.dart';
+import 'package:flutter_syntactic_sorter/blocs/game/game_bloc.dart';
+import 'package:flutter_syntactic_sorter/ui/widgets/piece/piece.dart';
+import 'package:flutter_syntactic_sorter/ui/widgets/piece/util/operators.dart';
 
-class DragBox extends Piece {
+class DragPiece extends Piece {
   static const int ANIMATION_TIME_MS = 1500;
   static const Duration DURATION = const Duration(milliseconds: ANIMATION_TIME_MS);
   final audioCache = AudioCache();
 
-  DragBox({@required initPosition, @required word}) : super(initPosition: initPosition, word: word);
+  DragPiece({@required initPosition, @required word}) : super(initPosition: initPosition, word: word);
 
   @override
-  State<StatefulWidget> createState() => _DragBoxState();
+  State<StatefulWidget> createState() => _DragPieceState();
 }
 
-class _DragBoxState extends State<DragBox> with TickerProviderStateMixin {
-  CardsBloc _bloc;
+class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
+  GameBloc _bloc;
   int _attempts;
   Offset _origin;
   Offset _position;
@@ -43,7 +43,7 @@ class _DragBoxState extends State<DragBox> with TickerProviderStateMixin {
   }
 
   void _setUpAnimation() {
-    _controller = AnimationController(duration: DragBox.DURATION, vsync: this);
+    _controller = AnimationController(duration: DragPiece.DURATION, vsync: this);
     _movementAnimation = Tween<Offset>(begin: _position, end: _origin)
         .animate(CurvedAnimation(parent: _controller, curve: Curves.elasticOut));
   }
@@ -52,6 +52,11 @@ class _DragBoxState extends State<DragBox> with TickerProviderStateMixin {
   void didUpdateWidget(Widget oldWidget) {
     super.didUpdateWidget(oldWidget);
     _setUp();
+  }
+
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override

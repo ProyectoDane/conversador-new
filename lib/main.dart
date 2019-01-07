@@ -1,4 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cards/ui/app.dart';
+import 'package:flutter_syntactic_sorter/ui/app.dart';
 
-void main() => runApp(CardsApp());
+void main() => runApp(GameApp());

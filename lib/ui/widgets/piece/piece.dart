@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cards/model/word.dart';
+import 'package:flutter_syntactic_sorter/model/word.dart';
 
 abstract class Piece extends StatefulWidget {
   static const double FONT_SIZE = 15.0;

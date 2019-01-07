@@ -1,4 +1,4 @@
-package ar.com.intivefdv.fluttercards
+package ar.com.intivefdv.fluttersyntacticsorter
 
 import android.os.Bundle
 

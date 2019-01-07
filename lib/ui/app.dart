@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_cards/blocs/cards/cards_bloc.dart';
-import 'package:flutter_cards/ui/pages/cards/cards_page.dart';
+import 'package:flutter_syntactic_sorter/blocs/game/game_bloc.dart';
+import 'package:flutter_syntactic_sorter/ui/pages/game/game_page.dart';
 
-class CardsApp extends StatelessWidget {
-  final _cardsBloc = CardsBloc();
+class GameApp extends StatelessWidget {
+  final _gameBloc = GameBloc();
 
   @override
   Widget build(BuildContext context) {
     _setOrientation();
 
     return MaterialApp(
-      title: 'Flutter Cards',
+      title: 'Flutter Syntactic Sorter',
       theme: ThemeData(),
       routes: {
-        '/': (BuildContext context) => CardsPage(_cardsBloc),
+        '/': (BuildContext context) => GamePage(_gameBloc),
       },
     );
   }

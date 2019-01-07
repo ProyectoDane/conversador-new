@@ -7,7 +7,7 @@ class Level {
 
   Level({@required this.value, @required this.amountOfSuccessful, @required this.amountOfWords});
 
-  bool isLevelCompleted() => amountOfSuccessful == amountOfWords;
+  bool isCompleted() => amountOfSuccessful == amountOfWords;
 
   factory Level.initial() => Level(value: 1, amountOfSuccessful: 0, amountOfWords: 1);
 
