@@ -61,8 +61,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   }
 
   Future<GameState> _renderLevel() async {
-    final words = await repository.getWords(this._level.amountOfWords);
-    return NextLevelState(words);
+    final pieces = await repository.getPieces(this._level.amountOfWords);
+    return NextLevelState(pieces);
   }
 
   GameState _renderFail(FailedAttempt event) {

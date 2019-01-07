@@ -1,3 +1,4 @@
+import 'package:flutter_syntactic_sorter/model/piece.dart';
 import 'package:flutter_syntactic_sorter/model/word.dart';
 
 abstract class GameState {}
@@ -5,9 +6,9 @@ abstract class GameState {}
 class InitialState extends GameState {}
 
 class NextLevelState extends GameState {
-  final List<Word> words;
+  final List<Piece> pieces;
 
-  NextLevelState(this.words);
+  NextLevelState(this.pieces);
 }
 
 class FailState extends GameState {

@@ -1,4 +1,4 @@
-import 'package:flutter_syntactic_sorter/model/word.dart';
+import 'package:flutter_syntactic_sorter/model/piece.dart';
 import 'package:flutter_syntactic_sorter/repository/utils/piece_factory.dart';
 
 class Repository {
@@ -8,5 +8,5 @@ class Repository {
 
   Repository.internal();
 
-  Future<List<Word>> getWords(int level) async => Future.value(PieceFactory.getRandomWords(level));
+  Future<List<Piece>> getPieces(int level) async => Future.value(PieceFactory.getRandomPieces(level));
 }

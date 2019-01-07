@@ -3,16 +3,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_bloc.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_event.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_state.dart';
+import 'package:flutter_syntactic_sorter/model/shape/shape.dart';
 import 'package:flutter_syntactic_sorter/model/word.dart';
-import 'package:flutter_syntactic_sorter/ui/widgets/piece/piece.dart';
+import 'package:flutter_syntactic_sorter/model/piece.dart';
 
-class TargetPiece extends Piece {
+class TargetPiece extends StatefulWidget {
   static const int _ANIMATION_TIME_MS = 1500;
   static const int _ANIMATION_TIME_FAST_MS = _ANIMATION_TIME_MS ~/ 2;
   static const Duration NORMAL = const Duration(milliseconds: _ANIMATION_TIME_MS);
   static const Duration FAST = const Duration(milliseconds: _ANIMATION_TIME_FAST_MS);
 
-  TargetPiece({@required initPosition, @required word}) : super(initPosition: initPosition, word: word);
+  final Offset initPosition;
+  final Piece piece;
+
+  TargetPiece({@required this.initPosition, @required this.piece});
 
   @override
   State<StatefulWidget> createState() => _TargetPieceState();
@@ -24,7 +28,6 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
   AnimationController _opacityController;
   Animation<double> _sizeAnimation;
   Animation<double> _opacityAnimation;
-  Color _color;
   GameBloc _bloc;
 
   @override
@@ -35,14 +38,14 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
 
   void _setUp() {
     _bloc = BlocProvider.of(context);
-    _color = Piece.COLOR;
     _setUpAnimation();
     _toRender = _renderInitial();
   }
 
   void _setUpAnimation() {
     _sizeController = AnimationController(duration: TargetPiece.NORMAL, vsync: this);
-    _sizeAnimation = Tween(begin: 0.0, end: Piece.SIZE).animate(_sizeController);
+    // TODO check this animation
+    _sizeAnimation = Tween(begin: 0.0, end: Shape.BASE_SIZE).animate(_sizeController);
     _opacityController = AnimationController(duration: TargetPiece.FAST, vsync: this);
     _opacityAnimation = CurvedAnimation(parent: _opacityController, curve: Curves.decelerate);
   }
@@ -80,26 +83,23 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
   }
 
   void _renderFail(FailState state) {
-    final shouldNotAnimate = widget.word != state.word || state.attempts <= 1;
+    final shouldNotAnimate = widget.piece.word != state.word || state.attempts <= 1;
     if (shouldNotAnimate) {
       return;
     }
 
     if (state.attempts == 2) {
-      _color = Piece.COLOR;
       _opacityController.forward().whenComplete(_opacityController.reverse);
     }
 
     if (state.attempts == 3) {
-      _color = state.word.shape.color;
       _sizeController.forward().whenComplete(_bloc.animationCompleted);
     }
   }
 
   void _renderWaitingForAnimation(WaitingForAnimationState state) {
-    final hasToAnimate = widget.word == state.word;
+    final hasToAnimate = widget.piece.word == state.word;
     if (hasToAnimate) {
-      _color = state.word.shape.color;
       _sizeController.forward().whenComplete(_bloc.animationCompleted);
     }
   }
@@ -109,9 +109,8 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
       left: widget.initPosition.dx,
       top: widget.initPosition.dy,
       child: DragTarget(
-        onWillAccept: (word) => word.id == widget.word.id,
+        onWillAccept: (word) => word.id == widget.piece.word.id,
         onAccept: (Word word) {
-          _color = word.shape.color;
           _sizeController.forward().whenComplete(_bloc.animationCompleted);
         },
         builder: (context, accepted, rejected) => _buildAnimations(),
@@ -141,8 +140,8 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
           child: Stack(
             alignment: Alignment.center,
             children: <Widget>[
-              widget.buildPiece(size: _sizeAnimation.value, color: _color, showText: false),
-              widget.buildPiece(), // Text
+              widget.piece.buildPiece(type: Piece.TARGET_COMPLETED, size: _sizeAnimation.value, showText: false),
+              widget.piece.buildPiece(type: Piece.TARGET_INITIAL), // Text
             ],
           ),
         );

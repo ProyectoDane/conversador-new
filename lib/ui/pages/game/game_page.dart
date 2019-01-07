@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_bloc.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_event.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_state.dart';
-import 'package:flutter_syntactic_sorter/model/word.dart';
+import 'package:flutter_syntactic_sorter/model/piece.dart';
 import 'package:flutter_syntactic_sorter/ui/pages/game/util/positions_helper.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/drag_piece.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/target_piece.dart';
@@ -16,7 +16,7 @@ class GamePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PlatformScaffold(title: 'Words', child: _GameBody(_bloc));
+    return PlatformScaffold(title: 'Game', child: _GameBody(_bloc));
   }
 }
 
@@ -76,31 +76,31 @@ class _GameBodyState extends State<_GameBody> {
   Widget _renderNextLevel(NextLevelState state) {
     return SafeArea(
       child: Stack(
-        children: _buildDraggableAndTargets(state.words),
+        children: _buildDraggableAndTargets(state.pieces),
       ),
     );
   }
 
-  List<Widget> _buildDraggableAndTargets(List<Word> words) {
-    final targetPieces = _buildPieces(words: words, isTarget: true);
-    final dragPieces = _buildPieces(words: words);
+  List<Widget> _buildDraggableAndTargets(List<Piece> pieces) {
+    final targetPieces = _buildPieces(pieces: pieces, isTarget: true);
+    final dragPieces = _buildPieces(pieces: pieces);
     return List.from(dragPieces)..addAll(targetPieces);
   }
 
-  List<Widget> _buildPieces({@required List<Word> words, bool isTarget = false}) {
-    final positions = PositionHelper.generateEquidistantPositions(context, words.length);
-    return words.map((word) {
+  List<Widget> _buildPieces({@required List<Piece> pieces, bool isTarget = false}) {
+    final positions = PositionHelper.generateEquidistantPositions(context, pieces.length);
+    return pieces.map((piece) {
       final xPosition = positions.removeLast();
-      return _buildPiece(isTarget, xPosition, word);
+      return _buildPiece(isTarget, xPosition, piece);
     }).toList();
   }
 
-  Widget _buildPiece(bool isTarget, double xPosition, Word word) {
+  Widget _buildPiece(bool isTarget, double xPosition, Piece piece) {
     return BlocProvider(
       bloc: widget.bloc,
       child: isTarget
-          ? TargetPiece(initPosition: Offset(xPosition, 220.0), word: word)
-          : DragPiece(initPosition: Offset(xPosition, 20.0), word: word),
+          ? TargetPiece(initPosition: Offset(xPosition, 220.0), piece: piece)
+          : DragPiece(initPosition: Offset(xPosition, 20.0), piece: piece),
     );
   }
 }

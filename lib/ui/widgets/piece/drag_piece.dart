@@ -2,15 +2,18 @@ import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_bloc.dart';
-import 'package:flutter_syntactic_sorter/ui/widgets/piece/piece.dart';
+import 'package:flutter_syntactic_sorter/model/piece.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/util/operators.dart';
 
-class DragPiece extends Piece {
+class DragPiece extends StatefulWidget {
   static const int ANIMATION_TIME_MS = 1500;
   static const Duration DURATION = const Duration(milliseconds: ANIMATION_TIME_MS);
   final audioCache = AudioCache();
 
-  DragPiece({@required initPosition, @required word}) : super(initPosition: initPosition, word: word);
+  final Offset initPosition;
+  final Piece piece;
+
+  DragPiece({@required this.initPosition, @required this.piece});
 
   @override
   State<StatefulWidget> createState() => _DragPieceState();
@@ -21,7 +24,6 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
   int _attempts;
   Offset _origin;
   Offset _position;
-  Color _color;
   bool _isDisabled;
   AnimationController _controller;
   Animation<Offset> _movementAnimation;
@@ -37,7 +39,6 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
     _attempts = 0;
     _origin = widget.initPosition;
     _position = widget.initPosition;
-    _color = widget.word.shape.color;
     _isDisabled = false;
     _setUpAnimation();
   }
@@ -67,7 +68,9 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
         return Positioned(
           left: _movementAnimation.value.dx,
           top: _movementAnimation.value.dy,
-          child: _isDisabled ? widget.buildPiece(color: _color) : _buildDraggable(),
+          child: _isDisabled
+              ? widget.piece.buildPiece(type: Piece.DRAG_COMPLETED)
+              : _buildDraggable(),
         );
       },
     );
@@ -75,8 +78,8 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
 
   Widget _buildDraggable() {
     return Draggable(
-      data: widget.word,
-      child: widget.buildPiece(color: _color),
+      data: widget.piece.word,
+      child: widget.piece.buildPiece(type: Piece.DRAG_INITIAL),
       onDraggableCanceled: (_, offset) {
         _render(Operator.failure(
           newState: () {
@@ -87,13 +90,12 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
       onDragCompleted: () {
         _render(Operator.success(
           newState: () {
-            _color = _color.withOpacity(0.2);
-            _bloc.pieceSuccess(widget.word);
+            _bloc.pieceSuccess(widget.piece.word);
             _isDisabled = true;
           },
         ));
       },
-      feedback: widget.buildPiece(color: _color.withOpacity(0.5)),
+      feedback: widget.piece.buildPiece(type: Piece.DRAG_FEEDBACK),
     );
   }
 
@@ -116,14 +118,13 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
 
     _attempts = _attempts + 1;
     if (_attempts == 1 || _attempts == 2) {
-      _bloc.failedAttempt(widget.word, _attempts);
+      _bloc.failedAttempt(widget.piece.word, _attempts);
     }
     if (_attempts == 3) {
       setState(() {
-        _color = _color.withOpacity(0.2);
         _isDisabled = true;
       });
-      _bloc.pieceSuccess(widget.word);
+      _bloc.pieceSuccess(widget.piece.word);
     }
   }
 }

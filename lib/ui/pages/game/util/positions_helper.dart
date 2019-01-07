@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_syntactic_sorter/ui/widgets/piece/piece.dart';
+import 'package:flutter_syntactic_sorter/model/shape/shape.dart';
 
 class PositionHelper {
   static List<double> generateEquidistantPositions(BuildContext context, int numberOfPieces) {
@@ -8,7 +8,7 @@ class PositionHelper {
 
     final List<double> positions = [];
     for (int i = 0; i < numberOfPieces; i++) {
-      positions.add((distance * (i + 1 / 2)) - (Piece.SIZE / 2));
+      positions.add((distance * (i + 1 / 2)) - (Shape.BASE_SIZE / 2));
     }
     positions.shuffle();
     return positions;
