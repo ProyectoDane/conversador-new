@@ -4,9 +4,9 @@ import 'package:flutter_cards/blocs/cards/cards_bloc.dart';
 import 'package:flutter_cards/blocs/cards/cards_event.dart';
 import 'package:flutter_cards/blocs/cards/cards_state.dart';
 import 'package:flutter_cards/model/word.dart';
-import 'package:flutter_cards/ui/widgets/box/box.dart';
+import 'package:flutter_cards/ui/widgets/piece/piece.dart';
 
-class TargetBox extends Box {
+class TargetBox extends Piece {
   static const int _ANIMATION_TIME_MS = 1500;
   static const int _ANIMATION_TIME_FAST_MS = _ANIMATION_TIME_MS ~/ 2;
   static const Duration NORMAL = const Duration(milliseconds: _ANIMATION_TIME_MS);
@@ -38,14 +38,14 @@ class _TargetBoxState extends State<TargetBox> with TickerProviderStateMixin {
 
   void _setUp() {
     _bloc = BlocProvider.of(context);
-    _color = Box.COLOR;
+    _color = Piece.COLOR;
     _setUpAnimation();
     _toRender = _renderInitial();
   }
 
   void _setUpAnimation() {
     _sizeController = AnimationController(duration: TargetBox.NORMAL, vsync: this);
-    _sizeAnimation = Tween(begin: 0.0, end: Box.SIZE).animate(_sizeController);
+    _sizeAnimation = Tween(begin: 0.0, end: Piece.SIZE).animate(_sizeController);
     _opacityController = AnimationController(duration: TargetBox.FAST, vsync: this);
     _opacityAnimation = CurvedAnimation(parent: _opacityController, curve: Curves.decelerate);
   }
@@ -82,7 +82,7 @@ class _TargetBoxState extends State<TargetBox> with TickerProviderStateMixin {
     }
 
     if (state.attempts == 2) {
-      _color = Box.COLOR;
+      _color = Piece.COLOR;
       _opacityController.forward().whenComplete(_opacityController.reverse);
     }
 
@@ -140,23 +140,8 @@ class _TargetBoxState extends State<TargetBox> with TickerProviderStateMixin {
           child: Stack(
             alignment: Alignment.center,
             children: <Widget>[
-              Container(
-                  width: Box.SIZE,
-                  height: Box.SIZE,
-                  decoration:
-                      BoxDecoration(color: Box.COLOR, borderRadius: BorderRadius.all(Radius.circular(Box.MAX_RADIUS)))),
-              Container(
-                width: _sizeAnimation.value,
-                height: _sizeAnimation.value,
-                decoration:
-                    BoxDecoration(color: _color, borderRadius: BorderRadius.all(Radius.circular(Box.MAX_RADIUS))),
-              ),
-              Center(
-                child: Text(
-                  widget.word.value,
-                  style: TextStyle(color: Colors.white, decoration: TextDecoration.none, fontSize: Box.FONT_SIZE),
-                ),
-              ),
+              widget.buildPiece(size: _sizeAnimation.value, color: _color, showText: false),
+              widget.buildPiece(), // Text
             ],
           ),
         );

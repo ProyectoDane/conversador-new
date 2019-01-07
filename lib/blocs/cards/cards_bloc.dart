@@ -26,7 +26,7 @@ class CardsBloc extends Bloc<CardsEvent, CardsState> {
     dispatch(FailedAttempt(word, attempts));
   }
 
-  void boxSuccess(Word word) async {
+  void pieceSuccess(Word word) async {
     dispatch(BoxSuccess(word));
   }
 

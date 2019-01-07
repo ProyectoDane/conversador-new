@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cards/blocs/cards/cards_bloc.dart';
@@ -7,8 +5,8 @@ import 'package:flutter_cards/blocs/cards/cards_event.dart';
 import 'package:flutter_cards/blocs/cards/cards_state.dart';
 import 'package:flutter_cards/model/word.dart';
 import 'package:flutter_cards/ui/pages/cards/util/positions_helper.dart';
-import 'package:flutter_cards/ui/widgets/box/drag_box.dart';
-import 'package:flutter_cards/ui/widgets/box/target_box.dart';
+import 'package:flutter_cards/ui/widgets/piece/drag_piece.dart';
+import 'package:flutter_cards/ui/widgets/piece/target_piece.dart';
 import 'package:flutter_cards/ui/widgets/platform/platform_scaffold.dart';
 
 class CardsPage extends StatelessWidget {

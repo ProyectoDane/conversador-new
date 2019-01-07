@@ -17,6 +17,7 @@ class RandomFactory {
       id: _getRandomId(),
       value: _getRandomText(),
       color: _getRandomColor(),
+      shape: _gerRandomShape(),
     );
   }
 
@@ -54,5 +55,15 @@ class RandomFactory {
     ];
     words.shuffle();
     return words.removeLast();
+  }
+
+  static int _gerRandomShape() {
+    final shapes = [
+      1,
+      2,
+      3,
+    ];
+    shapes.shuffle();
+    return shapes.removeLast();
   }
 }

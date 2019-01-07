@@ -2,10 +2,10 @@ import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cards/blocs/cards/cards_bloc.dart';
-import 'package:flutter_cards/ui/widgets/box/box.dart';
-import 'package:flutter_cards/ui/widgets/box/util/operators.dart';
+import 'package:flutter_cards/ui/widgets/piece/piece.dart';
+import 'package:flutter_cards/ui/widgets/piece/util/operators.dart';
 
-class DragBox extends Box {
+class DragBox extends Piece {
   static const int ANIMATION_TIME_MS = 1500;
   static const Duration DURATION = const Duration(milliseconds: ANIMATION_TIME_MS);
   final audioCache = AudioCache();
@@ -62,7 +62,7 @@ class _DragBoxState extends State<DragBox> with TickerProviderStateMixin {
         return Positioned(
           left: _movementAnimation.value.dx,
           top: _movementAnimation.value.dy,
-          child: _isDisabled ? widget.buildBox(boxColor: _color) : _buildDraggable(),
+          child: _isDisabled ? widget.buildPiece(color: _color) : _buildDraggable(),
         );
       },
     );
@@ -71,7 +71,7 @@ class _DragBoxState extends State<DragBox> with TickerProviderStateMixin {
   Widget _buildDraggable() {
     return Draggable(
       data: widget.word,
-      child: widget.buildBox(boxColor: _color),
+      child: widget.buildPiece(color: _color),
       onDraggableCanceled: (_, offset) {
         _render(Operator.failure(
           newState: () {
@@ -83,12 +83,12 @@ class _DragBoxState extends State<DragBox> with TickerProviderStateMixin {
         _render(Operator.success(
           newState: () {
             _color = _color.withOpacity(0.2);
-            _bloc.boxSuccess(widget.word);
+            _bloc.pieceSuccess(widget.word);
             _isDisabled = true;
           },
         ));
       },
-      feedback: widget.buildBox(boxColor: _color.withOpacity(0.5)),
+      feedback: widget.buildPiece(color: _color.withOpacity(0.5)),
     );
   }
 
@@ -118,7 +118,7 @@ class _DragBoxState extends State<DragBox> with TickerProviderStateMixin {
         _color = _color.withOpacity(0.2);
         _isDisabled = true;
       });
-      _bloc.boxSuccess(widget.word);
+      _bloc.pieceSuccess(widget.word);
     }
   }
 }
