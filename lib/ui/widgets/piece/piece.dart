@@ -19,8 +19,10 @@ abstract class Piece extends StatefulWidget {
       decoration: BoxDecoration(color: color, borderRadius: BorderRadius.all(Radius.circular(MAX_RADIUS))),
       child: showText
           ? Center(
-              child: Text(word.value,
-                  style: TextStyle(color: Colors.white, decoration: TextDecoration.none, fontSize: fontSize)),
+              child: Text(
+                word.value,
+                style: TextStyle(color: Colors.white, decoration: TextDecoration.none, fontSize: fontSize),
+              ),
             )
           : Container(),
     );

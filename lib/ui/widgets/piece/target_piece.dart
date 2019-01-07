@@ -12,10 +12,7 @@ class TargetBox extends Piece {
   static const Duration NORMAL = const Duration(milliseconds: _ANIMATION_TIME_MS);
   static const Duration FAST = const Duration(milliseconds: _ANIMATION_TIME_FAST_MS);
 
-  TargetBox({
-    @required initPosition,
-    @required word,
-  }) : super(initPosition: initPosition, word: word);
+  TargetBox({@required initPosition, @required word}) : super(initPosition: initPosition, word: word);
 
   @override
   State<StatefulWidget> createState() => _TargetBoxState();
@@ -87,7 +84,7 @@ class _TargetBoxState extends State<TargetBox> with TickerProviderStateMixin {
     }
 
     if (state.attempts == 3) {
-      _color = state.word.color;
+      _color = state.word.shape.color;
       _sizeController.forward().whenComplete(_bloc.animationCompleted);
     }
   }
@@ -96,7 +93,7 @@ class _TargetBoxState extends State<TargetBox> with TickerProviderStateMixin {
 
   void _renderWaitingForAnimation(WaitingForAnimationState state) {
     if (_hasToAnimate(state.word)) {
-      _color = state.word.color;
+      _color = state.word.shape.color;
       _sizeController.forward().whenComplete(_bloc.animationCompleted);
     }
   }
@@ -110,7 +107,7 @@ class _TargetBoxState extends State<TargetBox> with TickerProviderStateMixin {
       child: DragTarget(
         onWillAccept: (word) => word.id == widget.word.id,
         onAccept: (Word word) {
-          _color = word.color;
+          _color = word.shape.color;
           _sizeController.forward().whenComplete(_bloc.animationCompleted);
         },
         builder: (context, accepted, rejected) => _buildAnimations(),

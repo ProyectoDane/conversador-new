@@ -37,7 +37,7 @@ class _DragBoxState extends State<DragBox> with TickerProviderStateMixin {
     _attempts = 0;
     _origin = widget.initPosition;
     _position = widget.initPosition;
-    _color = widget.word.color;
+    _color = widget.word.shape.color;
     _isDisabled = false;
     _setUpAnimation();
   }

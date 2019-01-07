@@ -1,5 +1,5 @@
 import 'package:flutter_cards/model/word.dart';
-import 'package:flutter_cards/repository/utils/random_factory.dart';
+import 'package:flutter_cards/repository/utils/piece_factory.dart';
 
 class Repository {
   static var _instance = Repository.internal();
@@ -8,5 +8,5 @@ class Repository {
 
   Repository.internal();
 
-  Future<List<Word>> getWords(int level) async => Future.value(RandomFactory.getRandomWords(level));
+  Future<List<Word>> getWords(int level) async => Future.value(PieceFactory.getRandomWords(level));
 }

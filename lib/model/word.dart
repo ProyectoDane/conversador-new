@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cards/model/shape.dart';
 
 class Word {
   final int id;
   final String value;
-  final Color color;
-  final int shape;
+  final Shape shape;
 
-  Word({@required this.id, @required this.value, @required this.color, @required this.shape});
+  Word({@required this.id, @required this.value, @required this.shape});
 }

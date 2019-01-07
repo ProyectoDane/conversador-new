@@ -1,9 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_cards/model/shape.dart';
 import 'package:flutter_cards/model/word.dart';
 
-class RandomFactory {
+class PieceFactory {
   static List<Word> getRandomWords(int amount) {
     final List<Word> words = [];
     for (int i = 0; i < amount; i++) {
@@ -16,28 +17,12 @@ class RandomFactory {
     return Word(
       id: _getRandomId(),
       value: _getRandomText(),
-      color: _getRandomColor(),
-      shape: _gerRandomShape(),
+      shape: _getRandomShape(),
     );
   }
 
   static int _getRandomId() {
     return Random().nextInt(100000);
-  }
-
-  static Color _getRandomColor() {
-    final colors = [
-      Colors.red,
-      Colors.black,
-      Colors.blue,
-      Colors.brown,
-      Colors.purple,
-      Colors.amberAccent,
-      Colors.green,
-      Colors.orange,
-    ];
-    colors.shuffle();
-    return colors.removeLast();
   }
 
   static String _getRandomText() {
@@ -57,12 +42,31 @@ class RandomFactory {
     return words.removeLast();
   }
 
-  static int _gerRandomShape() {
-    final shapes = [
-      1,
-      2,
-      3,
+  static Shape _getRandomShape() {
+    return Shape(
+      id: _getRandomId(),
+      color: _getRandomColor(),
+      type: _getRandomType(),
+    );
+  }
+
+  static Color _getRandomColor() {
+    final colors = [
+      Colors.red,
+      Colors.black,
+      Colors.blue,
+      Colors.brown,
+      Colors.purple,
+      Colors.amberAccent,
+      Colors.green,
+      Colors.orange,
     ];
+    colors.shuffle();
+    return colors.removeLast();
+  }
+
+  static int _getRandomType() {
+    final shapes = List.from(Shape.SHAPES);
     shapes.shuffle();
     return shapes.removeLast();
   }
