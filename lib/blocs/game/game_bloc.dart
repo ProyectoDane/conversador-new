@@ -50,6 +50,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       }
 
       if (event is AnimationCompleted) {
+        _level = Level.updateProgressLevel(_level);
         if (_level.isCompleted()) {
           yield await _renderLevelCompleted();
         }
@@ -69,7 +70,6 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   }
 
   GameState _renderPieceSuccess(PieceSuccess event) {
-    _level = Level.updateProgressLevel(_level);
     return WaitingForAnimationState(event.word);
   }
 
