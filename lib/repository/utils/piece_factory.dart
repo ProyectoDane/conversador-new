@@ -5,7 +5,6 @@ import 'package:flutter_syntactic_sorter/model/piece.dart';
 import 'package:flutter_syntactic_sorter/model/shape/circle.dart';
 import 'package:flutter_syntactic_sorter/model/shape/rectangle.dart';
 import 'package:flutter_syntactic_sorter/model/shape/shape.dart';
-import 'package:flutter_syntactic_sorter/model/shape/triangle.dart';
 import 'package:flutter_syntactic_sorter/model/word.dart';
 
 class PieceFactory {
@@ -61,13 +60,8 @@ class PieceFactory {
           color: _getRandomColor(),
         );
       case Circle.TYPE:
-        return Circle(
-          id: _getRandomId(),
-          color: _getRandomColor(),
-        );
-      case Triangle.TYPE:
       default:
-        return Triangle(
+        return Circle(
           id: _getRandomId(),
           color: _getRandomColor(),
         );
@@ -90,7 +84,7 @@ class PieceFactory {
   }
 
   static int _getRandomType() {
-    final shapes = [Rectangle.TYPE, Circle.TYPE, Triangle.TYPE];
+    final shapes = [Rectangle.TYPE, Circle.TYPE];
     shapes.shuffle();
     return shapes.removeLast();
   }

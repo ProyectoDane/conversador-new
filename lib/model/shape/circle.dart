@@ -11,11 +11,7 @@ class Circle extends Shape {
     return Container(
       width: size,
       height: size,
-      decoration: BoxDecoration(
-          color: getColor(type),
-          borderRadius: BorderRadius.all(
-            Radius.circular(Shape.BASE_RADIUS),
-          )),
+      decoration: BoxDecoration(color: getColor(type), shape: BoxShape.circle),
       child: showText
           ? Center(
               child: Text(
