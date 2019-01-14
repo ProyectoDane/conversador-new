@@ -16,7 +16,7 @@ class GamePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PlatformScaffold(title: 'Game', child: _GameBody(_bloc));
+    return PlatformScaffold(title: 'Game', body: _GameBody(_bloc));
   }
 }
 
@@ -74,9 +74,15 @@ class _GameBodyState extends State<_GameBody> {
   }
 
   Widget _renderNextLevel(NextLevelState state) {
-    return SafeArea(
-      child: Stack(
-        children: _buildDraggableAndTargets(state.pieces),
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/images/game/background.jpg"),
+          fit: BoxFit.fill,
+        ),
+      ),
+      child: SafeArea(
+        child: Stack(children: _buildDraggableAndTargets(state.pieces)),
       ),
     );
   }

@@ -5,7 +5,7 @@ abstract class Shape {
   static const double BASE_FONT_SIZE = 15.0;
   static const double BASE_SIZE = 80.0;
   static const double BASE_RADIUS = 5.0;
-  static const Color BASE_COLOR = Colors.black12;
+  static const Color BASE_COLOR = Colors.black26;
 
   final int id;
   final Color color;

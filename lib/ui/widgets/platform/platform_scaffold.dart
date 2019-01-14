@@ -4,16 +4,16 @@ import 'package:flutter_syntactic_sorter/ui/widgets/platform/platform_base.dart'
 
 class PlatformScaffold extends PlatformBase<CupertinoPageScaffold, Scaffold> {
   final title;
-  final child;
+  final body;
   final key;
 
-  PlatformScaffold({@required this.title, @required this.child, this.key}) : super(key);
+  PlatformScaffold({@required this.title, @required this.body, this.key}) : super(key);
 
   @override
   Scaffold buildAndroidWidget(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(title)),
-      body: child,
+      body: body,
     );
   }
 
@@ -21,7 +21,7 @@ class PlatformScaffold extends PlatformBase<CupertinoPageScaffold, Scaffold> {
   CupertinoPageScaffold buildIOSWidget(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(middle: Text(title)),
-      child: child,
+      child: body,
     );
   }
 }
