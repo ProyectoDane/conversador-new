@@ -44,7 +44,6 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
 
   void _setUpAnimation() {
     _sizeController = AnimationController(duration: TargetPiece.NORMAL, vsync: this);
-    // TODO check this animation
     _sizeAnimation = Tween(begin: 0.0, end: Shape.BASE_SIZE).animate(_sizeController);
     _opacityController = AnimationController(duration: TargetPiece.FAST, vsync: this);
     _opacityAnimation = CurvedAnimation(parent: _opacityController, curve: Curves.decelerate);

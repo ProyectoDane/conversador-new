@@ -4,6 +4,7 @@ import 'package:flutter_syntactic_sorter/blocs/game/game_bloc.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_event.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_state.dart';
 import 'package:flutter_syntactic_sorter/model/piece.dart';
+import 'package:flutter_syntactic_sorter/ui/lang/LangLocalizations.dart';
 import 'package:flutter_syntactic_sorter/ui/pages/game/util/positions_helper.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/drag_piece.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/target_piece.dart';
@@ -16,7 +17,10 @@ class GamePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PlatformScaffold(title: 'Game', body: _GameBody(_bloc));
+    return PlatformScaffold(
+      title: LangLocalizations.of(context).trans('game_title'),
+      body: _GameBody(_bloc),
+    );
   }
 }
 
