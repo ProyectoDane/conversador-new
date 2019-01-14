@@ -35,18 +35,12 @@ class _GameBodyState extends State<_GameBody> {
   @override
   void initState() {
     super.initState();
+    widget.bloc.startLevel();
     _toRender = _renderInitial();
   }
 
   Widget _renderInitial() {
-    return Center(
-      child: Container(
-        child: RaisedButton(
-          child: Text("START GAME"),
-          onPressed: widget.bloc.startLevel,
-        ),
-      ),
-    );
+    return Center(child: CircularProgressIndicator());
   }
 
   @override

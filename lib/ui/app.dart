@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_bloc.dart';
 import 'package:flutter_syntactic_sorter/ui/pages/game/game_page.dart';
+import 'package:flutter_syntactic_sorter/ui/pages/main/main_page.dart';
 
 class GameApp extends StatelessWidget {
   final _gameBloc = GameBloc();
@@ -14,7 +15,8 @@ class GameApp extends StatelessWidget {
       title: 'Flutter Syntactic Sorter',
       theme: ThemeData(),
       routes: {
-        '/': (BuildContext context) => GamePage(_gameBloc),
+        '/': (BuildContext context) => MainPage(),
+        '/game': (BuildContext context) => GamePage(_gameBloc),
       },
     );
   }
