@@ -1,25 +1,10 @@
+import 'package:flutter_syntactic_sorter/model/sentence.dart';
 import 'package:meta/meta.dart';
 
 class Level {
   final int value;
-  final int amountOfSuccessful;
-  final int amountOfWords;
+  final int maxDifficulty;
+  final List<Sentence> sentences;
 
-  Level({@required this.value, @required this.amountOfSuccessful, @required this.amountOfWords});
-
-  bool isCompleted() => amountOfSuccessful == amountOfWords;
-
-  factory Level.initial() => Level(value: 1, amountOfSuccessful: 0, amountOfWords: 1);
-
-  factory Level.updateProgressLevel(Level level) => Level(
-        value: level.value,
-        amountOfSuccessful: level.amountOfSuccessful + 1,
-        amountOfWords: level.amountOfWords,
-      );
-
-  factory Level.nextLevel(Level level) => Level(
-        value: level.value + 1,
-        amountOfSuccessful: 0,
-        amountOfWords: level.amountOfWords + 1,
-      );
+  Level({@required this.value, @required this.maxDifficulty, @required this.sentences});
 }

@@ -10,7 +10,6 @@ class PositionHelper {
     for (int i = 0; i < numberOfPieces; i++) {
       positions.add((distance * (i + 1 / 2)) - (Shape.BASE_SIZE / 2));
     }
-    positions.shuffle();
     return positions;
   }
 }

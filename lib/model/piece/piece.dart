@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_syntactic_sorter/model/shape/shape.dart';
-import 'package:flutter_syntactic_sorter/model/word.dart';
 
 class Piece {
   static const int TARGET_INITIAL = 1;
@@ -9,13 +8,13 @@ class Piece {
   static const int DRAG_FEEDBACK = 4;
   static const int DRAG_COMPLETED = 5;
 
-  final Word word;
+  final String concept;
   final Shape shape;
 
-  Piece({@required this.word, @required this.shape});
+  Piece({@required this.concept, @required this.shape});
 
   Widget buildPiece({@required int type, double size = Shape.BASE_SIZE, bool showText = true}) => shape.build(
-        value: word.value,
+        concept: this.concept,
         type: type,
         size: size,
         showText: showText,

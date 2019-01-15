@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_bloc.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_event.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_state.dart';
-import 'package:flutter_syntactic_sorter/model/piece.dart';
+import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
 import 'package:flutter_syntactic_sorter/ui/lang/LangLocalizations.dart';
 import 'package:flutter_syntactic_sorter/ui/pages/game/util/positions_helper.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/drag_piece.dart';
@@ -86,25 +86,28 @@ class _GameBodyState extends State<_GameBody> {
   }
 
   List<Widget> _buildDraggableAndTargets(List<Piece> pieces) {
-    final targetPieces = _buildPieces(pieces: pieces, isTarget: true);
-    final dragPieces = _buildPieces(pieces: pieces);
+    final targetPieces = _buildPieces(pieces: pieces);
+    final dragPieces = _buildPieces(pieces: pieces, isDrag: true);
     return List.from(dragPieces)..addAll(targetPieces);
   }
 
-  List<Widget> _buildPieces({@required List<Piece> pieces, bool isTarget = false}) {
+  List<Widget> _buildPieces({@required List<Piece> pieces, bool isDrag = false}) {
     final positions = PositionHelper.generateEquidistantPositions(context, pieces.length);
+    if (isDrag) {
+      positions.shuffle();
+    }
     return pieces.map((piece) {
-      final xPosition = positions.removeLast();
-      return _buildPiece(isTarget, xPosition, piece);
+      final xPosition = positions.removeAt(0);
+      return _buildPiece(isDrag, xPosition, piece);
     }).toList();
   }
 
-  Widget _buildPiece(bool isTarget, double xPosition, Piece piece) {
+  Widget _buildPiece(bool isDrag, double xPosition, Piece piece) {
     return BlocProvider(
       bloc: widget.bloc,
-      child: isTarget
-          ? TargetPiece(initPosition: Offset(xPosition, 220.0), piece: piece)
-          : DragPiece(initPosition: Offset(xPosition, 20.0), piece: piece),
+      child: isDrag
+          ? DragPiece(initPosition: Offset(xPosition, 20.0), piece: piece)
+          : TargetPiece(initPosition: Offset(xPosition, 220.0), piece: piece),
     );
   }
 }

@@ -4,10 +4,10 @@ import 'package:flutter_syntactic_sorter/model/shape/shape.dart';
 class Rectangle extends Shape {
   static const int TYPE = 1;
 
-  Rectangle({@required id, @required color}) : super(id: id, color: color);
+  Rectangle({@required color}) : super(color: color);
 
   @override
-  Widget build({@required String value, @required double size, int type, bool showText}) {
+  Widget build({@required String concept, @required double size, int type, bool showText}) {
     return Container(
       width: size,
       height: size,
@@ -19,7 +19,7 @@ class Rectangle extends Shape {
       child: showText
           ? Center(
               child: Text(
-                value,
+                concept,
                 style: TextStyle(color: Colors.white, decoration: TextDecoration.none, fontSize: Shape.BASE_FONT_SIZE),
               ),
             )

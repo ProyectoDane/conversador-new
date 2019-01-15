@@ -4,8 +4,7 @@ import 'package:flutter_syntactic_sorter/blocs/game/game_bloc.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_event.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_state.dart';
 import 'package:flutter_syntactic_sorter/model/shape/shape.dart';
-import 'package:flutter_syntactic_sorter/model/word.dart';
-import 'package:flutter_syntactic_sorter/model/piece.dart';
+import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
 
 class TargetPiece extends StatefulWidget {
   static const int _ANIMATION_TIME_MS = 1500;
@@ -70,7 +69,7 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
   }
 
   Widget _render(GameState state) {
-    if (state is FailState) {
+    if (state is FailConceptState) {
       _renderFail(state);
     }
 
@@ -81,8 +80,8 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
     return _toRender;
   }
 
-  void _renderFail(FailState state) {
-    final shouldNotAnimate = widget.piece.word != state.word || state.attempts <= 1;
+  void _renderFail(FailConceptState state) {
+    final shouldNotAnimate = widget.piece.concept != state.concept || state.attempts <= 1;
     if (shouldNotAnimate) {
       return;
     }
@@ -97,7 +96,7 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
   }
 
   void _renderWaitingForAnimation(WaitingForAnimationState state) {
-    final hasToAnimate = widget.piece.word == state.word;
+    final hasToAnimate = widget.piece.concept == state.concept;
     if (hasToAnimate) {
       _sizeController.forward().whenComplete(_bloc.animationCompleted);
     }
@@ -108,8 +107,8 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
       left: widget.initPosition.dx,
       top: widget.initPosition.dy,
       child: DragTarget(
-        onWillAccept: (word) => word.id == widget.piece.word.id,
-        onAccept: (Word word) {
+        onWillAccept: (concept) => concept == widget.piece.concept,
+        onAccept: (String concept) {
           _sizeController.forward().whenComplete(_bloc.animationCompleted);
         },
         builder: (context, accepted, rejected) => _buildAnimations(),

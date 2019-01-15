@@ -4,12 +4,15 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_event.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_state.dart';
 import 'package:flutter_syntactic_sorter/model/level.dart';
-import 'package:flutter_syntactic_sorter/model/word.dart';
+import 'package:flutter_syntactic_sorter/model/live_level.dart';
+import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
+import 'package:flutter_syntactic_sorter/model/piece/piece_factory.dart';
 import 'package:flutter_syntactic_sorter/repository/repository.dart';
 
 class GameBloc extends Bloc<GameEvent, GameState> {
-  static const int MAX_LEVEL = 3;
-  Level _level = Level.initial();
+  LiveLevel _liveLevel;
+  Level _currentLevel;
+  int _currentSentence;
   Repository repository;
 
   GameBloc({this.repository}) {
@@ -22,12 +25,12 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     dispatch(StartLevel());
   }
 
-  void failedAttempt(Word word, int attempts) async {
-    dispatch(FailedAttempt(word, attempts));
+  void failedAttempt(String concept, int attempts) async {
+    dispatch(FailedAttempt(concept, attempts));
   }
 
-  void pieceSuccess(Word word) async {
-    dispatch(PieceSuccess(word));
+  void pieceSuccess(String concept) async {
+    dispatch(PieceSuccess(concept));
   }
 
   void animationCompleted() async {
@@ -50,9 +53,9 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       }
 
       if (event is AnimationCompleted) {
-        _level = Level.updateProgressLevel(_level);
-        if (_level.isCompleted()) {
-          yield await _renderLevelCompleted();
+        _liveLevel = LiveLevel.updateProgressLevel(_liveLevel);
+        if (_liveLevel.isSentenceComplete()) {
+          yield await _renderSentenceCompleted();
         }
       }
     } catch (exception) {
@@ -61,25 +64,39 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   }
 
   Future<GameState> _renderLevel() async {
-    final pieces = await repository.getPieces(this._level.amountOfWords);
+    _currentLevel = await repository.getRandomLevel();
+    _currentSentence = 0;
+    _liveLevel = LiveLevel(sentence: _currentLevel.sentences[_currentSentence]);
+    List<Piece> pieces = PieceFactory.getPieces(_liveLevel.sentence.concepts);
     return NextLevelState(pieces);
   }
 
   GameState _renderFail(FailedAttempt event) {
-    return FailState(event.word, event.attempts);
+    return FailConceptState(event.concept, event.attempts);
   }
 
   GameState _renderPieceSuccess(PieceSuccess event) {
-    return WaitingForAnimationState(event.word);
+    return WaitingForAnimationState(event.concept);
   }
 
-  Future<GameState> _renderLevelCompleted() async {
-    final hasToRestart = _level.value == MAX_LEVEL;
-    return hasToRestart ? await _buildNextLevel(restart: true) : await _buildNextLevel();
+  Future<GameState> _renderSentenceCompleted() async {
+    if (_currentSentence == _currentLevel.sentences.length - 1) {
+      return _renderNextLevel();
+    }
+
+    return _renderNextSentence();
   }
 
-  Future<GameState> _buildNextLevel({bool restart = false}) async {
-    _level = restart ? Level.initial() : Level.nextLevel(_level);
+  Future<GameState> _renderNextSentence() async {
+    _currentSentence = _currentSentence + 1;
+    _liveLevel = LiveLevel(sentence: _currentLevel.sentences[_currentSentence]);
+    List<Piece> pieces = PieceFactory.getPieces(_liveLevel.sentence.concepts);
+    // TODO make a new state
+    return NextLevelState(pieces);
+  }
+
+  Future<GameState> _renderNextLevel() async {
+    // TODO render next level
     return _renderLevel();
   }
 }

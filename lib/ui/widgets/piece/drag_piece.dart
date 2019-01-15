@@ -2,7 +2,7 @@ import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_bloc.dart';
-import 'package:flutter_syntactic_sorter/model/piece.dart';
+import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/util/operators.dart';
 
 class DragPiece extends StatefulWidget {
@@ -78,7 +78,7 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
 
   Widget _buildDraggable() {
     return Draggable(
-      data: widget.piece.word,
+      data: widget.piece.concept,
       child: widget.piece.buildPiece(type: Piece.DRAG_INITIAL),
       onDraggableCanceled: (_, offset) {
         _render(Operator.failure(
@@ -90,7 +90,7 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
       onDragCompleted: () {
         _render(Operator.success(
           newState: () {
-            _bloc.pieceSuccess(widget.piece.word);
+            _bloc.pieceSuccess(widget.piece.concept);
             _isDisabled = true;
           },
         ));
@@ -118,13 +118,13 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
 
     _attempts = _attempts + 1;
     if (_attempts == 1 || _attempts == 2) {
-      _bloc.failedAttempt(widget.piece.word, _attempts);
+      _bloc.failedAttempt(widget.piece.concept, _attempts);
     }
     if (_attempts == 3) {
       setState(() {
         _isDisabled = true;
       });
-      _bloc.pieceSuccess(widget.piece.word);
+      _bloc.pieceSuccess(widget.piece.concept);
     }
   }
 }

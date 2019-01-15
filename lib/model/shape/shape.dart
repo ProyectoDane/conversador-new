@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_syntactic_sorter/model/piece.dart';
+import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
 
 abstract class Shape {
   static const double BASE_FONT_SIZE = 15.0;
@@ -7,12 +7,11 @@ abstract class Shape {
   static const double BASE_RADIUS = 5.0;
   static const Color BASE_COLOR = Colors.black26;
 
-  final int id;
   final Color color;
 
-  Shape({@required this.id, @required this.color});
+  Shape({@required this.color});
 
-  Widget build({@required String value, @required double size, int type, bool showText});
+  Widget build({@required String concept, @required double size, int type, bool showText});
 
   Color getColor(int type) {
     switch (type) {
