@@ -73,7 +73,7 @@ class _GameBodyState extends State<_GameBody> {
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('assets/images/game/background.jpg'),
+          image: AssetImage(state.background),
           fit: BoxFit.fill,
         ),
       ),

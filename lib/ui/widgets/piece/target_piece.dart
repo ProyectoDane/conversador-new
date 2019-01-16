@@ -86,6 +86,7 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
       return;
     }
 
+    // TODO improve this
     if (state.attempts == 2) {
       _opacityController.forward().whenComplete(_opacityController.reverse);
     }

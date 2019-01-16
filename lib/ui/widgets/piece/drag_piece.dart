@@ -114,6 +114,7 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
       return;
     }
 
+    // TODO improve this
     _attempts = _attempts + 1;
     if (_attempts == 1 || _attempts == 2) {
       _bloc.failedAttempt(widget.piece.content, _attempts);

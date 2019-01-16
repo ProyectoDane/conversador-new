@@ -15,6 +15,7 @@ class LevelFactory {
     return Level(
       value: 1,
       maxDifficulty: Sentence.DIFFICULTY_NORMAL,
+      background: 'assets/images/game/background.jpg',
       sentences: _getSentences(),
     );
   }

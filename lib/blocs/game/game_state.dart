@@ -6,8 +6,9 @@ class InitialState extends GameState {}
 
 class NextLevelState extends GameState {
   final List<Piece> pieces;
+  final String background;
 
-  NextLevelState(this.pieces);
+  NextLevelState(this.pieces, this.background);
 }
 
 class FailContentState extends GameState {
