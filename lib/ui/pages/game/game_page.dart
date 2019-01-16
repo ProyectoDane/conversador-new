@@ -59,7 +59,11 @@ class _GameBodyState extends State<_GameBody> {
     }
 
     if (state is NextLevelState) {
-      _toRender = _renderNextLevel(state);
+      _toRender = _renderLevel(state.pieces, state.backgroundUri);
+    }
+
+    if (state is NextSentenceState) {
+      _toRender = _renderLevel(state.pieces, state.backgroundUri);
     }
 
     return _toRender;
@@ -69,16 +73,16 @@ class _GameBodyState extends State<_GameBody> {
     return Center(child: Text(state.errorMessage));
   }
 
-  Widget _renderNextLevel(NextLevelState state) {
+  Widget _renderLevel(List<Piece> pieces, String backgroundUri) {
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage(state.background),
+          image: AssetImage(backgroundUri),
           fit: BoxFit.fill,
         ),
       ),
       child: SafeArea(
-        child: Stack(children: _buildDraggableAndTargets(state.pieces)),
+        child: Stack(children: _buildDraggableAndTargets(pieces)),
       ),
     );
   }

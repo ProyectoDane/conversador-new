@@ -68,7 +68,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     _currentSentence = 0;
     _liveLevel = LiveLevel(sentence: _currentLevel.sentences[_currentSentence]);
     List<Piece> pieces = PieceFactory.getPieces(_liveLevel.sentence.concepts);
-    return NextLevelState(pieces, _currentLevel.background);
+    return NextLevelState(pieces, _currentLevel.backgroundUri);
   }
 
   GameState _renderFail(FailedAttempt event) {
@@ -91,12 +91,11 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     _currentSentence = _currentSentence + 1;
     _liveLevel = LiveLevel(sentence: _currentLevel.sentences[_currentSentence]);
     List<Piece> pieces = PieceFactory.getPieces(_liveLevel.sentence.concepts);
-    // TODO make a new state
-    return NextLevelState(pieces, _currentLevel.background);
+    return NextSentenceState(pieces, _currentLevel.backgroundUri);
   }
 
   Future<GameState> _renderNextLevel() async {
-    // TODO render next level
+    // TODO do something to increase level
     return _renderLevel();
   }
 }

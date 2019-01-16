@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter_syntactic_sorter/model/level.dart';
 import 'package:flutter_syntactic_sorter/repository/utils/level_factory.dart';
 
@@ -8,5 +10,8 @@ class Repository {
 
   Repository.internal();
 
-  Future<Level> getRandomLevel() async => Future.value(LevelFactory.getLevel());
+  Future<Level> getRandomLevel() async {
+    final level = Random().nextInt(2);
+    return Future.value(LevelFactory.getLevel(level));
+  }
 }
