@@ -3,25 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/platform/platform_base.dart';
 
 class PlatformScaffold extends PlatformBase<CupertinoPageScaffold, Scaffold> {
-  final title;
   final body;
+  final title;
   final key;
 
-  PlatformScaffold({@required this.title, @required this.body, this.key}) : super(key);
+  PlatformScaffold({@required this.body, this.title, this.key}) : super(key);
 
   @override
   Scaffold buildAndroidWidget(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(title)),
-      body: body,
-    );
+    final appBar = title == null ? null : AppBar(title: Text(title));
+    return Scaffold(appBar: appBar, body: body);
   }
 
   @override
   CupertinoPageScaffold buildIOSWidget(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(middle: Text(title)),
-      child: body,
-    );
+    final navigationBar = title == null ? null : CupertinoNavigationBar(middle: Text(title));
+    return CupertinoPageScaffold(navigationBar: navigationBar, child: body);
   }
 }

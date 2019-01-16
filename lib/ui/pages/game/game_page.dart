@@ -18,7 +18,6 @@ class GamePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PlatformScaffold(
-      title: LangLocalizations.of(context).trans('game_title'),
       body: _GameBody(_bloc),
     );
   }
@@ -75,7 +74,7 @@ class _GameBodyState extends State<_GameBody> {
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage("assets/images/game/background.jpg"),
+          image: AssetImage('assets/images/game/background.jpg'),
           fit: BoxFit.fill,
         ),
       ),
@@ -92,10 +91,7 @@ class _GameBodyState extends State<_GameBody> {
   }
 
   List<Widget> _buildPieces({@required List<Piece> pieces, bool isDrag = false}) {
-    final positions = PositionHelper.generateEquidistantPositions(context, pieces.length);
-    if (isDrag) {
-      positions.shuffle();
-    }
+    final positions = PositionHelper.generateEquidistantPositions(context, isDrag, pieces.length);
     return pieces.map((piece) {
       final xPosition = positions.removeAt(0);
       return _buildPiece(isDrag, xPosition, piece);
@@ -103,11 +99,12 @@ class _GameBodyState extends State<_GameBody> {
   }
 
   Widget _buildPiece(bool isDrag, double xPosition, Piece piece) {
+    final yPosition = PositionHelper.generateYPosition(context, isDrag);
     return BlocProvider(
       bloc: widget.bloc,
       child: isDrag
-          ? DragPiece(initPosition: Offset(xPosition, 20.0), piece: piece)
-          : TargetPiece(initPosition: Offset(xPosition, 220.0), piece: piece),
+          ? DragPiece(initPosition: Offset(xPosition, yPosition), piece: piece)
+          : TargetPiece(initPosition: Offset(xPosition, yPosition), piece: piece),
     );
   }
 }
