@@ -4,7 +4,6 @@ import 'package:flutter_syntactic_sorter/blocs/game/game_bloc.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_event.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_state.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
-import 'package:flutter_syntactic_sorter/ui/lang/LangLocalizations.dart';
 import 'package:flutter_syntactic_sorter/ui/pages/game/util/positions_helper.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/drag_piece.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/target_piece.dart';

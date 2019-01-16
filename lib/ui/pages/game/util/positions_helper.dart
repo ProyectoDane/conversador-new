@@ -4,11 +4,13 @@ import 'package:flutter_syntactic_sorter/model/shape/shape.dart';
 class PositionHelper {
   static List<double> generateEquidistantPositions(BuildContext context, bool isDrag, int numberOfPieces) {
     final width = MediaQuery.of(context).size.width;
-    final distance = width / numberOfPieces;
+    final blocks = width / numberOfPieces;
 
     final List<double> positions = [];
     for (int i = 0; i < numberOfPieces; i++) {
-      positions.add((distance * (i + 1 / 2)) - (Shape.BASE_SIZE / 2));
+      final centerPositionInBlock = blocks * (i + 1 / 2);
+      final centerShapeInBlock = centerPositionInBlock - Shape.BASE_SIZE / 2;
+      positions.add(centerShapeInBlock);
     }
 
     if (isDrag) {
@@ -20,8 +22,9 @@ class PositionHelper {
 
   static double generateYPosition(BuildContext context, bool isDrag) {
     final height = MediaQuery.of(context).size.height;
-    final distance = height / 2;
-    final coefficient = isDrag ? 0 : 1;
-    return (distance * (coefficient + 1 / 2)) - (Shape.BASE_SIZE / 2);
+    final blocks = height / 2;
+    final baseOrHalf = isDrag ? 0 : 1;
+    final centerPositionInBlock = blocks * (baseOrHalf + 1 / 2);
+    return centerPositionInBlock - Shape.BASE_SIZE / 2;
   }
 }

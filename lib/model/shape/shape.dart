@@ -13,17 +13,11 @@ abstract class Shape {
 
   Widget build({@required String content, @required double size, int type, bool showText});
 
-  Color getColor(int type) {
-    switch (type) {
-      case Piece.TARGET_INITIAL:
-        return Shape.BASE_COLOR;
-      case Piece.TARGET_COMPLETED:
-      case Piece.DRAG_INITIAL:
-        return color;
-      case Piece.DRAG_FEEDBACK:
-      case Piece.DRAG_COMPLETED:
-      default:
-        return color.withOpacity(0.5);
-    }
-  }
+  Color getColor(int type) => {
+        Piece.TARGET_INITIAL: Shape.BASE_COLOR,
+        Piece.TARGET_COMPLETED: color,
+        Piece.DRAG_INITIAL: color,
+        Piece.DRAG_FEEDBACK: color.withOpacity(0.5),
+        Piece.DRAG_COMPLETED: color.withOpacity(0.5),
+      }[type];
 }

@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_bloc.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_event.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_state.dart';
-import 'package:flutter_syntactic_sorter/model/shape/shape.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
+import 'package:flutter_syntactic_sorter/model/shape/shape.dart';
 
 class TargetPiece extends StatefulWidget {
   static const int _ANIMATION_TIME_MS = 1500;

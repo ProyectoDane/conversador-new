@@ -68,9 +68,7 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
         return Positioned(
           left: _movementAnimation.value.dx,
           top: _movementAnimation.value.dy,
-          child: _isDisabled
-              ? widget.piece.buildPiece(type: Piece.DRAG_COMPLETED)
-              : _buildDraggable(),
+          child: _isDisabled ? widget.piece.buildPiece(type: Piece.DRAG_COMPLETED) : _buildDraggable(),
         );
       },
     );
