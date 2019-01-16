@@ -69,7 +69,7 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
   }
 
   Widget _render(GameState state) {
-    if (state is FailConceptState) {
+    if (state is FailContentState) {
       _renderFail(state);
     }
 
@@ -80,8 +80,8 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
     return _toRender;
   }
 
-  void _renderFail(FailConceptState state) {
-    final shouldNotAnimate = widget.piece.concept != state.concept || state.attempts <= 1;
+  void _renderFail(FailContentState state) {
+    final shouldNotAnimate = widget.piece.content != state.content || state.attempts <= 1;
     if (shouldNotAnimate) {
       return;
     }
@@ -96,7 +96,7 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
   }
 
   void _renderWaitingForAnimation(WaitingForAnimationState state) {
-    final hasToAnimate = widget.piece.concept == state.concept;
+    final hasToAnimate = widget.piece.content == state.content;
     if (hasToAnimate) {
       _sizeController.forward().whenComplete(_bloc.animationCompleted);
     }
@@ -107,16 +107,14 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
       left: widget.initPosition.dx,
       top: widget.initPosition.dy,
       child: DragTarget(
-        onWillAccept: (concept) => concept == widget.piece.concept,
-        onAccept: (String concept) {
+        onWillAccept: (String content) => content == widget.piece.content,
+        onAccept: (_) {
           _sizeController.forward().whenComplete(_bloc.animationCompleted);
         },
-        builder: (context, accepted, rejected) => _buildAnimations(),
+        builder: (context, accepted, rejected) => _buildOpacityAnimation(),
       ),
     );
   }
-
-  Widget _buildAnimations() => _buildOpacityAnimation();
 
   Widget _buildOpacityAnimation() {
     return AnimatedBuilder(

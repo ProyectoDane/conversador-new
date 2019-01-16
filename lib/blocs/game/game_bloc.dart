@@ -25,12 +25,12 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     dispatch(StartLevel());
   }
 
-  void failedAttempt(String concept, int attempts) async {
-    dispatch(FailedAttempt(concept, attempts));
+  void failedAttempt(String content, int attempts) async {
+    dispatch(FailedAttempt(content, attempts));
   }
 
-  void pieceSuccess(String concept) async {
-    dispatch(PieceSuccess(concept));
+  void pieceSuccess(String content) async {
+    dispatch(PieceSuccess(content));
   }
 
   void animationCompleted() async {
@@ -72,11 +72,11 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   }
 
   GameState _renderFail(FailedAttempt event) {
-    return FailConceptState(event.concept, event.attempts);
+    return FailContentState(event.content, event.attempts);
   }
 
   GameState _renderPieceSuccess(PieceSuccess event) {
-    return WaitingForAnimationState(event.concept);
+    return WaitingForAnimationState(event.content);
   }
 
   Future<GameState> _renderSentenceCompleted() async {

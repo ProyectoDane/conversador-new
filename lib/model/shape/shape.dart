@@ -11,7 +11,7 @@ abstract class Shape {
 
   Shape({@required this.color});
 
-  Widget build({@required String concept, @required double size, int type, bool showText});
+  Widget build({@required String content, @required double size, int type, bool showText});
 
   Color getColor(int type) {
     switch (type) {

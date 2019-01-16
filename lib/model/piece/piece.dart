@@ -8,13 +8,13 @@ class Piece {
   static const int DRAG_FEEDBACK = 4;
   static const int DRAG_COMPLETED = 5;
 
-  final String concept;
+  final String content;
   final Shape shape;
 
-  Piece({@required this.concept, @required this.shape});
+  Piece({@required this.content, @required this.shape});
 
   Widget buildPiece({@required int type, double size = Shape.BASE_SIZE, bool showText = true}) => shape.build(
-        concept: this.concept,
+        content: this.content,
         type: type,
         size: size,
         showText: showText,

@@ -7,7 +7,7 @@ class Circle extends Shape {
   Circle({@required color}) : super(color: color);
 
   @override
-  Widget build({@required String concept, @required double size, int type, bool showText}) {
+  Widget build({@required String content, @required double size, int type, bool showText}) {
     return Container(
       width: size,
       height: size,
@@ -15,7 +15,7 @@ class Circle extends Shape {
       child: showText
           ? Center(
               child: Text(
-                concept,
+                content,
                 style: TextStyle(color: Colors.white, decoration: TextDecoration.none, fontSize: Shape.BASE_FONT_SIZE),
               ),
             )

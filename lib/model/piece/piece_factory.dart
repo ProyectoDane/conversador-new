@@ -20,7 +20,7 @@ class PieceFactory {
 
   static Piece _getPiece(Concept concept) {
     return Piece(
-      concept: concept.value,
+      content: concept.value,
       shape: _getShape(concept.type),
     );
   }

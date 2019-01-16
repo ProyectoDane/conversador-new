@@ -10,17 +10,17 @@ class NextLevelState extends GameState {
   NextLevelState(this.pieces);
 }
 
-class FailConceptState extends GameState {
-  final String concept;
+class FailContentState extends GameState {
+  final String content;
   final int attempts;
 
-  FailConceptState(this.concept, this.attempts);
+  FailContentState(this.content, this.attempts);
 }
 
 class WaitingForAnimationState extends GameState {
-  final String concept;
+  final String content;
 
-  WaitingForAnimationState(this.concept);
+  WaitingForAnimationState(this.content);
 }
 
 class ErrorState extends GameState {

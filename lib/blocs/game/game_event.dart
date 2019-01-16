@@ -3,16 +3,16 @@ abstract class GameEvent {}
 class StartLevel extends GameEvent {}
 
 class FailedAttempt extends GameEvent {
-  final concept;
+  final content;
   final attempts;
 
-  FailedAttempt(this.concept, this.attempts);
+  FailedAttempt(this.content, this.attempts);
 }
 
 class PieceSuccess extends GameEvent {
-  final concept;
+  final content;
 
-  PieceSuccess(this.concept);
+  PieceSuccess(this.content);
 }
 
 class AnimationCompleted extends GameEvent {}

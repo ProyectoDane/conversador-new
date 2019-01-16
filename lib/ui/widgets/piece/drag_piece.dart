@@ -78,7 +78,7 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
 
   Widget _buildDraggable() {
     return Draggable(
-      data: widget.piece.concept,
+      data: widget.piece.content,
       child: widget.piece.buildPiece(type: Piece.DRAG_INITIAL),
       onDraggableCanceled: (_, offset) {
         _render(Operator.failure(
@@ -90,7 +90,7 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
       onDragCompleted: () {
         _render(Operator.success(
           newState: () {
-            _bloc.pieceSuccess(widget.piece.concept);
+            _bloc.pieceSuccess(widget.piece.content);
             _isDisabled = true;
           },
         ));
@@ -118,13 +118,13 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
 
     _attempts = _attempts + 1;
     if (_attempts == 1 || _attempts == 2) {
-      _bloc.failedAttempt(widget.piece.concept, _attempts);
+      _bloc.failedAttempt(widget.piece.content, _attempts);
     }
     if (_attempts == 3) {
       setState(() {
         _isDisabled = true;
       });
-      _bloc.pieceSuccess(widget.piece.concept);
+      _bloc.pieceSuccess(widget.piece.content);
     }
   }
 }
