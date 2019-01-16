@@ -86,14 +86,13 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
       return;
     }
 
-    // TODO improve this
     if (state.attempts == 2) {
       _opacityController.forward().whenComplete(_opacityController.reverse);
+      return;
     }
 
-    if (state.attempts == 3) {
-      _sizeController.forward().whenComplete(_bloc.animationCompleted);
-    }
+    // state.attempts == 3
+    _sizeController.forward().whenComplete(_bloc.animationCompleted);
   }
 
   void _renderWaitingForAnimation(WaitingForAnimationState state) {
