@@ -22,7 +22,10 @@ class GameApp extends StatelessWidget {
     );
   }
 
-  void _setOrientation() => SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
+  void _setOrientation() => SystemChrome.setPreferredOrientations([
+        DeviceOrientation.landscapeRight,
+        DeviceOrientation.landscapeLeft,
+      ]);
 
   Map<String, WidgetBuilder> _routes() {
     return {
