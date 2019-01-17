@@ -11,13 +11,13 @@ class PlatformScaffold extends PlatformBase<CupertinoPageScaffold, Scaffold> {
 
   @override
   Scaffold buildAndroidWidget(BuildContext context) {
-    final appBar = title == null ? null : AppBar(title: Text(title));
-    return Scaffold(appBar: appBar, body: body);
+    final bar = title == null ? null : AppBar(title: Text(title));
+    return Scaffold(appBar: bar, body: body);
   }
 
   @override
   CupertinoPageScaffold buildIOSWidget(BuildContext context) {
-    final navigationBar = title == null ? null : CupertinoNavigationBar(middle: Text(title));
-    return CupertinoPageScaffold(navigationBar: navigationBar, child: body);
+    final bar = title == null ? null : CupertinoNavigationBar(middle: Text(title));
+    return CupertinoPageScaffold(navigationBar: bar, child: body);
   }
 }

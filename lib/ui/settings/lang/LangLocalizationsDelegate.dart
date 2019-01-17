@@ -23,13 +23,9 @@ class LangLocalizationsDelegate extends LocalizationsDelegate<LangLocalizations>
       ];
 
   static Locale localeResolutionCallback(Locale locale, Iterable<Locale> supportedLocales) {
-    // This is necessary because sometimes it's called twice with locale in null
-    if (locale == null) {
-      return supportedLocales.first;
-    }
-
     for (Locale supportedLocale in supportedLocales) {
-      if (supportedLocale.languageCode == locale.languageCode || supportedLocale.countryCode == locale.countryCode) {
+      // The "?" is necessary because sometimes this method is called twice with locale in null
+      if (supportedLocale.languageCode == locale?.languageCode || supportedLocale.countryCode == locale?.countryCode) {
         return supportedLocale;
       }
     }

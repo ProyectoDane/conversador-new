@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_event.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_state.dart';
-import 'package:flutter_syntactic_sorter/model/stage/live_stage.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece_factory.dart';
+import 'package:flutter_syntactic_sorter/model/stage/live_stage.dart';
 import 'package:flutter_syntactic_sorter/model/stage/stage.dart';
 import 'package:flutter_syntactic_sorter/repository/repository.dart';
 import 'package:flutter_syntactic_sorter/ui/settings/difficulty/game_difficulty.dart';
@@ -18,7 +18,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   Repository repository;
 
   GameBloc({this.repository}) {
-    this.repository = repository != null ? repository : Repository();
+    this.repository ??= Repository();
   }
 
   GameState get initialState => InitialState();
