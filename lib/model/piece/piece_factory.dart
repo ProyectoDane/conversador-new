@@ -3,6 +3,7 @@ import 'package:flutter_syntactic_sorter/model/concept/action.dart';
 import 'package:flutter_syntactic_sorter/model/concept/concept.dart';
 import 'package:flutter_syntactic_sorter/model/concept/modifier.dart';
 import 'package:flutter_syntactic_sorter/model/concept/subject.dart';
+import 'package:flutter_syntactic_sorter/model/concept/thing.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
 import 'package:flutter_syntactic_sorter/model/shape/circle.dart';
 import 'package:flutter_syntactic_sorter/model/shape/rectangle.dart';
@@ -27,21 +28,25 @@ class PieceFactory {
       Subject.ID: Rectangle(color: Colors.grey),
       Action.ID: Rectangle(color: Colors.grey),
       Modifier.ID: Rectangle(color: Colors.grey),
+      Thing.ID: Rectangle(color: Colors.grey),
     },
     GameDifficulty.NO_SHAPES_AND_COLORS: {
       Subject.ID: Rectangle(color: Colors.green),
       Action.ID: Rectangle(color: Colors.red),
       Modifier.ID: Rectangle(color: Colors.blue),
+      Thing.ID: Rectangle(color: Colors.orange),
     },
     GameDifficulty.SHAPES_AND_NO_COLORS: {
       Subject.ID: Rectangle(color: Colors.grey),
       Action.ID: Circle(color: Colors.grey),
       Modifier.ID: Rectangle(color: Colors.grey),
+      Thing.ID: Circle(color: Colors.grey),
     },
     GameDifficulty.SHAPES_AND_COLORS: {
       Subject.ID: Rectangle(color: Colors.green),
       Action.ID: Circle(color: Colors.red),
       Modifier.ID: Rectangle(color: Colors.blue),
+      Thing.ID: Circle(color: Colors.orange),
     },
   };
 }

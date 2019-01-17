@@ -7,19 +7,5 @@ class Circle extends Shape {
   Circle({@required color}) : super(color: color);
 
   @override
-  Widget build({@required String content, @required double size, int type, bool showText}) {
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(color: getColor(type), shape: BoxShape.circle),
-      child: showText
-          ? Center(
-              child: Text(
-                content,
-                style: TextStyle(color: Colors.white, decoration: TextDecoration.none, fontSize: Shape.BASE_FONT_SIZE),
-              ),
-            )
-          : Container(),
-    );
-  }
+  Decoration getDecoration(int type) => BoxDecoration(color: getColor(type), shape: BoxShape.circle);
 }

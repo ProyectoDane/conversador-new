@@ -13,8 +13,8 @@ class Repository {
 
   Future<GameDifficulty> getGameDifficulty() async {
     final difficulty = GameDifficulty(
-      shapes: Random().nextBool(),
-      colors: Random().nextBool(),
+      shapes: true,
+      colors: true,
     );
     return Future.value(difficulty);
   }

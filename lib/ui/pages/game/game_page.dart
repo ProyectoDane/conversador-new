@@ -94,7 +94,7 @@ class _GameBodyState extends State<_GameBody> {
   }
 
   List<Widget> _buildPieces({@required List<Piece> pieces, bool isDrag = false}) {
-    final positions = PositionHelper.generateEquidistantPositions(context, isDrag, pieces.length);
+    final positions = PositionHelper.generateEquidistantXPositions(context, isDrag, pieces.length);
     return pieces.map((piece) {
       final xPosition = positions.removeAt(0);
       return _buildPiece(isDrag, xPosition, piece);
@@ -102,7 +102,7 @@ class _GameBodyState extends State<_GameBody> {
   }
 
   Widget _buildPiece(bool isDrag, double xPosition, Piece piece) {
-    final yPosition = PositionHelper.generateYPosition(context, isDrag);
+    final yPosition = PositionHelper.generateEquidistantYPosition(context, isDrag);
     return BlocProvider(
       bloc: widget.bloc,
       child: isDrag

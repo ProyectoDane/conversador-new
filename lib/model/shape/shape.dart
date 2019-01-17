@@ -11,13 +11,29 @@ abstract class Shape {
 
   Shape({@required this.color});
 
-  Widget build({@required String content, @required double size, int type, bool showText});
+  Widget build({@required String content, @required double size, int type, bool showText}) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: getDecoration(type),
+      child: showText
+          ? Center(
+              child: Text(
+                content,
+                style: TextStyle(color: Colors.white, decoration: TextDecoration.none, fontSize: BASE_FONT_SIZE),
+              ),
+            )
+          : Container(),
+    );
+  }
 
   Color getColor(int type) => {
-        Piece.TARGET_INITIAL: Shape.BASE_COLOR,
+        Piece.TARGET_INITIAL: BASE_COLOR,
         Piece.TARGET_COMPLETED: color,
         Piece.DRAG_INITIAL: color,
         Piece.DRAG_FEEDBACK: color.withOpacity(0.5),
         Piece.DRAG_COMPLETED: color.withOpacity(0.5),
       }[type];
+
+  Decoration getDecoration(int type);
 }
