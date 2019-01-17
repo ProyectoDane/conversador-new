@@ -1,6 +1,6 @@
 abstract class GameEvent {}
 
-class StartLevel extends GameEvent {}
+class StartStage extends GameEvent {}
 
 class FailedAttempt extends GameEvent {
   final content;

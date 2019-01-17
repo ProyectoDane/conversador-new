@@ -37,7 +37,7 @@ class _GameBodyState extends State<_GameBody> {
   @override
   void initState() {
     super.initState();
-    widget.bloc.startLevel();
+    widget.bloc.startStage();
     _toRender = _renderInitial();
   }
 
@@ -58,12 +58,12 @@ class _GameBodyState extends State<_GameBody> {
       _toRender = _renderError(state);
     }
 
-    if (state is NextLevelState) {
-      _toRender = _renderLevel(state.pieces, state.backgroundUri);
+    if (state is NextStageState) {
+      _toRender = _renderStage(state.pieces, state.backgroundUri);
     }
 
-    if (state is NextSentenceState) {
-      _toRender = _renderLevel(state.pieces, state.backgroundUri);
+    if (state is NextLevelState) {
+      _toRender = _renderStage(state.pieces, state.backgroundUri);
     }
 
     return _toRender;
@@ -73,7 +73,7 @@ class _GameBodyState extends State<_GameBody> {
     return Center(child: Text(state.errorMessage));
   }
 
-  Widget _renderLevel(List<Piece> pieces, String backgroundUri) {
+  Widget _renderStage(List<Piece> pieces, String backgroundUri) {
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(

@@ -2,35 +2,35 @@ import 'package:flutter_syntactic_sorter/model/concept/action.dart';
 import 'package:flutter_syntactic_sorter/model/concept/concept.dart';
 import 'package:flutter_syntactic_sorter/model/concept/modifier.dart';
 import 'package:flutter_syntactic_sorter/model/concept/subject.dart';
-import 'package:flutter_syntactic_sorter/model/level.dart';
-import 'package:flutter_syntactic_sorter/model/sentence.dart';
+import 'package:flutter_syntactic_sorter/model/stage/level.dart';
+import 'package:flutter_syntactic_sorter/model/stage/stage.dart';
 
 // TODO improve this
-class LevelFactory {
-  static Level getLevel(int level) => level == 0 ? _getFootballLevel() : _getFoodLevel();
+class StageFactory {
+  static Stage getStage(int stage) => stage == 0 ? _getFootballStage() : _getFoodStage();
 
-  static Level _getFootballLevel() => Level(
+  static Stage _getFootballStage() => Stage(
         value: 1,
-        maxDifficulty: Sentence.DIFFICULTY_NORMAL,
+        maxDifficulty: Level.DIFFICULTY_NORMAL,
         backgroundUri: 'assets/images/game/football.jpg',
-        sentences: _getFootballSentences(),
+        levels: _getFootballLevels(),
       );
 
-  static List<Sentence> _getFootballSentences() {
-    final List<Sentence> sentences = [];
+  static List<Level> _getFootballLevels() {
+    final List<Level> levels = [];
     for (int i = 0; i < 2; i++) {
-      sentences.add(_getFootballSentence(i));
+      levels.add(_getFootballLevel(i));
     }
-    return sentences;
+    return levels;
   }
 
-  static Sentence _getFootballSentence(int diff) {
+  static Level _getFootballLevel(int diff) {
     if (diff == 0) {
-      return Sentence(difficulty: Sentence.DIFFICULTY_EASY, concepts: _getFootballConcepts(diff));
+      return Level(difficulty: Level.DIFFICULTY_EASY, concepts: _getFootballConcepts(diff));
     }
 
     // Diff 2
-    return Sentence(difficulty: Sentence.DIFFICULTY_NORMAL, concepts: _getFootballConcepts(diff));
+    return Level(difficulty: Level.DIFFICULTY_NORMAL, concepts: _getFootballConcepts(diff));
   }
 
   static List<Concept> _getFootballConcepts(int diff) {
@@ -47,28 +47,28 @@ class LevelFactory {
     return concepts;
   }
 
-  static Level _getFoodLevel() => Level(
+  static Stage _getFoodStage() => Stage(
         value: 1,
-        maxDifficulty: Sentence.DIFFICULTY_NORMAL,
+        maxDifficulty: Level.DIFFICULTY_NORMAL,
         backgroundUri: 'assets/images/game/food.jpg',
-        sentences: _getFoodSentences(),
+        levels: _getFoodLevels(),
       );
 
-  static List<Sentence> _getFoodSentences() {
-    final List<Sentence> sentences = [];
+  static List<Level> _getFoodLevels() {
+    final List<Level> levels = [];
     for (int i = 0; i < 2; i++) {
-      sentences.add(_getFoodSentence(i));
+      levels.add(_getFoodLevel(i));
     }
-    return sentences;
+    return levels;
   }
 
-  static Sentence _getFoodSentence(int diff) {
+  static Level _getFoodLevel(int diff) {
     if (diff == 0) {
-      return Sentence(difficulty: Sentence.DIFFICULTY_EASY, concepts: _getFoodConcepts(diff));
+      return Level(difficulty: Level.DIFFICULTY_EASY, concepts: _getFoodConcepts(diff));
     }
 
     // Diff 2
-    return Sentence(difficulty: Sentence.DIFFICULTY_NORMAL, concepts: _getFoodConcepts(diff));
+    return Level(difficulty: Level.DIFFICULTY_NORMAL, concepts: _getFoodConcepts(diff));
   }
 
   static List<Concept> _getFoodConcepts(int diff) {

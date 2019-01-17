@@ -4,18 +4,18 @@ abstract class GameState {}
 
 class InitialState extends GameState {}
 
+class NextStageState extends GameState {
+  final List<Piece> pieces;
+  final String backgroundUri;
+
+  NextStageState(this.pieces, this.backgroundUri);
+}
+
 class NextLevelState extends GameState {
   final List<Piece> pieces;
   final String backgroundUri;
 
   NextLevelState(this.pieces, this.backgroundUri);
-}
-
-class NextSentenceState extends GameState {
-  final List<Piece> pieces;
-  final String backgroundUri;
-
-  NextSentenceState(this.pieces, this.backgroundUri);
 }
 
 class FailContentState extends GameState {
