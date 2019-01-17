@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_syntactic_sorter/model/shape/shape.dart';
 
 class Rectangle extends Shape {
-  static const int TYPE = 1;
+  static const int ID = 1;
 
   Rectangle({@required color}) : super(color: color);
 

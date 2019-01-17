@@ -8,11 +8,13 @@ import 'package:flutter_syntactic_sorter/model/live_level.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece_factory.dart';
 import 'package:flutter_syntactic_sorter/repository/repository.dart';
+import 'package:flutter_syntactic_sorter/ui/settings/difficulty/game_difficulty.dart';
 
 class GameBloc extends Bloc<GameEvent, GameState> {
   LiveLevel _liveLevel;
   Level _currentLevel;
   int _currentSentence;
+  GameDifficulty _gameDifficulty;
   Repository repository;
 
   GameBloc({this.repository}) {
@@ -22,6 +24,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   GameState get initialState => InitialState();
 
   void startLevel() async {
+    _gameDifficulty = await repository.getGameDifficulty();
     dispatch(StartLevel());
   }
 
@@ -66,8 +69,13 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   Future<GameState> _renderLevel() async {
     _currentLevel = await repository.getRandomLevel();
     _currentSentence = 0;
-    _liveLevel = LiveLevel(sentence: _currentLevel.sentences[_currentSentence]);
-    List<Piece> pieces = PieceFactory.getPieces(_liveLevel.sentence.concepts);
+
+    final sentence = _currentLevel.sentences[_currentSentence];
+    _liveLevel = LiveLevel(sentence: sentence);
+
+    final concepts = _liveLevel.sentence.concepts;
+    final pieces = PieceFactory.getPieces(concepts, _gameDifficulty);
+
     return NextLevelState(pieces, _currentLevel.backgroundUri);
   }
 
@@ -89,8 +97,13 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
   Future<GameState> _renderNextSentence() async {
     _currentSentence = _currentSentence + 1;
-    _liveLevel = LiveLevel(sentence: _currentLevel.sentences[_currentSentence]);
-    List<Piece> pieces = PieceFactory.getPieces(_liveLevel.sentence.concepts);
+
+    final sentence = _currentLevel.sentences[_currentSentence];
+    _liveLevel = LiveLevel(sentence: sentence);
+
+    final concepts = _liveLevel.sentence.concepts;
+    final pieces = PieceFactory.getPieces(concepts, _gameDifficulty);
+
     return NextSentenceState(pieces, _currentLevel.backgroundUri);
   }
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_syntactic_sorter/ui/lang/LangLocalizations.dart';
+import 'package:flutter_syntactic_sorter/ui/settings/lang/LangLocalizations.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/platform/platform_scaffold.dart';
 
 class MainPage extends StatelessWidget {

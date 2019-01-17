@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_bloc.dart';
-import 'package:flutter_syntactic_sorter/ui/lang/LangLocalizationsDelegate.dart';
 import 'package:flutter_syntactic_sorter/ui/pages/game/game_page.dart';
 import 'package:flutter_syntactic_sorter/ui/pages/main/main_page.dart';
+import 'package:flutter_syntactic_sorter/ui/settings/lang/LangLocalizationsDelegate.dart';
 
 class GameApp extends StatelessWidget {
   final _gameBloc = GameBloc();

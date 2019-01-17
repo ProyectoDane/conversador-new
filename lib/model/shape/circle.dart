@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_syntactic_sorter/model/shape/shape.dart';
 
 class Circle extends Shape {
-  static const int TYPE = 2;
+  static const int ID = 2;
 
   Circle({@required color}) : super(color: color);
 

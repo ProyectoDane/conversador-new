@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_syntactic_sorter/ui/lang/LangLocalizations.dart';
+import 'package:flutter_syntactic_sorter/ui/settings/lang/LangLocalizations.dart';
 
 class LangLocalizationsDelegate extends LocalizationsDelegate<LangLocalizations> {
   static const Map<String, String> AVAILABLE_LOCALES = {
