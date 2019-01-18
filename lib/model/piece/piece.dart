@@ -13,10 +13,9 @@ class Piece {
 
   Piece({@required this.content, @required this.shape});
 
-  Widget buildPiece({@required int type, double size = Shape.BASE_SIZE, bool showText = true}) => shape.build(
+  Widget create({@required int type, double size = Shape.BASE_SIZE}) => shape.create(
         content: this.content,
         type: type,
         size: size,
-        showText: showText,
       );
 }

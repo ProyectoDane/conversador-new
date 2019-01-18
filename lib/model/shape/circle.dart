@@ -7,5 +7,8 @@ class Circle extends Shape {
   Circle({@required color}) : super(color: color);
 
   @override
-  Decoration getDecoration(int type) => BoxDecoration(color: getColor(type), shape: BoxShape.circle);
+  Decoration getDecoration(int type) => BoxDecoration(
+        color: Shape.getColorByType(color, type),
+        shape: BoxShape.circle,
+      );
 }

@@ -5,6 +5,7 @@ import 'package:flutter_syntactic_sorter/blocs/game/game_event.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_state.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
 import 'package:flutter_syntactic_sorter/model/shape/shape.dart';
+import 'package:flutter_syntactic_sorter/ui/widgets/piece/animations/opacity_animation.dart';
 
 class TargetPiece extends StatefulWidget {
   static const int _ANIMATION_TIME_MS = 1500;
@@ -107,41 +108,13 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
       left: widget.initPosition.dx,
       top: widget.initPosition.dy,
       child: DragTarget(
-        onWillAccept: (String content) => content == widget.piece.content,
-        onAccept: (_) {
-          _sizeController.forward().whenComplete(_bloc.animationCompleted);
-        },
-        builder: (context, accepted, rejected) => _buildOpacityAnimation(),
-      ),
-    );
-  }
-
-  Widget _buildOpacityAnimation() {
-    return AnimatedBuilder(
-      animation: _opacityAnimation,
-      builder: (BuildContext context, Widget child) {
-        return Opacity(
-          opacity: 1 - _opacityAnimation.value,
-          child: _buildRadiusAnimation(),
-        );
-      },
-    );
-  }
-
-  Widget _buildRadiusAnimation() {
-    return AnimatedBuilder(
-      animation: _sizeAnimation,
-      builder: (BuildContext context, Widget child) {
-        return Center(
-          child: Stack(
-            alignment: Alignment.center,
-            children: <Widget>[
-              widget.piece.buildPiece(type: Piece.TARGET_COMPLETED, size: _sizeAnimation.value, showText: false),
-              widget.piece.buildPiece(type: Piece.TARGET_INITIAL), // Text
-            ],
-          ),
-        );
-      },
+          onWillAccept: (String content) => content == widget.piece.content,
+          onAccept: (_) {
+            _sizeController.forward().whenComplete(_bloc.animationCompleted);
+          },
+          builder: (context, accepted, rejected) {
+            return OpacityAnimation.animate(_opacityAnimation, _sizeAnimation, widget.piece);
+          }),
     );
   }
 }

@@ -8,8 +8,7 @@ class Rectangle extends Shape {
 
   @override
   Decoration getDecoration(int type) => BoxDecoration(
-      color: getColor(type),
-      borderRadius: BorderRadius.all(
-        Radius.circular(Shape.BASE_RADIUS),
-      ));
+        color: Shape.getColorByType(color, type),
+        borderRadius: BorderRadius.all(Radius.circular(Shape.BASE_RADIUS)),
+      );
 }

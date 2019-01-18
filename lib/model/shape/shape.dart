@@ -11,29 +11,27 @@ abstract class Shape {
 
   Shape({@required this.color});
 
-  Widget build({@required String content, @required double size, int type, bool showText}) {
+  static Color getColorByType(Color color, int type) => {
+    Piece.TARGET_INITIAL: BASE_COLOR,
+    Piece.TARGET_COMPLETED: color,
+    Piece.DRAG_INITIAL: color,
+    Piece.DRAG_FEEDBACK: color.withOpacity(0.5),
+    Piece.DRAG_COMPLETED: color.withOpacity(0.5),
+  }[type];
+
+  Widget create({@required String content, @required double size, int type}) {
     return Container(
       width: size,
       height: size,
       decoration: getDecoration(type),
-      child: showText
-          ? Center(
-              child: Text(
-                content,
-                style: TextStyle(color: Colors.white, decoration: TextDecoration.none, fontSize: BASE_FONT_SIZE),
-              ),
-            )
-          : Container(),
+      child: Center(
+        child: Text(
+          content,
+          style: TextStyle(color: Colors.white, decoration: TextDecoration.none, fontSize: BASE_FONT_SIZE),
+        ),
+      ),
     );
   }
-
-  Color getColor(int type) => {
-        Piece.TARGET_INITIAL: BASE_COLOR,
-        Piece.TARGET_COMPLETED: color,
-        Piece.DRAG_INITIAL: color,
-        Piece.DRAG_FEEDBACK: color.withOpacity(0.5),
-        Piece.DRAG_COMPLETED: color.withOpacity(0.5),
-      }[type];
 
   Decoration getDecoration(int type);
 }

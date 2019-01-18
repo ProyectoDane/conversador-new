@@ -68,7 +68,7 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
         return Positioned(
           left: _movementAnimation.value.dx,
           top: _movementAnimation.value.dy,
-          child: _isDisabled ? widget.piece.buildPiece(type: Piece.DRAG_COMPLETED) : _buildDraggable(),
+          child: _isDisabled ? widget.piece.create(type: Piece.DRAG_COMPLETED) : _buildDraggable(),
         );
       },
     );
@@ -77,7 +77,7 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
   Widget _buildDraggable() {
     return Draggable(
       data: widget.piece.content,
-      child: widget.piece.buildPiece(type: Piece.DRAG_INITIAL),
+      child: widget.piece.create(type: Piece.DRAG_INITIAL),
       onDraggableCanceled: (_, offset) {
         _render(Operator.failure(
           newState: () {
@@ -93,7 +93,7 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
           },
         ));
       },
-      feedback: widget.piece.buildPiece(type: Piece.DRAG_FEEDBACK),
+      feedback: widget.piece.create(type: Piece.DRAG_FEEDBACK),
     );
   }
 
