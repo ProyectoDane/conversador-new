@@ -4,6 +4,7 @@ import 'package:flutter_syntactic_sorter/blocs/game/game_bloc.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_event.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_state.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
+import 'package:flutter_syntactic_sorter/model/shape/shape_config.dart';
 import 'package:flutter_syntactic_sorter/ui/pages/game/util/positions_helper.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/drag_piece.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/target_piece.dart';
@@ -59,11 +60,11 @@ class _GameBodyState extends State<_GameBody> {
     }
 
     if (state is NextStageState) {
-      _toRender = _renderStage(state.pieces, state.backgroundUri);
+      _toRender = _renderStage(state.pieces, state.shapeConfig, state.backgroundUri);
     }
 
     if (state is NextLevelState) {
-      _toRender = _renderStage(state.pieces, state.backgroundUri);
+      _toRender = _renderStage(state.pieces, state.shapeConfig, state.backgroundUri);
     }
 
     return _toRender;
@@ -73,7 +74,7 @@ class _GameBodyState extends State<_GameBody> {
     return Center(child: Text(state.errorMessage));
   }
 
-  Widget _renderStage(List<Piece> pieces, String backgroundUri) {
+  Widget _renderStage(List<Piece> pieces, ShapeConfig shapeConfig, String backgroundUri) {
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
@@ -82,32 +83,42 @@ class _GameBodyState extends State<_GameBody> {
         ),
       ),
       child: SafeArea(
-        child: Stack(children: _buildDraggableAndTargets(pieces)),
+        child: Stack(children: _buildDraggableAndTargets(pieces, shapeConfig)),
       ),
     );
   }
 
-  List<Widget> _buildDraggableAndTargets(List<Piece> pieces) {
-    final targetPieces = _buildPieces(pieces: pieces);
-    final dragPieces = _buildPieces(pieces: pieces, isDrag: true);
+  List<Widget> _buildDraggableAndTargets(List<Piece> pieces, ShapeConfig shapeConfig) {
+    final targetPieces = _buildPieces(pieces: pieces, shapeConfig: shapeConfig);
+    final dragPieces = _buildPieces(pieces: pieces, shapeConfig: shapeConfig, isDrag: true);
     return List.from(dragPieces)..addAll(targetPieces);
   }
 
-  List<Widget> _buildPieces({@required List<Piece> pieces, bool isDrag = false}) {
+  List<Widget> _buildPieces({@required List<Piece> pieces, @required ShapeConfig shapeConfig, bool isDrag = false}) {
     final positions = PositionHelper.generateEquidistantXPositions(context, isDrag, pieces.length);
     return pieces.map((piece) {
       final xPosition = positions.removeAt(0);
-      return _buildPiece(isDrag, xPosition, piece);
+      return _buildPiece(
+        piece: piece,
+        shapeConfig: shapeConfig,
+        isDrag: isDrag,
+        xPosition: xPosition,
+      );
     }).toList();
   }
 
-  Widget _buildPiece(bool isDrag, double xPosition, Piece piece) {
+  Widget _buildPiece({
+    @required Piece piece,
+    @required shapeConfig,
+    @required bool isDrag,
+    @required double xPosition,
+  }) {
     final yPosition = PositionHelper.generateEquidistantYPosition(context, isDrag);
     return BlocProvider(
       bloc: widget.bloc,
       child: isDrag
-          ? DragPiece(initPosition: Offset(xPosition, yPosition), piece: piece)
-          : TargetPiece(initPosition: Offset(xPosition, yPosition), piece: piece),
+          ? DragPiece(piece: piece, shapeConfig: shapeConfig, initPosition: Offset(xPosition, yPosition))
+          : TargetPiece(piece: piece, shapeConfig: shapeConfig, initPosition: Offset(xPosition, yPosition)),
     );
   }
 }

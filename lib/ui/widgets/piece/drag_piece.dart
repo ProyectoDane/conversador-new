@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_bloc.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
+import 'package:flutter_syntactic_sorter/model/shape/shape_config.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/util/operators.dart';
 
 class DragPiece extends StatefulWidget {
@@ -10,10 +11,11 @@ class DragPiece extends StatefulWidget {
   static const Duration DURATION = const Duration(milliseconds: ANIMATION_TIME_MS);
   final audioCache = AudioCache();
 
-  final Offset initPosition;
   final Piece piece;
+  final ShapeConfig shapeConfig;
+  final Offset initPosition;
 
-  DragPiece({@required this.initPosition, @required this.piece});
+  DragPiece({@required this.piece, @required this.shapeConfig, @required this.initPosition});
 
   @override
   State<StatefulWidget> createState() => _DragPieceState();
@@ -68,7 +70,12 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
         return Positioned(
           left: _movementAnimation.value.dx,
           top: _movementAnimation.value.dy,
-          child: _isDisabled ? widget.piece.create(type: Piece.DRAG_COMPLETED) : _buildDraggable(),
+          child: _isDisabled
+              ? widget.piece.buildWidget(
+                  pieceType: Piece.DRAG_COMPLETED,
+                  shapeConfig: widget.shapeConfig,
+                )
+              : _buildDraggable(),
         );
       },
     );
@@ -76,8 +83,11 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
 
   Widget _buildDraggable() {
     return Draggable(
-      data: widget.piece.content,
-      child: widget.piece.create(type: Piece.DRAG_INITIAL),
+      data: widget.piece.concept.value,
+      child: widget.piece.buildWidget(
+        pieceType: Piece.DRAG_INITIAL,
+        shapeConfig: widget.shapeConfig,
+      ),
       onDraggableCanceled: (_, offset) {
         _render(Operator.failure(
           newState: () {
@@ -88,12 +98,15 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
       onDragCompleted: () {
         _render(Operator.success(
           newState: () {
-            _bloc.pieceSuccess(widget.piece.content);
+            _bloc.pieceSuccess(widget.piece.concept.value);
             _isDisabled = true;
           },
         ));
       },
-      feedback: widget.piece.create(type: Piece.DRAG_FEEDBACK),
+      feedback: widget.piece.buildWidget(
+        pieceType: Piece.DRAG_FEEDBACK,
+        shapeConfig: widget.shapeConfig,
+      ),
     );
   }
 
@@ -116,12 +129,12 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
 
     _attempts = _attempts + 1;
     if (_attempts < 3) {
-      _bloc.failedAttempt(widget.piece.content, _attempts);
+      _bloc.failedAttempt(widget.piece.concept.value, _attempts);
       return;
     }
 
     // attempts == 3
     setState(() => _isDisabled = true);
-    _bloc.pieceSuccess(widget.piece.content);
+    _bloc.pieceSuccess(widget.piece.concept.value);
   }
 }

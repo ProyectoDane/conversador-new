@@ -4,7 +4,7 @@ import 'package:flutter_syntactic_sorter/blocs/game/game_bloc.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_event.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_state.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
-import 'package:flutter_syntactic_sorter/model/shape/shape.dart';
+import 'package:flutter_syntactic_sorter/model/shape/shape_config.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/animations/opacity_animation.dart';
 
 class TargetPiece extends StatefulWidget {
@@ -13,10 +13,11 @@ class TargetPiece extends StatefulWidget {
   static const Duration NORMAL = const Duration(milliseconds: _ANIMATION_TIME_MS);
   static const Duration FAST = const Duration(milliseconds: _ANIMATION_TIME_FAST_MS);
 
-  final Offset initPosition;
   final Piece piece;
+  final ShapeConfig shapeConfig;
+  final Offset initPosition;
 
-  TargetPiece({@required this.initPosition, @required this.piece});
+  TargetPiece({@required this.piece, @required this.shapeConfig, @required this.initPosition});
 
   @override
   State<StatefulWidget> createState() => _TargetPieceState();
@@ -44,7 +45,7 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
 
   void _setUpAnimation() {
     _sizeController = AnimationController(duration: TargetPiece.NORMAL, vsync: this);
-    _sizeAnimation = Tween(begin: 0.0, end: Shape.BASE_SIZE).animate(_sizeController);
+    _sizeAnimation = Tween(begin: 0.0, end: Piece.BASE_SIZE).animate(_sizeController);
     _opacityController = AnimationController(duration: TargetPiece.FAST, vsync: this);
     _opacityAnimation = CurvedAnimation(parent: _opacityController, curve: Curves.decelerate);
   }
@@ -82,7 +83,7 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
   }
 
   void _renderFail(FailContentState state) {
-    final shouldNotAnimate = widget.piece.content != state.content || state.attempts <= 1;
+    final shouldNotAnimate = widget.piece.concept.value != state.content || state.attempts <= 1;
     if (shouldNotAnimate) {
       return;
     }
@@ -97,7 +98,7 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
   }
 
   void _renderWaitingForAnimation(WaitingForAnimationState state) {
-    final hasToAnimate = widget.piece.content == state.content;
+    final hasToAnimate = widget.piece.concept.value == state.content;
     if (hasToAnimate) {
       _sizeController.forward().whenComplete(_bloc.animationCompleted);
     }
@@ -108,12 +109,17 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
       left: widget.initPosition.dx,
       top: widget.initPosition.dy,
       child: DragTarget(
-          onWillAccept: (String content) => content == widget.piece.content,
+          onWillAccept: (String content) => content == widget.piece.concept.value,
           onAccept: (_) {
             _sizeController.forward().whenComplete(_bloc.animationCompleted);
           },
           builder: (context, accepted, rejected) {
-            return OpacityAnimation.animate(_opacityAnimation, _sizeAnimation, widget.piece);
+            return OpacityAnimation.animate(
+              opacityAnimation: _opacityAnimation,
+              sizeAnimation: _sizeAnimation,
+              piece: widget.piece,
+              shapeConfig: widget.shapeConfig,
+            );
           }),
     );
   }

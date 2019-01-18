@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 abstract class Concept {
   final String value;
-  final int id;
+  final int type;
 
-  Concept({@required this.value, @required this.id});
+  Concept({@required this.value, @required this.type});
 }
