@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_event.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_state.dart';
+import 'package:flutter_syntactic_sorter/model/concept/concept.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece_factory.dart';
 import 'package:flutter_syntactic_sorter/model/shape/shape_config.dart';
@@ -27,12 +28,12 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     dispatch(StartStage());
   }
 
-  void failedAttempt(String content, int attempts) async {
-    dispatch(FailedAttempt(content, attempts));
+  void failedAttempt(Concept concept, int attempts) async {
+    dispatch(FailedAttempt(concept, attempts));
   }
 
-  void pieceSuccess(String content) async {
-    dispatch(PieceSuccess(content));
+  void pieceSuccess(Concept concept) async {
+    dispatch(PieceSuccess(concept));
   }
 
   void animationCompleted() async {
@@ -80,9 +81,9 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     return PieceFactory.getPieces(concepts);
   }
 
-  GameState _renderFail(FailedAttempt event) => FailContentState(event.content, event.attempts);
+  GameState _renderFail(FailedAttempt event) => FailContentState(event.concept, event.attempts);
 
-  GameState _renderPieceSuccess(PieceSuccess event) => WaitingForAnimationState(event.content);
+  GameState _renderPieceSuccess(PieceSuccess event) => WaitingForAnimationState(event.concept);
 
   Future<GameState> _renderLevelCompleted() async {
     return (_currentLevel == _currentStage.levels.length - 1) ? _renderNextStage() : _renderNextLevel();

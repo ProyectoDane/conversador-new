@@ -102,7 +102,7 @@ class StageFactory {
       default:
         concepts.add(Modifier(value: 'la'));
         concepts.add(Subject(value: 'niña'));
-        concepts.add(Action(value: 'comer'));
+        concepts.add(Action(value: 'come'));
         concepts.add(Thing(value: 'la comida'));
         return concepts;
     }

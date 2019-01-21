@@ -1,18 +1,20 @@
+import 'package:flutter_syntactic_sorter/model/concept/concept.dart';
+
 abstract class GameEvent {}
 
 class StartStage extends GameEvent {}
 
 class FailedAttempt extends GameEvent {
-  final content;
-  final attempts;
+  final Concept concept;
+  final int attempts;
 
-  FailedAttempt(this.content, this.attempts);
+  FailedAttempt(this.concept, this.attempts);
 }
 
 class PieceSuccess extends GameEvent {
-  final content;
+  final Concept concept;
 
-  PieceSuccess(this.content);
+  PieceSuccess(this.concept);
 }
 
 class AnimationCompleted extends GameEvent {}

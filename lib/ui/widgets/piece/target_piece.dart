@@ -83,7 +83,7 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
   }
 
   void _renderFail(FailContentState state) {
-    final shouldNotAnimate = widget.piece.concept.value != state.content || state.attempts <= 1;
+    final shouldNotAnimate = widget.piece.concept != state.concept || state.attempts <= 1;
     if (shouldNotAnimate) {
       return;
     }
@@ -98,7 +98,7 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
   }
 
   void _renderWaitingForAnimation(WaitingForAnimationState state) {
-    final hasToAnimate = widget.piece.concept.value == state.content;
+    final hasToAnimate = widget.piece.concept == state.concept;
     if (hasToAnimate) {
       _sizeController.forward().whenComplete(_bloc.animationCompleted);
     }

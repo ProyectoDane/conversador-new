@@ -1,3 +1,4 @@
+import 'package:flutter_syntactic_sorter/model/concept/concept.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
 import 'package:flutter_syntactic_sorter/model/shape/shape_config.dart';
 
@@ -21,19 +22,17 @@ class NextLevelState extends GameState {
   NextLevelState(this.pieces, this.shapeConfig, this.backgroundUri);
 }
 
-// TODO maybe use concept
 class FailContentState extends GameState {
-  final String content;
+  final Concept concept;
   final int attempts;
 
-  FailContentState(this.content, this.attempts);
+  FailContentState(this.concept, this.attempts);
 }
 
-// TODO maybe use concept
 class WaitingForAnimationState extends GameState {
-  final String content;
+  final Concept concept;
 
-  WaitingForAnimationState(this.content);
+  WaitingForAnimationState(this.concept);
 }
 
 class ErrorState extends GameState {
