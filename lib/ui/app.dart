@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_syntactic_sorter/blocs/game/game_bloc.dart';
+import 'package:flutter_syntactic_sorter/blocs/main/main_bloc.dart';
 import 'package:flutter_syntactic_sorter/ui/pages/game/game_page.dart';
 import 'package:flutter_syntactic_sorter/ui/pages/main/main_page.dart';
 import 'package:flutter_syntactic_sorter/ui/settings/lang/LangLocalizationsDelegate.dart';
 
 class GameApp extends StatelessWidget {
   final _gameBloc = GameBloc();
+  final _mainBloc = MainBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,7 @@ class GameApp extends StatelessWidget {
 
   Map<String, WidgetBuilder> _routes() {
     return {
-      '/': (BuildContext context) => MainPage(),
+      '/': (BuildContext context) => MainPage(_mainBloc),
       '/game': (BuildContext context) => GamePage(_gameBloc),
     };
   }

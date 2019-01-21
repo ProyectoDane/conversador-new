@@ -36,17 +36,6 @@ class _GameBodyState extends State<_GameBody> {
   Widget _toRender;
 
   @override
-  void initState() {
-    super.initState();
-    widget.bloc.startStage();
-    _toRender = _renderInitial();
-  }
-
-  Widget _renderInitial() {
-    return Center(child: CircularProgressIndicator());
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocBuilder<GameEvent, GameState>(
       bloc: widget.bloc,
@@ -55,6 +44,10 @@ class _GameBodyState extends State<_GameBody> {
   }
 
   Widget _render(GameState state) {
+    if (state is InitialState) {
+      _toRender = _renderInitial();
+    }
+
     if (state is ErrorState) {
       _toRender = _renderError(state);
     }
@@ -68,6 +61,11 @@ class _GameBodyState extends State<_GameBody> {
     }
 
     return _toRender;
+  }
+
+  Widget _renderInitial() {
+    widget.bloc.startStage();
+    return Center(child: CircularProgressIndicator());
   }
 
   Widget _renderError(ErrorState state) {
