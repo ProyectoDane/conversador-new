@@ -9,12 +9,13 @@ import 'package:flutter_syntactic_sorter/model/piece/piece_factory.dart';
 import 'package:flutter_syntactic_sorter/model/shape/shape_config.dart';
 import 'package:flutter_syntactic_sorter/model/stage/live_stage.dart';
 import 'package:flutter_syntactic_sorter/model/stage/stage.dart';
+import 'package:flutter_syntactic_sorter/model/stage/stage_helper.dart';
 import 'package:flutter_syntactic_sorter/repository/repository.dart';
 
 class GameBloc extends Bloc<GameEvent, GameState> {
   LiveStage _liveStage;
   Stage _currentStage;
-  int _currentLevel;
+  int _currentDifficulty;
   ShapeConfig _shapeConfig;
   Repository repository;
 
@@ -69,16 +70,14 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   Future<GameState> _renderStage() async {
     _currentStage = await repository.getRandomStage();
     _shapeConfig = await repository.getShapeConfig();
-    _currentLevel = 0;
-    final pieces = _getPieces();
-    return NextStageState(pieces, _shapeConfig, _currentStage.backgroundUri);
+    _currentDifficulty = Stage.DIFFICULTY_EASY;
+    return NextStageState(_getPieces(), _shapeConfig, _currentStage.backgroundUri);
   }
 
   List<Piece> _getPieces() {
-    final level = _currentStage.levels[_currentLevel];
-    _liveStage = LiveStage(level: level);
-    final concepts = _liveStage.level.concepts;
-    return PieceFactory.getPieces(concepts);
+    final concepts = StageHelper.getConceptsByDifficulty(_currentStage.concepts, _currentDifficulty);
+    _liveStage = LiveStage(concepts: concepts);
+    return PieceFactory.getPieces(_liveStage.concepts);
   }
 
   GameState _renderFail(FailedAttempt event) => FailContentState(event.concept, event.attempts);
@@ -86,13 +85,12 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   GameState _renderPieceSuccess(PieceSuccess event) => WaitingForAnimationState(event.concept);
 
   Future<GameState> _renderLevelCompleted() async {
-    return (_currentLevel == _currentStage.levels.length - 1) ? _renderNextStage() : _renderNextLevel();
+    return (_currentDifficulty == _currentStage.maxDifficulty) ? _renderNextStage() : _renderNextLevel();
   }
 
   Future<GameState> _renderNextLevel() async {
-    _currentLevel = _currentLevel + 1;
-    final pieces = _getPieces();
-    return NextLevelState(pieces, _shapeConfig, _currentStage.backgroundUri);
+    _currentDifficulty = StageHelper.increaseDifficulty(_currentDifficulty);
+    return NextLevelState(_getPieces(), _shapeConfig, _currentStage.backgroundUri);
   }
 
   // TODO do something to increase stage

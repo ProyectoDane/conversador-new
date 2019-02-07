@@ -1,19 +1,19 @@
-import 'package:flutter_syntactic_sorter/model/stage/level.dart';
+import 'package:flutter_syntactic_sorter/model/concept/concept.dart';
 import 'package:meta/meta.dart';
 
 class LiveStage {
-  final Level level;
+  final List<Concept> concepts;
   final int amountOfConcept;
   final int amountOfSuccessful;
 
-  LiveStage({@required Level level, int amountOfConcept, this.amountOfSuccessful = 0})
-      : this.level = level,
-        this.amountOfConcept = level.concepts.length;
+  LiveStage({@required List<Concept> concepts, int amountOfConcept, this.amountOfSuccessful = 0})
+      : this.concepts = concepts,
+        this.amountOfConcept = concepts.length;
 
   bool isLevelComplete() => amountOfSuccessful == amountOfConcept;
 
   factory LiveStage.updateLevelProgress(LiveStage liveStage) => LiveStage(
-        level: liveStage.level,
+        concepts: liveStage.concepts,
         amountOfConcept: liveStage.amountOfConcept,
         amountOfSuccessful: liveStage.amountOfSuccessful + 1,
       );

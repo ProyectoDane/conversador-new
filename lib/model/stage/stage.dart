@@ -1,11 +1,16 @@
-import 'package:flutter_syntactic_sorter/model/stage/level.dart';
+import 'package:flutter_syntactic_sorter/model/concept/concept.dart';
 import 'package:meta/meta.dart';
 
 class Stage {
+  static const int DIFFICULTY_EASY = 1;
+  static const int DIFFICULTY_NORMAL = 2;
+  static const int DIFFICULTY_HARD = 3;
+  static const int DIFFICULTY_MAX = 4;
+
   final int value;
   final int maxDifficulty;
   final String backgroundUri;
-  final List<Level> levels;
+  final List<Concept> concepts;
 
-  Stage({@required this.value, @required this.maxDifficulty, @required this.backgroundUri, @required this.levels});
+  Stage({@required this.value, @required this.maxDifficulty, @required this.backgroundUri, @required this.concepts});
 }

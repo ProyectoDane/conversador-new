@@ -1,110 +1,53 @@
-import 'package:flutter_syntactic_sorter/model/concept/action.dart';
+import 'package:flutter_syntactic_sorter/model/concept/complement.dart';
 import 'package:flutter_syntactic_sorter/model/concept/concept.dart';
 import 'package:flutter_syntactic_sorter/model/concept/modifier.dart';
+import 'package:flutter_syntactic_sorter/model/concept/predicate.dart';
+import 'package:flutter_syntactic_sorter/model/concept/predicate_core.dart';
 import 'package:flutter_syntactic_sorter/model/concept/subject.dart';
-import 'package:flutter_syntactic_sorter/model/concept/thing.dart';
-import 'package:flutter_syntactic_sorter/model/stage/level.dart';
+import 'package:flutter_syntactic_sorter/model/concept/subject_core.dart';
 import 'package:flutter_syntactic_sorter/model/stage/stage.dart';
 
-// TODO improve this
 class StageFactory {
   static Stage getStage(int stage) => stage == 0 ? _getFootballStage() : _getFoodStage();
 
   static Stage _getFootballStage() => Stage(
         value: 1,
-        maxDifficulty: Level.DIFFICULTY_NORMAL,
+        maxDifficulty: Stage.DIFFICULTY_HARD,
         backgroundUri: 'assets/images/game/football.jpg',
-        levels: _getFootballLevels(),
+        concepts: _getFootballExample(),
       );
 
-  static List<Level> _getFootballLevels() {
-    final List<Level> levels = [];
-    for (int i = 0; i < 3; i++) {
-      levels.add(_getFootballLevel(i));
-    }
-    return levels;
-  }
+  static List<Concept> _getFootballExample() {
+    final modifier = Modifier(value: 'el');
+    final subjectCore = SubjectCore(value: 'niño');
+    final predicateCore = PredicateCore(value: 'juega');
+    final complement = Complement(value: 'alegremente');
 
-  static Level _getFootballLevel(int diff) {
-    switch (diff) {
-      case 0:
-        return Level(difficulty: Level.DIFFICULTY_EASY, concepts: _getFootballConcepts(diff));
-      case 1:
-        return Level(difficulty: Level.DIFFICULTY_NORMAL, concepts: _getFootballConcepts(diff));
-      case 2:
-      default:
-        return Level(difficulty: Level.DIFFICULTY_HARD, concepts: _getFootballConcepts(diff));
-    }
-  }
+    final subject = Subject(concepts: <Concept>[modifier, subjectCore]);
+    final predicate = Predicate(concepts: <Concept>[predicateCore, complement]);
 
-  static List<Concept> _getFootballConcepts(int diff) {
-    List<Concept> concepts = [];
-    switch (diff) {
-      case 0:
-        concepts.add(Subject(value: 'el niño'));
-        concepts.add(Action(value: 'juega con la pelota'));
-        return concepts;
-      case 1:
-        concepts.add(Modifier(value: 'el'));
-        concepts.add(Subject(value: 'niño'));
-        concepts.add(Action(value: 'juega con la pelota'));
-        return concepts;
-      case 2:
-      default:
-        concepts.add(Modifier(value: 'el'));
-        concepts.add(Subject(value: 'niño'));
-        concepts.add(Action(value: 'juega'));
-        concepts.add(Thing(value: 'con la pelota'));
-        return concepts;
-    }
+    return <Concept>[subject, predicate];
   }
 
   static Stage _getFoodStage() => Stage(
-        value: 1,
-        maxDifficulty: Level.DIFFICULTY_NORMAL,
+        value: 2,
+        maxDifficulty: Stage.DIFFICULTY_MAX,
         backgroundUri: 'assets/images/game/food.jpg',
-        levels: _getFoodLevels(),
+        concepts: _getFoodExample(),
       );
 
-  static List<Level> _getFoodLevels() {
-    final List<Level> levels = [];
-    for (int i = 0; i < 3; i++) {
-      levels.add(_getFoodLevel(i));
-    }
-    return levels;
-  }
+  // TODO there is a bug when the word is repeated
+  static List<Concept> _getFoodExample() {
+    final modifier = Modifier(value: 'la');
+    final subjectCore = SubjectCore(value: 'niña');
+    final predicateCore = PredicateCore(value: 'come');
+    final complementModifier = Modifier(value: 'el');
+    final complementSubject = SubjectCore(value: 'almuerzo');
 
-  static Level _getFoodLevel(int diff) {
-    switch (diff) {
-      case 0:
-        return Level(difficulty: Level.DIFFICULTY_EASY, concepts: _getFoodConcepts(diff));
-      case 1:
-        return Level(difficulty: Level.DIFFICULTY_NORMAL, concepts: _getFoodConcepts(diff));
-      case 2:
-      default:
-        return Level(difficulty: Level.DIFFICULTY_HARD, concepts: _getFoodConcepts(diff));
-    }
-  }
+    final subject = Subject(concepts: <Concept>[modifier, subjectCore]);
+    final complement = Complement(concepts: <Concept>[complementModifier, complementSubject]);
+    final predicate = Predicate(concepts: <Concept>[predicateCore, complement]);
 
-  static List<Concept> _getFoodConcepts(int diff) {
-    List<Concept> concepts = [];
-    switch (diff) {
-      case 0:
-        concepts.add(Subject(value: 'la niña'));
-        concepts.add(Action(value: 'come la comida'));
-        return concepts;
-      case 1:
-        concepts.add(Modifier(value: 'la'));
-        concepts.add(Subject(value: 'niña'));
-        concepts.add(Action(value: 'come la comida'));
-        return concepts;
-      case 2:
-      default:
-        concepts.add(Modifier(value: 'la'));
-        concepts.add(Subject(value: 'niña'));
-        concepts.add(Action(value: 'come'));
-        concepts.add(Thing(value: 'la comida'));
-        return concepts;
-    }
+    return <Concept>[subject, predicate];
   }
 }

@@ -5,6 +5,7 @@ class Shape {
 
   Shape({this.decoration});
 
+  // TODO there is a bug with the size of the circle
   Widget buildWidget({@required int pieceType, @required String content, @required double size}) {
     return Container(
       width: size,

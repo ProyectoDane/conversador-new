@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_syntactic_sorter/model/concept/action.dart';
+import 'package:flutter_syntactic_sorter/model/concept/complement.dart';
 import 'package:flutter_syntactic_sorter/model/concept/modifier.dart';
+import 'package:flutter_syntactic_sorter/model/concept/predicate.dart';
+import 'package:flutter_syntactic_sorter/model/concept/predicate_core.dart';
 import 'package:flutter_syntactic_sorter/model/concept/subject.dart';
-import 'package:flutter_syntactic_sorter/model/concept/thing.dart';
+import 'package:flutter_syntactic_sorter/model/concept/subject_core.dart';
 import 'package:flutter_syntactic_sorter/model/difficulty/game_difficulty.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
 import 'package:flutter_syntactic_sorter/model/shape/decorators/circle.dart';
@@ -35,16 +37,20 @@ class ShapeConfig {
 
   static Function defaultColorByConceptType = () => {
         Subject.ID: Colors.green,
-        Action.ID: Colors.red,
+        SubjectCore.ID: Colors.green,
+        Predicate.ID: Colors.red,
+        PredicateCore.ID: Colors.red,
         Modifier.ID: Colors.blue,
-        Thing.ID: Colors.orange,
+        Complement.ID: Colors.orange,
       };
 
   static Function defaultShapeByConceptType = (Color color) => {
         Subject.ID: Shape(decoration: Rectangle(color)),
-        Action.ID: Shape(decoration: Circle(color)),
+        SubjectCore.ID: Shape(decoration: Rectangle(color)),
+        Predicate.ID: Shape(decoration: Circle(color)),
+        PredicateCore.ID: Shape(decoration: Circle(color)),
         Modifier.ID: Shape(decoration: Rectangle(color)),
-        Thing.ID: Shape(decoration: Circle(color)),
+        Complement.ID: Shape(decoration: Circle(color)),
       };
 
   static Function defaultColorByPieceType = (Color color) => {
