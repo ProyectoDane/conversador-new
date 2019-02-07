@@ -16,6 +16,17 @@ class ShapeConfig {
 
   ShapeConfig({this.colorByConceptType, this.shapeByConceptType, this.colorByPieceType});
 
+  static ShapeConfig cloneWithAssign(
+          {ShapeConfig shapeConfig,
+          Function colorByConceptType,
+          Function shapeByConceptType,
+          Function colorByPieceType}) =>
+      ShapeConfig(
+        colorByConceptType: colorByConceptType == null ? shapeConfig.colorByConceptType : colorByConceptType,
+        shapeByConceptType: shapeByConceptType == null ? shapeConfig.shapeByConceptType : shapeByConceptType,
+        colorByPieceType: colorByPieceType == null ? shapeConfig.colorByPieceType : colorByPieceType,
+      );
+
   static ShapeConfig getDefaultConfig() => ShapeConfig(
         colorByConceptType: ShapeConfig.defaultColorByConceptType,
         shapeByConceptType: ShapeConfig.defaultShapeByConceptType,

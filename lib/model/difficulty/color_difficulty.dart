@@ -15,9 +15,6 @@ class ColorDifficulty extends GameDifficulty {
       };
 
   @override
-  ShapeConfig apply(ShapeConfig shapeConfig) => ShapeConfig(
-        colorByConceptType: colorByConceptType,
-        colorByPieceType: shapeConfig.colorByPieceType,
-        shapeByConceptType: shapeConfig.shapeByConceptType,
-      );
+  ShapeConfig apply(ShapeConfig shapeConfig) =>
+      ShapeConfig.cloneWithAssign(shapeConfig: shapeConfig, colorByConceptType: colorByConceptType);
 }
