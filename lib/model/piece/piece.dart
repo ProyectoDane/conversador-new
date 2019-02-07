@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_syntactic_sorter/model/concept/concept.dart';
+import 'package:flutter_syntactic_sorter/model/shape/shape_config.dart';
 
 class Piece {
-  static const double BASE_SIZE = 80.0;
+  static const double BASE_SIZE = 90.0;
 
   static const int TARGET_INITIAL = 1;
   static const int TARGET_COMPLETED = 2;
@@ -14,7 +15,7 @@ class Piece {
 
   Piece({@required this.concept});
 
-  Widget buildWidget({@required pieceType, @required shapeConfig, double size = BASE_SIZE}) {
+  Widget buildWidget({@required int pieceType, @required ShapeConfig shapeConfig, double size = BASE_SIZE}) {
     final shape = shapeConfig.createShape(concept.type, pieceType);
     return shape.buildWidget(pieceType: pieceType, content: concept.value, size: size);
   }
