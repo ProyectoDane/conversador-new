@@ -13,6 +13,7 @@ class Shape {
       child: Center(
         child: Text(
           content,
+          textAlign: TextAlign.center,
           style: TextStyle(color: Colors.white, decoration: TextDecoration.none, fontSize: 15.0),
         ),
       ),
