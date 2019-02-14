@@ -3,8 +3,6 @@ import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
 
 class PieceFactory {
   static List<Piece> getPieces(List<Concept> concepts) {
-    return concepts.map((concept) => _getPiece(concept)).toList();
+    return concepts.map((concept) => Piece(concept: concept)).toList();
   }
-
-  static Piece _getPiece(Concept concept) => Piece(concept: concept);
 }

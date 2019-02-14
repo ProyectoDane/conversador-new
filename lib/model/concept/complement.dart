@@ -1,7 +1,8 @@
 import 'package:flutter_syntactic_sorter/model/concept/concept.dart';
 
 class Complement extends Concept {
-  static const int ID = 31;
+  static const int TYPE = 31;
 
-  Complement({value, concepts, type = ID}) : super(value: value, concepts: concepts, type: type);
+  Complement({value = '', children = const <Concept>[], type = TYPE})
+      : super(value: value, children: children, type: type);
 }

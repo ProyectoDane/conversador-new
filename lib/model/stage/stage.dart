@@ -1,4 +1,5 @@
 import 'package:flutter_syntactic_sorter/model/concept/concept.dart';
+import 'package:flutter_syntactic_sorter/model/concept/sentence.dart';
 import 'package:meta/meta.dart';
 
 class Stage {
@@ -10,7 +11,12 @@ class Stage {
   final int value;
   final int maxDifficulty;
   final String backgroundUri;
-  final List<Concept> concepts;
+  final Sentence sentence;
 
-  Stage({@required this.value, @required this.maxDifficulty, @required this.backgroundUri, @required this.concepts});
+  Stage({@required this.value, @required this.maxDifficulty, @required this.backgroundUri, @required this.sentence});
+
+  static int increaseDifficulty(currentDifficulty) => currentDifficulty + 1;
+
+  static List<Concept> getConceptsByDifficulty(sentence, currentDifficulty) =>
+      Sentence.getConceptsByDifficulty(sentence, currentDifficulty);
 }

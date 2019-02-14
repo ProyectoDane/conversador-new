@@ -9,7 +9,6 @@ import 'package:flutter_syntactic_sorter/model/piece/piece_factory.dart';
 import 'package:flutter_syntactic_sorter/model/shape/shape_config.dart';
 import 'package:flutter_syntactic_sorter/model/stage/live_stage.dart';
 import 'package:flutter_syntactic_sorter/model/stage/stage.dart';
-import 'package:flutter_syntactic_sorter/model/stage/stage_helper.dart';
 import 'package:flutter_syntactic_sorter/repository/repository.dart';
 
 class GameBloc extends Bloc<GameEvent, GameState> {
@@ -75,7 +74,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   }
 
   List<Piece> _getPieces() {
-    final concepts = StageHelper.getConceptsByDifficulty(_currentStage.concepts, _currentDifficulty);
+    final concepts = Stage.getConceptsByDifficulty(_currentStage.sentence, _currentDifficulty);
     _liveStage = LiveStage(concepts: concepts);
     return PieceFactory.getPieces(_liveStage.concepts);
   }
@@ -89,7 +88,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   }
 
   Future<GameState> _renderNextLevel() async {
-    _currentDifficulty = StageHelper.increaseDifficulty(_currentDifficulty);
+    _currentDifficulty = Stage.increaseDifficulty(_currentDifficulty);
     return NextLevelState(_getPieces(), _shapeConfig, _currentStage.backgroundUri);
   }
 

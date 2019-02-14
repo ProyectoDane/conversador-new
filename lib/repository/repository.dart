@@ -28,7 +28,7 @@ class Repository {
   }
 
   Future<Stage> getRandomStage() async {
-    final stage = Random().nextInt(2);
-    return Future.value(StageFactory.getStage(stage));
+    final difficulty = Random().nextInt(Stage.DIFFICULTY_MAX) + 1;
+    return Future.value(StageFactory.getStage(difficulty));
   }
 }

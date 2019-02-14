@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_syntactic_sorter/model/concept/action.dart';
 import 'package:flutter_syntactic_sorter/model/concept/complement.dart';
+import 'package:flutter_syntactic_sorter/model/concept/entity.dart';
 import 'package:flutter_syntactic_sorter/model/concept/modifier.dart';
 import 'package:flutter_syntactic_sorter/model/concept/predicate.dart';
-import 'package:flutter_syntactic_sorter/model/concept/predicate_core.dart';
 import 'package:flutter_syntactic_sorter/model/concept/subject.dart';
-import 'package:flutter_syntactic_sorter/model/concept/subject_core.dart';
 import 'package:flutter_syntactic_sorter/model/difficulty/game_difficulty.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
 import 'package:flutter_syntactic_sorter/model/shape/decorators/circle.dart';
@@ -36,21 +36,21 @@ class ShapeConfig {
       );
 
   static Function defaultColorByConceptType = () => {
-        Subject.ID: Colors.green,
-        SubjectCore.ID: Colors.green,
-        Predicate.ID: Colors.red,
-        PredicateCore.ID: Colors.red,
-        Modifier.ID: Colors.blue,
-        Complement.ID: Colors.orange,
+        Subject.TYPE: Colors.green,
+        Entity.TYPE: Colors.green,
+        Predicate.TYPE: Colors.red,
+        Action.TYPE: Colors.red,
+        Modifier.TYPE: Colors.blue,
+        Complement.TYPE: Colors.orange,
       };
 
   static Function defaultShapeByConceptType = (Color color) => {
-        Subject.ID: Shape(decoration: Rectangle(color)),
-        SubjectCore.ID: Shape(decoration: Rectangle(color)),
-        Predicate.ID: Shape(decoration: Circle(color)),
-        PredicateCore.ID: Shape(decoration: Circle(color)),
-        Modifier.ID: Shape(decoration: Rectangle(color)),
-        Complement.ID: Shape(decoration: Circle(color)),
+        Subject.TYPE: Shape(decoration: Rectangle(color)),
+        Entity.TYPE: Shape(decoration: Rectangle(color)),
+        Predicate.TYPE: Shape(decoration: Circle(color)),
+        Action.TYPE: Shape(decoration: Circle(color)),
+        Modifier.TYPE: Shape(decoration: Rectangle(color)),
+        Complement.TYPE: Shape(decoration: Circle(color)),
       };
 
   static Function defaultColorByPieceType = (Color color) => {
