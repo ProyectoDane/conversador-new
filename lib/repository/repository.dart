@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter_syntactic_sorter/model/difficulty/game_difficulty.dart';
 import 'package:flutter_syntactic_sorter/model/shape/shape_config.dart';
 import 'package:flutter_syntactic_sorter/model/stage/stage.dart';
-import 'package:flutter_syntactic_sorter/repository/utils/stage_factory.dart';
+import 'package:flutter_syntactic_sorter/model/stage/stage_factory.dart';
 
 class Repository {
   static var _instance = Repository.internal();
