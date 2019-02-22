@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_syntactic_sorter/blocs/main/main_bloc.dart';
 import 'package:flutter_syntactic_sorter/blocs/main/main_event.dart';
 import 'package:flutter_syntactic_sorter/blocs/main/main_state.dart';
-import 'package:flutter_syntactic_sorter/ui/settings/lang/LangLocalizations.dart';
+import 'package:flutter_syntactic_sorter/ui/router.dart';
+import 'package:flutter_syntactic_sorter/ui/settings/lang/lang_localizations.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/platform/platform_scaffold.dart';
 
 class MainPage extends StatelessWidget {
@@ -54,13 +55,9 @@ class _MainBodyState extends State<_MainBody> {
 
   Widget _renderInitial() {
     return Center(
-      child: Container(
-        child: RaisedButton(
-            child: Text(LangLocalizations.of(context).trans('main_start_game')),
-            onPressed: () {
-              widget.bloc.setDifficulty([]).whenComplete(() => Navigator.pushNamed(context, '/game'));
-            }),
-      ),
+      child: RaisedButton(
+          child: Text(LangLocalizations.of(context).trans('main_start_game')),
+          onPressed: () => Navigator.pushNamed(context, Router.GAME_SETTINGS_PAGE)),
     );
   }
 

@@ -9,13 +9,13 @@ class Repository {
   static var _instance = Repository.internal();
 
   // TODO save the config
-  List<GameDifficulty> difficulties = [];
+  List<GameDifficulty> difficulties;
 
   factory Repository({apiService, dao}) => _instance;
 
   Repository.internal();
 
-  // TODO implement this
+  // TODO in the future it will return a value if it was properly saved
   Future<bool> setShapeConfig(List<GameDifficulty> difficulties) async {
     this.difficulties = difficulties;
     return Future.value(true);

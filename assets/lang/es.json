@@ -1,4 +1,8 @@
 {
   "main_title": "Ordenador sintactico",
-  "main_start_game": "Empezar juego"
+  "main_start_game": "Empezar juego",
+  "settings_game_title": "Elegir dificultad",
+  "game_settings_play": "Jugar!",
+  "game_settings_switch_color": "Color",
+  "game_settings_switch_shape": "Forma"
 }

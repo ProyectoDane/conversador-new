@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/platform/platform_base.dart';
 
 class PlatformScaffold extends PlatformBase<CupertinoPageScaffold, Scaffold> {
-  final body;
-  final title;
-  final key;
+  final Widget body;
+  final String title;
+  final Key key;
 
   PlatformScaffold({@required this.body, this.title, this.key}) : super(key);
 

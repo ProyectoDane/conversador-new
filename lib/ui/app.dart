@@ -1,26 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_syntactic_sorter/blocs/game/game_bloc.dart';
-import 'package:flutter_syntactic_sorter/blocs/main/main_bloc.dart';
-import 'package:flutter_syntactic_sorter/ui/pages/game/game_page.dart';
-import 'package:flutter_syntactic_sorter/ui/pages/main/main_page.dart';
-import 'package:flutter_syntactic_sorter/ui/settings/lang/LangLocalizationsDelegate.dart';
+import 'package:flutter_syntactic_sorter/ui/router.dart';
+import 'package:flutter_syntactic_sorter/ui/settings/lang/lang_localizations_delegate.dart';
 
 class GameApp extends StatelessWidget {
-  final _gameBloc = GameBloc();
-  final _mainBloc = MainBloc();
-
   @override
   Widget build(BuildContext context) {
     _setOrientation();
 
     return MaterialApp(
       title: 'Flutter Syntactic Sorter',
-      theme: ThemeData(),
+      theme: _getTheme(),
       localizationsDelegates: LangLocalizationsDelegate.localizationDelegates(),
       supportedLocales: LangLocalizationsDelegate.supportedLocales(),
       localeResolutionCallback: LangLocalizationsDelegate.localeResolutionCallback,
-      routes: _routes(),
+      routes: Router.getRoutes(),
     );
   }
 
@@ -29,10 +23,10 @@ class GameApp extends StatelessWidget {
         DeviceOrientation.landscapeLeft,
       ]);
 
-  Map<String, WidgetBuilder> _routes() {
-    return {
-      '/': (BuildContext context) => MainPage(_mainBloc),
-      '/game': (BuildContext context) => GamePage(_gameBloc),
-    };
-  }
+  ThemeData _getTheme() => ThemeData(
+        brightness: Brightness.dark,
+        primaryColor: Colors.lightBlue[800],
+        accentColor: Colors.cyan[600],
+        fontFamily: 'Montserrat',
+      );
 }
