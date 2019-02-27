@@ -4,7 +4,7 @@ class WidgetUtils {
   static Decoration getBackground(final String imageUri) => BoxDecoration(
         image: DecorationImage(
           image: AssetImage(imageUri),
-          fit: BoxFit.cover,
+          fit: BoxFit.fill,
         ),
       );
 }

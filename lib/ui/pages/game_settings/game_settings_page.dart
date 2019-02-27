@@ -64,23 +64,19 @@ class _GameSettingsBodyState extends State<_GameSettingsBody> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Container(
-              margin: const EdgeInsets.only(bottom: Dimen.SPACING_NORMAL),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  _getTitle(),
-                  _getButton(),
-                ],
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                _getImage('assets/images/game_settings/shapes_on.png', () => hasShape = !hasShape),
-                _getImage('assets/images/game_settings/colors_on.png', () => hasColor = !hasColor),
-              ],
-            ),
+            Expanded(flex: 1, child: _getTitleAndButton()),
+            Expanded(flex: 2, child: _getImages()),
+          ],
+        ),
+      );
+
+  Widget _getTitleAndButton() => Container(
+        margin: const EdgeInsets.only(bottom: Dimen.SPACING_NORMAL),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            _getTitle(),
+            _getButton(),
           ],
         ),
       );
@@ -101,11 +97,33 @@ class _GameSettingsBodyState extends State<_GameSettingsBody> {
         text: LangLocalizations.of(context).trans('game_settings_start'),
       );
 
-  Widget _getImage(final String imageUri, final Function newState) => GestureDetector(
-        onTap: () => setState(newState),
+  Widget _getImages() => Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Expanded(flex: 1, child: _getShapeImage()),
+          Expanded(flex: 1, child: _getColorImage()),
+        ],
+      );
+
+  Widget _getShapeImage() => GestureDetector(
+        onTap: () => setState(() => hasShape = !hasShape),
         child: Container(
           margin: EdgeInsets.all(Dimen.SPACING_NORMAL),
-          child: CustomImage(imageUri: imageUri),
+          child: CustomImage(
+            imageUri: 'assets/images/game_settings/shapes.png',
+            isActive: hasShape,
+          ),
+        ),
+      );
+
+  Widget _getColorImage() => GestureDetector(
+        onTap: () => setState(() => hasColor = !hasColor),
+        child: Container(
+          margin: EdgeInsets.all(Dimen.SPACING_NORMAL),
+          child: CustomImage(
+            imageUri: 'assets/images/game_settings/colors.png',
+            isActive: hasColor,
+          ),
         ),
       );
 

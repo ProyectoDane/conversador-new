@@ -13,8 +13,11 @@ class CustomButton extends StatelessWidget {
         height: 50.0,
         child: RaisedButton(
           color: Colors.white,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
           onPressed: onPressed,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
+            side: BorderSide(color: Colors.lightGreen),
+          ),
           child: Text(
             text,
             style: const TextStyle(
