@@ -1,7 +1,9 @@
 {
-  "main_title": "Flutter Syntactic Sorter",
-  "main_start_game": "Start Game",
+  "main_title": "Syntactic Sorter",
+  "main_btn_start": "Start",
+
   "settings_game_title": "Choose difficulty",
+
   "game_settings_play": "Play!",
   "game_settings_switch_color": "Color",
   "game_settings_switch_shape": "Shape"

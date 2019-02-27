@@ -27,4 +27,5 @@ flutter:
   assets:
     - assets/sounds/
     - assets/images/game/
+    - assets/images/main/
     - assets/lang/

@@ -5,7 +5,9 @@ import 'package:flutter_syntactic_sorter/blocs/main/main_event.dart';
 import 'package:flutter_syntactic_sorter/blocs/main/main_state.dart';
 import 'package:flutter_syntactic_sorter/ui/router.dart';
 import 'package:flutter_syntactic_sorter/ui/settings/lang/lang_localizations.dart';
+import 'package:flutter_syntactic_sorter/ui/widgets/buttons/custom_button.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/platform/platform_scaffold.dart';
+import 'package:flutter_syntactic_sorter/util/dimen.dart';
 
 class MainPage extends StatelessWidget {
   final MainBloc _bloc;
@@ -14,10 +16,7 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PlatformScaffold(
-      title: LangLocalizations.of(context).trans('main_title'),
-      body: _MainBody(_bloc),
-    );
+    return PlatformScaffold(body: _MainBody(_bloc));
   }
 }
 
@@ -54,10 +53,34 @@ class _MainBodyState extends State<_MainBody> {
   }
 
   Widget _renderInitial() {
-    return Center(
-      child: RaisedButton(
-          child: Text(LangLocalizations.of(context).trans('main_start_game')),
-          onPressed: () => Navigator.pushNamed(context, Router.GAME_SETTINGS_PAGE)),
+    return Container(
+      constraints: BoxConstraints.expand(),
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/images/main/background.png'),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            margin: const EdgeInsets.only(bottom: Dimen.SPACING_NORMAL),
+            child: Text(
+              LangLocalizations.of(context).trans('main_title'),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: Dimen.FONT_HUGE,
+              ),
+            ),
+          ),
+          CustomButton(
+            onPressed: () => Navigator.pushNamed(context, Router.GAME_SETTINGS_PAGE),
+            text: LangLocalizations.of(context).trans('main_btn_start'),
+          )
+        ],
+      ),
     );
   }
 
