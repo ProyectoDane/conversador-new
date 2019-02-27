@@ -7,6 +7,7 @@ import 'package:flutter_syntactic_sorter/ui/router.dart';
 import 'package:flutter_syntactic_sorter/ui/settings/lang/lang_localizations.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/buttons/custom_button.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/platform/platform_scaffold.dart';
+import 'package:flutter_syntactic_sorter/ui/widgets/text/custom_text.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/util/widget_utils.dart';
 import 'package:flutter_syntactic_sorter/util/dimen.dart';
 
@@ -64,8 +65,8 @@ class _MainBodyState extends State<_MainBody> {
 
   Widget _getTitle() => Container(
         margin: const EdgeInsets.only(bottom: Dimen.SPACING_NORMAL),
-        child: Text(
-          LangLocalizations.of(context).trans('main_title'),
+        child: CustomText(
+          text: LangLocalizations.of(context).trans('main_title'),
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: Dimen.FONT_HUGE,

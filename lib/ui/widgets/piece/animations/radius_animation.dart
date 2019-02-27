@@ -24,7 +24,7 @@ class RadiusAnimation {
                     shapeConfig: shapeConfig,
                   ),
                 ),
-                piece.buildWidget(pieceType: Piece.TARGET_INITIAL, shapeConfig: shapeConfig), // Text
+                piece.buildWidget(pieceType: Piece.TARGET_INITIAL, shapeConfig: shapeConfig),
               ],
             ),
           );

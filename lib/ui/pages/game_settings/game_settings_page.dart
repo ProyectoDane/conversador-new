@@ -11,6 +11,7 @@ import 'package:flutter_syntactic_sorter/ui/settings/lang/lang_localizations.dar
 import 'package:flutter_syntactic_sorter/ui/widgets/buttons/custom_button.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/images/custom_image.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/platform/platform_scaffold.dart';
+import 'package:flutter_syntactic_sorter/ui/widgets/text/custom_text.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/util/widget_utils.dart';
 import 'package:flutter_syntactic_sorter/util/dimen.dart';
 
@@ -83,8 +84,8 @@ class _GameSettingsBodyState extends State<_GameSettingsBody> {
 
   Widget _getTitle() => Container(
         margin: const EdgeInsets.only(right: Dimen.SPACING_NORMAL),
-        child: Text(
-          LangLocalizations.of(context).trans('game_settings_title'),
+        child: CustomText(
+          text: LangLocalizations.of(context).trans('game_settings_title'),
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: Dimen.FONT_HUGE,
@@ -108,7 +109,11 @@ class _GameSettingsBodyState extends State<_GameSettingsBody> {
   Widget _getShapeImage() => GestureDetector(
         onTap: () => setState(() => hasShape = !hasShape),
         child: Container(
-          margin: EdgeInsets.all(Dimen.SPACING_NORMAL),
+          margin: EdgeInsets.only(
+            left: Dimen.SPACING_BIG,
+            right: Dimen.SPACING_SMALL,
+            bottom: Dimen.SPACING_BIG,
+          ),
           child: CustomImage(
             imageUri: 'assets/images/game_settings/shapes.png',
             isActive: hasShape,
@@ -119,7 +124,11 @@ class _GameSettingsBodyState extends State<_GameSettingsBody> {
   Widget _getColorImage() => GestureDetector(
         onTap: () => setState(() => hasColor = !hasColor),
         child: Container(
-          margin: EdgeInsets.all(Dimen.SPACING_NORMAL),
+          margin: EdgeInsets.only(
+            left: Dimen.SPACING_SMALL,
+            right: Dimen.SPACING_BIG,
+            bottom: Dimen.SPACING_BIG,
+          ),
           child: CustomImage(
             imageUri: 'assets/images/game_settings/colors.png',
             isActive: hasColor,
