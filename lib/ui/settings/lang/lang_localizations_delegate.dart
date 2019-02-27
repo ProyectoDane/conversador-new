@@ -22,7 +22,7 @@ class LangLocalizationsDelegate extends LocalizationsDelegate<LangLocalizations>
         GlobalWidgetsLocalizations.delegate,
       ];
 
-  static Locale localeResolutionCallback(Locale locale, Iterable<Locale> supportedLocales) {
+  static Locale localeResolutionCallback(final Locale locale, final Iterable<Locale> supportedLocales) {
     for (Locale supportedLocale in supportedLocales) {
       // The "?" is necessary because sometimes this method is called twice with locale in null
       if (supportedLocale.languageCode == locale?.languageCode || supportedLocale.countryCode == locale?.countryCode) {

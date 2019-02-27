@@ -16,7 +16,7 @@ class Repository {
   Repository.internal();
 
   // TODO in the future it will return a value if it was properly saved
-  Future<bool> setShapeConfig(List<GameDifficulty> difficulties) async {
+  Future<bool> setShapeConfig(final List<GameDifficulty> difficulties) async {
     this.difficulties = difficulties;
     return Future.value(true);
   }

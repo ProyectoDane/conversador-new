@@ -46,7 +46,7 @@ class _GameSettingsBodyState extends State<_GameSettingsBody> {
         builder: (BuildContext context, GameSettingsState state) => _render(state),
       );
 
-  Widget _render(GameSettingsState state) {
+  Widget _render(final GameSettingsState state) {
     if (state is InitialState) {
       _toRender = _renderInitial();
     }

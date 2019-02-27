@@ -63,8 +63,7 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
+  Widget build(BuildContext context) => AnimatedBuilder(
       animation: _movementAnimation,
       builder: (BuildContext context, Widget child) {
         return Positioned(
@@ -79,10 +78,9 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
         );
       },
     );
-  }
 
-  Widget _buildDraggable() {
-    return Draggable(
+
+  Widget _buildDraggable() => Draggable(
       data: widget.piece.concept.value,
       child: widget.piece.buildWidget(
         pieceType: Piece.DRAG_INITIAL,
@@ -108,9 +106,8 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
         shapeConfig: widget.shapeConfig,
       ),
     );
-  }
 
-  void _render(Operator operator) {
+  void _render(final Operator operator) {
     setState(operator.newState);
     widget.audioCache.play(operator.sound);
     _playAnimation();
@@ -122,7 +119,7 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
     _controller.forward();
   }
 
-  void _notifyFailure(bool shouldNotify) {
+  void _notifyFailure(final bool shouldNotify) {
     if (!shouldNotify) {
       return;
     }

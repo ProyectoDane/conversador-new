@@ -15,8 +15,8 @@ class Stage {
 
   Stage({@required this.value, @required this.maxDifficulty, @required this.backgroundUri, @required this.sentence});
 
-  static int increaseDifficulty(currentDifficulty) => currentDifficulty + 1;
+  static int increaseDifficulty(final currentDifficulty) => currentDifficulty + 1;
 
-  static List<Concept> getConceptsByDifficulty(sentence, currentDifficulty) =>
+  static List<Concept> getConceptsByDifficulty(final sentence, final currentDifficulty) =>
       Sentence.getConceptsByDifficulty(sentence, currentDifficulty);
 }

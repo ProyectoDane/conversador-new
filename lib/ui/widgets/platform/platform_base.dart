@@ -10,7 +10,7 @@ abstract class PlatformBase<I extends Widget, A extends Widget> extends Stateles
   @override
   Widget build(BuildContext context) => Platform.isIOS ? buildIOSWidget(context) : buildAndroidWidget(context);
 
-  I buildIOSWidget(BuildContext context);
+  I buildIOSWidget(final BuildContext context);
 
-  A buildAndroidWidget(BuildContext context);
+  A buildAndroidWidget(final BuildContext context);
 }

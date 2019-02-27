@@ -21,6 +21,6 @@ class ShapeDifficulty extends GameDifficulty {
       };
 
   @override
-  ShapeConfig apply(ShapeConfig shapeConfig) =>
+  ShapeConfig apply(final ShapeConfig shapeConfig) =>
       ShapeConfig.cloneWithAssign(shapeConfig: shapeConfig, shapeByConceptType: shapeByConceptType);
 }

@@ -63,14 +63,12 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
   }
 
   @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<GameEvent, GameState>(
-      bloc: _bloc,
-      builder: (BuildContext context, GameState state) => _render(state),
-    );
-  }
+  Widget build(BuildContext context) => BlocBuilder<GameEvent, GameState>(
+        bloc: _bloc,
+        builder: (BuildContext context, GameState state) => _render(state),
+      );
 
-  Widget _render(GameState state) {
+  Widget _render(final GameState state) {
     if (state is FailContentState) {
       _renderFail(state);
     }
@@ -82,7 +80,7 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
     return _toRender;
   }
 
-  void _renderFail(FailContentState state) {
+  void _renderFail(final FailContentState state) {
     final shouldNotAnimate = widget.piece.concept != state.concept || state.attempts <= 1;
     if (shouldNotAnimate) {
       return;
@@ -97,30 +95,28 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
     _sizeController.forward().whenComplete(_bloc.animationCompleted);
   }
 
-  void _renderWaitingForAnimation(WaitingForAnimationState state) {
+  void _renderWaitingForAnimation(final WaitingForAnimationState state) {
     final hasToAnimate = widget.piece.concept == state.concept;
     if (hasToAnimate) {
       _sizeController.forward().whenComplete(_bloc.animationCompleted);
     }
   }
 
-  Widget _renderInitial() {
-    return Positioned(
-      left: widget.initPosition.dx,
-      top: widget.initPosition.dy,
-      child: DragTarget(
-          onWillAccept: (String content) => content == widget.piece.concept.value,
-          onAccept: (_) {
-            _sizeController.forward().whenComplete(_bloc.animationCompleted);
-          },
-          builder: (context, accepted, rejected) {
-            return OpacityAnimation.animate(
-              opacityAnimation: _opacityAnimation,
-              sizeAnimation: _sizeAnimation,
-              piece: widget.piece,
-              shapeConfig: widget.shapeConfig,
-            );
-          }),
-    );
-  }
+  Widget _renderInitial() => Positioned(
+        left: widget.initPosition.dx,
+        top: widget.initPosition.dy,
+        child: DragTarget(
+            onWillAccept: (String content) => content == widget.piece.concept.value,
+            onAccept: (_) {
+              _sizeController.forward().whenComplete(_bloc.animationCompleted);
+            },
+            builder: (context, accepted, rejected) {
+              return OpacityAnimation.animate(
+                opacityAnimation: _opacityAnimation,
+                sizeAnimation: _sizeAnimation,
+                piece: widget.piece,
+                shapeConfig: widget.shapeConfig,
+              );
+            }),
+      );
 }

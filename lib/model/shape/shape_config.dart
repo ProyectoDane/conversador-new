@@ -44,7 +44,7 @@ class ShapeConfig {
         Complement.TYPE: Colors.orange,
       };
 
-  static Function defaultShapeByConceptType = (Color color) => {
+  static Function defaultShapeByConceptType = (final Color color) => {
         Subject.TYPE: Shape(decoration: Rectangle(color)),
         Entity.TYPE: Shape(decoration: Rectangle(color)),
         Predicate.TYPE: Shape(decoration: Circle(color)),
@@ -53,7 +53,7 @@ class ShapeConfig {
         Complement.TYPE: Shape(decoration: Circle(color)),
       };
 
-  static Function defaultColorByPieceType = (Color color) => {
+  static Function defaultColorByPieceType = (final Color color) => {
         Piece.TARGET_INITIAL: Colors.black26,
         Piece.TARGET_COMPLETED: color,
         Piece.DRAG_INITIAL: color,
@@ -61,7 +61,7 @@ class ShapeConfig {
         Piece.DRAG_COMPLETED: color.withOpacity(0.5),
       };
 
-  static ShapeConfig applyDifficulties(ShapeConfig shapeConfig, List<GameDifficulty> difficulties) {
+  static ShapeConfig applyDifficulties(final ShapeConfig shapeConfig, final List<GameDifficulty> difficulties) {
     ShapeConfig baseConfig = shapeConfig;
     for (GameDifficulty difficulty in difficulties) {
       baseConfig = difficulty.apply(baseConfig);
@@ -69,7 +69,7 @@ class ShapeConfig {
     return baseConfig;
   }
 
-  Shape createShape(int conceptType, int pieceType) {
+  Shape createShape(final int conceptType, final int pieceType) {
     final colorByConcept = colorByConceptType()[conceptType];
     final colorByPiece = colorByPieceType(colorByConcept)[pieceType];
     return shapeByConceptType(colorByPiece)[conceptType];

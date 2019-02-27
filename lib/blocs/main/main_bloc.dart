@@ -11,7 +11,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   MainState get initialState => InitialState();
 
   @override
-  Stream<MainState> mapEventToState(MainState state, MainEvent event) async* {
+  Stream<MainState> mapEventToState(final MainState state, final MainEvent event) async* {
     try {} catch (exception) {
       yield ErrorState(exception.toString());
     }

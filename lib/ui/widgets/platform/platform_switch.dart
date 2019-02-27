@@ -9,16 +9,12 @@ class PlatformSwitch extends PlatformBase<CupertinoSwitch, Switch> {
   final Color activeTrackColor;
   final Color activeColor;
 
-  PlatformSwitch({
-    @required this.value,
-    @required this.onChanged,
-    @required this.activeColor,
-    this.activeTrackColor,
-    this.key,
-  }) : super(key);
+  PlatformSwitch(
+      {@required this.value, @required this.onChanged, @required this.activeColor, this.activeTrackColor, this.key})
+      : super(key);
 
   @override
-  Switch buildAndroidWidget(BuildContext context) {
+  Switch buildAndroidWidget(final BuildContext context) {
     return Switch(
       value: value,
       onChanged: onChanged,
@@ -28,7 +24,7 @@ class PlatformSwitch extends PlatformBase<CupertinoSwitch, Switch> {
   }
 
   @override
-  CupertinoSwitch buildIOSWidget(BuildContext context) {
+  CupertinoSwitch buildIOSWidget(final BuildContext context) {
     return CupertinoSwitch(
       value: value,
       onChanged: onChanged,

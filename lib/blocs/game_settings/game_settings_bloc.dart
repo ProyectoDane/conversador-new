@@ -13,10 +13,10 @@ class GameSettingsBloc extends Bloc<GameSettingsEvent, GameSettingsState> {
 
   GameSettingsState get initialState => InitialState();
 
-  Future<bool> setDifficulty(List<GameDifficulty> difficulties) async => repository.setShapeConfig(difficulties);
+  Future<bool> setDifficulty(final List<GameDifficulty> difficulties) async => repository.setShapeConfig(difficulties);
 
   @override
-  Stream<GameSettingsState> mapEventToState(GameSettingsState state, GameSettingsEvent event) async* {
+  Stream<GameSettingsState> mapEventToState(final GameSettingsState state, final GameSettingsEvent event) async* {
     try {} catch (exception) {
       yield ErrorState(exception.toString());
     }

@@ -9,13 +9,13 @@ class LangLocalizations {
 
   LangLocalizations(this.locale);
 
-  static LangLocalizations of(BuildContext context) {
+  static LangLocalizations of(final BuildContext context) {
     return Localizations.of<LangLocalizations>(context, LangLocalizations);
   }
 
   void load() async {
-    String data = await rootBundle.loadString('assets/lang/${this.locale.languageCode}.json');
-    Map<String, dynamic> _result = json.decode(data);
+    final String data = await rootBundle.loadString('assets/lang/${this.locale.languageCode}.json');
+    final Map<String, dynamic> _result = json.decode(data);
 
     this._strings = {};
     _result.forEach((String key, dynamic value) {
@@ -23,5 +23,5 @@ class LangLocalizations {
     });
   }
 
-  String trans(String key) => this._strings[key];
+  String trans(final String key) => this._strings[key];
 }

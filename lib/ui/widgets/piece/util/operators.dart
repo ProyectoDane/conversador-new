@@ -10,8 +10,8 @@ class Operator {
 
   Operator({@required this.sound, @required this.newState, this.shouldNotifyFailure = false});
 
-  factory Operator.success({@required newState}) => Operator(sound: SUCCESSFUL_SOUND, newState: newState);
+  factory Operator.success({@required final newState}) => Operator(sound: SUCCESSFUL_SOUND, newState: newState);
 
-  factory Operator.failure({@required newState}) =>
+  factory Operator.failure({@required final newState}) =>
       Operator(sound: FAILURE_SOUND, newState: newState, shouldNotifyFailure: true);
 }

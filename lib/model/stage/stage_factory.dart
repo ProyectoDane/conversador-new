@@ -12,7 +12,7 @@ import 'package:flutter_syntactic_sorter/model/stage/stage.dart';
 
 // TODO there is a bug when the word is repeated
 class StageFactory {
-  static Stage getStage(int difficulty) => {
+  static Stage getStage(final int difficulty) => {
         Stage.DIFFICULTY_EASY: _getEasyStage(),
         Stage.DIFFICULTY_NORMAL: _getNormalStage(),
         Stage.DIFFICULTY_HARD: _getHardStage(),

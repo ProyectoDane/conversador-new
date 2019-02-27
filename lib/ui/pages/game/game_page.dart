@@ -44,7 +44,7 @@ class _GameBodyState extends State<_GameBody> {
     );
   }
 
-  Widget _render(GameState state) {
+  Widget _render(final GameState state) {
     if (state is InitialState) {
       _toRender = _renderInitial();
     }

@@ -3,7 +3,10 @@ import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
 
 class PositionHelper {
   static List<double> generateEquidistantXPositions(
-      final BuildContext context, final bool isDrag, final int numberOfPieces) {
+    final BuildContext context,
+    final bool isDrag,
+    final int numberOfPieces,
+  ) {
     final width = MediaQuery.of(context).size.width;
     final widthIncludingBorder = width * 0.9;
     final blocks = widthIncludingBorder / numberOfPieces;

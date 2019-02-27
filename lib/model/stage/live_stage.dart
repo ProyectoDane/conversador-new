@@ -12,7 +12,7 @@ class LiveStage {
 
   bool isLevelComplete() => amountOfSuccessful == amountOfConcept;
 
-  factory LiveStage.updateLevelProgress(LiveStage liveStage) => LiveStage(
+  factory LiveStage.updateLevelProgress(final LiveStage liveStage) => LiveStage(
         concepts: liveStage.concepts,
         amountOfConcept: liveStage.amountOfConcept,
         amountOfSuccessful: liveStage.amountOfSuccessful + 1,

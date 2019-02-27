@@ -28,11 +28,11 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     dispatch(StartStage());
   }
 
-  void failedAttempt(Concept concept, int attempts) async {
+  void failedAttempt(final Concept concept, final int attempts) async {
     dispatch(FailedAttempt(concept, attempts));
   }
 
-  void pieceSuccess(Concept concept) async {
+  void pieceSuccess(final Concept concept) async {
     dispatch(PieceSuccess(concept));
   }
 
@@ -41,7 +41,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   }
 
   @override
-  Stream<GameState> mapEventToState(GameState state, GameEvent event) async* {
+  Stream<GameState> mapEventToState(final GameState state, final GameEvent event) async* {
     try {
       if (event is StartStage) {
         yield await _renderStage();
@@ -79,9 +79,9 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     return PieceFactory.getPieces(_liveStage.concepts);
   }
 
-  GameState _renderFail(FailedAttempt event) => FailContentState(event.concept, event.attempts);
+  GameState _renderFail(final FailedAttempt event) => FailContentState(event.concept, event.attempts);
 
-  GameState _renderPieceSuccess(PieceSuccess event) => WaitingForAnimationState(event.concept);
+  GameState _renderPieceSuccess(final PieceSuccess event) => WaitingForAnimationState(event.concept);
 
   Future<GameState> _renderLevelCompleted() async {
     return (_currentDifficulty == _currentStage.maxDifficulty) ? _renderNextStage() : _renderNextLevel();
