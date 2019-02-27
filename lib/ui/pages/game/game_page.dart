@@ -9,6 +9,7 @@ import 'package:flutter_syntactic_sorter/ui/pages/game/util/positions_helper.dar
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/drag_piece.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/target_piece.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/platform/platform_scaffold.dart';
+import 'package:flutter_syntactic_sorter/ui/widgets/util/widget_utils.dart';
 
 class GamePage extends StatelessWidget {
   final _bloc;
@@ -68,31 +69,30 @@ class _GameBodyState extends State<_GameBody> {
     return Center(child: CircularProgressIndicator());
   }
 
-  Widget _renderError(ErrorState state) {
+  Widget _renderError(final ErrorState state) {
     return Center(child: Text(state.errorMessage));
   }
 
-  Widget _renderStage(List<Piece> pieces, ShapeConfig shapeConfig, String backgroundUri) {
+  Widget _renderStage(final List<Piece> pieces, final ShapeConfig shapeConfig, final String backgroundUri) {
     return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(backgroundUri),
-          fit: BoxFit.fill,
-        ),
-      ),
+      decoration: WidgetUtils.getBackground(backgroundUri),
       child: SafeArea(
         child: Stack(children: _buildDraggableAndTargets(pieces, shapeConfig)),
       ),
     );
   }
 
-  List<Widget> _buildDraggableAndTargets(List<Piece> pieces, ShapeConfig shapeConfig) {
+  List<Widget> _buildDraggableAndTargets(final List<Piece> pieces, final ShapeConfig shapeConfig) {
     final targetPieces = _buildPieces(pieces: pieces, shapeConfig: shapeConfig);
     final dragPieces = _buildPieces(pieces: pieces, shapeConfig: shapeConfig, isDrag: true);
     return List.from(dragPieces)..addAll(targetPieces);
   }
 
-  List<Widget> _buildPieces({@required List<Piece> pieces, @required ShapeConfig shapeConfig, bool isDrag = false}) {
+  List<Widget> _buildPieces({
+    @required final List<Piece> pieces,
+    @required final ShapeConfig shapeConfig,
+    final bool isDrag = false,
+  }) {
     final positions = PositionHelper.generateEquidistantXPositions(context, isDrag, pieces.length);
     return pieces.map((piece) {
       final xPosition = positions.removeAt(0);
@@ -106,10 +106,10 @@ class _GameBodyState extends State<_GameBody> {
   }
 
   Widget _buildPiece({
-    @required Piece piece,
-    @required shapeConfig,
-    @required bool isDrag,
-    @required double xPosition,
+    @required final Piece piece,
+    @required final shapeConfig,
+    @required final bool isDrag,
+    @required final double xPosition,
   }) {
     final yPosition = PositionHelper.generateEquidistantYPosition(context, isDrag);
     return BlocProvider(

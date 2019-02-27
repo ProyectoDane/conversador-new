@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
 
 class PositionHelper {
-  static List<double> generateEquidistantXPositions(BuildContext context, bool isDrag, int numberOfPieces) {
+  static List<double> generateEquidistantXPositions(
+      final BuildContext context, final bool isDrag, final int numberOfPieces) {
     final width = MediaQuery.of(context).size.width;
     final widthIncludingBorder = width * 0.9;
     final blocks = widthIncludingBorder / numberOfPieces;
@@ -21,7 +22,7 @@ class PositionHelper {
     return positions;
   }
 
-  static double generateEquidistantYPosition(BuildContext context, bool isDrag) {
+  static double generateEquidistantYPosition(final BuildContext context, final bool isDrag) {
     final height = MediaQuery.of(context).size.height;
     final blocks = height / 2;
     final baseOrHalf = isDrag ? 0 : 1;

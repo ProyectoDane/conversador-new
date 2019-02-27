@@ -8,22 +8,20 @@ class CustomButton extends StatelessWidget {
   CustomButton({@required this.onPressed, @required this.text});
 
   @override
-  Widget build(BuildContext context) {
-    return ButtonTheme(
-      minWidth: 250.0,
-      height: 50.0,
-      child: RaisedButton(
-        color: Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-        child: Text(
-          text,
-          style: const TextStyle(
-            color: Colors.lightGreen,
-            fontSize: Dimen.FONT_LARGE,
+  Widget build(BuildContext context) => ButtonTheme(
+        minWidth: 250.0,
+        height: 50.0,
+        child: RaisedButton(
+          color: Colors.white,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+          onPressed: onPressed,
+          child: Text(
+            text,
+            style: const TextStyle(
+              color: Colors.lightGreen,
+              fontSize: Dimen.FONT_LARGE,
+            ),
           ),
         ),
-        onPressed: onPressed,
-      ),
-    );
-  }
+      );
 }
