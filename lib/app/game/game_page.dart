@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_syntactic_sorter/blocs/game/game_bloc.dart';
-import 'package:flutter_syntactic_sorter/blocs/game/game_event.dart';
-import 'package:flutter_syntactic_sorter/blocs/game/game_state.dart';
+import 'package:flutter_syntactic_sorter/app/game/game_bloc.dart';
+import 'package:flutter_syntactic_sorter/app/game/game_event.dart';
+import 'package:flutter_syntactic_sorter/app/game/game_state.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
 import 'package:flutter_syntactic_sorter/model/shape/shape_config.dart';
-import 'package:flutter_syntactic_sorter/ui/pages/game/util/positions_helper.dart';
+import 'package:flutter_syntactic_sorter/app/game/util/positions_helper.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/drag_piece.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/target_piece.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/platform/platform_scaffold.dart';

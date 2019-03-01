@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:flutter_syntactic_sorter/blocs/game/game_event.dart';
-import 'package:flutter_syntactic_sorter/blocs/game/game_state.dart';
+import 'package:flutter_syntactic_sorter/app/game/game_event.dart';
+import 'package:flutter_syntactic_sorter/app/game/game_state.dart';
 import 'package:flutter_syntactic_sorter/model/concept/concept.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece_factory.dart';

@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:flutter_syntactic_sorter/blocs/main/main_event.dart';
-import 'package:flutter_syntactic_sorter/blocs/main/main_state.dart';
+import 'package:flutter_syntactic_sorter/app/main/main_event.dart';
+import 'package:flutter_syntactic_sorter/app/main/main_state.dart';
 import 'package:flutter_syntactic_sorter/repository/repository.dart';
 
 class MainBloc extends Bloc<MainEvent, MainState> {

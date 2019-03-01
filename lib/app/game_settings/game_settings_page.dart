@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_syntactic_sorter/blocs/game_settings/game_settings_bloc.dart';
-import 'package:flutter_syntactic_sorter/blocs/game_settings/game_settings_event.dart';
-import 'package:flutter_syntactic_sorter/blocs/game_settings/game_settings_state.dart';
+import 'package:flutter_syntactic_sorter/app/game_settings/game_settings_bloc.dart';
+import 'package:flutter_syntactic_sorter/app/game_settings/game_settings_event.dart';
+import 'package:flutter_syntactic_sorter/app/game_settings/game_settings_state.dart';
 import 'package:flutter_syntactic_sorter/model/difficulty/color_difficulty.dart';
 import 'package:flutter_syntactic_sorter/model/difficulty/game_difficulty.dart';
 import 'package:flutter_syntactic_sorter/model/difficulty/shape_difficulty.dart';

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_syntactic_sorter/blocs/main/main_bloc.dart';
-import 'package:flutter_syntactic_sorter/blocs/main/main_event.dart';
-import 'package:flutter_syntactic_sorter/blocs/main/main_state.dart';
+import 'package:flutter_syntactic_sorter/app/main/main_bloc.dart';
+import 'package:flutter_syntactic_sorter/app/main/main_event.dart';
+import 'package:flutter_syntactic_sorter/app/main/main_state.dart';
 import 'package:flutter_syntactic_sorter/ui/router.dart';
 import 'package:flutter_syntactic_sorter/ui/settings/lang/lang_localizations.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/buttons/custom_button.dart';
