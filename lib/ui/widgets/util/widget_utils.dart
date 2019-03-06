@@ -7,4 +7,12 @@ class WidgetUtils {
           fit: BoxFit.fill,
         ),
       );
+
+  static Image getImage(final String imageUri,
+      {final Color color,
+      final BoxFit fit = BoxFit.scaleDown}) => Image(
+    image: AssetImage(imageUri),
+    fit: fit,
+    color: color,
+  );
 }
