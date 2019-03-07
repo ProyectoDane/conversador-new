@@ -41,9 +41,7 @@ class LangLocalizationsDelegate extends LocalizationsDelegate<LangLocalizations>
 
   @override
   Future<LangLocalizations> load(Locale locale) async {
-    LangLocalizations localizations = LangLocalizations(locale);
-    localizations.load();
-    return localizations;
+    return await LangLocalizations.load(locale);
   }
 
   @override
