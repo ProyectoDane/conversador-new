@@ -95,8 +95,8 @@ class StageFactory {
             Predicate(children: <Concept>[
               Action(value: 'come'),
               Complement(children: <Concept>[
-                Modifier(value: 'el'),
-                Entity(value: 'almuerzo'),
+                Modifier(value: 'la'),
+                Entity(value: 'comida'),
               ])
             ])),
       )

@@ -5,6 +5,7 @@
 *.pyc
 *.swp
 .DS_Store
+*/.DS_Store
 .atom/
 .buildlog/
 .history
@@ -63,6 +64,9 @@ build/
 **/ios/ServiceDefinitions.json
 **/ios/Runner/GeneratedPluginRegistrant.*
 **/ios/Runner.xcodeproj/project.pbxproj
+
+# Flutter generated files
+/res/values/*.arb
 
 # Exceptions to above rules.
 !**/ios/**/default.mode1v3

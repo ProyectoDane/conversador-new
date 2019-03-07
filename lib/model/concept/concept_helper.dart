@@ -56,11 +56,10 @@ class ConceptHelper {
     if (children.isEmpty) {
       return result;
     }
-
     for (Concept concept in children) {
-      result = result + ' ' + (concept.children.isEmpty ? concept.value : _reduceChildren(concept.children));
+      result = result + (concept.children.isEmpty ? concept.value : _reduceChildren(concept.children)) + ' ';
     }
-    return result;
+    return result.substring(0, result.length - 1);  // Remove last space
   }
 
   static List<Concept> _getSubjectChildren(final sentence) => sentence.subject.children;

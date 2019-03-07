@@ -12,8 +12,9 @@ class Piece {
   static const int DRAG_COMPLETED = 5;
 
   final Concept concept;
+  final int index;
 
-  Piece({@required this.concept});
+  Piece({@required this.concept, @required this.index});
 
   Widget buildWidget({@required int pieceType, @required ShapeConfig shapeConfig, double size = BASE_SIZE}) {
     final shape = shapeConfig.createShape(concept.type, pieceType);

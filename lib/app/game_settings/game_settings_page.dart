@@ -62,13 +62,13 @@ class _GameSettingsBodyState extends State<_GameSettingsBody> {
   Widget _renderInitial() => Container(
         constraints: BoxConstraints.expand(),
         decoration: WidgetUtils.getBackground('assets/images/all/background.png'),
-        child: Column(
+        child: SafeArea(child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Expanded(flex: 1, child: _getTitleAndButton()),
             Expanded(flex: 2, child: _getImages()),
           ],
-        ),
+        )),
       );
 
   Widget _getTitleAndButton() => Container(

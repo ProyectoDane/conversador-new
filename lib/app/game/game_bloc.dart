@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_syntactic_sorter/app/game/game_event.dart';
 import 'package:flutter_syntactic_sorter/app/game/game_state.dart';
-import 'package:flutter_syntactic_sorter/model/concept/concept.dart';
+import 'package:flutter_syntactic_sorter/app/game/live_stage/live_stage_bloc.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece_factory.dart';
 import 'package:flutter_syntactic_sorter/model/shape/shape_config.dart';
@@ -17,6 +17,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   int _currentDifficulty;
   ShapeConfig _shapeConfig;
   Repository repository;
+  LiveStageBloc liveStageBloc;
 
   GameBloc({this.repository}) {
     this.repository ??= Repository();
@@ -28,38 +29,20 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     dispatch(StartStage());
   }
 
-  void failedAttempt(final Concept concept, final int attempts) async {
-    dispatch(FailedAttempt(concept, attempts));
-  }
-
-  void pieceSuccess(final Concept concept) async {
-    dispatch(PieceSuccess(concept));
-  }
-
-  void animationCompleted() async {
-    dispatch(AnimationCompleted());
-  }
-
   @override
   Stream<GameState> mapEventToState(final GameState state, final GameEvent event) async* {
     try {
       if (event is StartStage) {
         yield await _renderStage();
       }
-
-      if (event is FailedAttempt) {
-        yield _renderFail(event);
-      }
-
-      if (event is PieceSuccess) {
-        yield _renderPieceSuccess(event);
-      }
-
-      if (event is AnimationCompleted) {
+      if (event is LevelCompleted) {
         _liveStage = LiveStage.updateLevelProgress(_liveStage);
-        if (_liveStage.isLevelComplete()) {
-          yield await _renderLevelCompleted();
-        }
+        liveStageBloc = LiveStageBloc(
+          concepts: _liveStage.concepts,
+          shapeConfig: _shapeConfig,
+          onCompleted: () => dispatch(LevelCompleted()),
+        );
+        yield await _renderLevelCompleted();
       }
     } catch (exception) {
       yield ErrorState(exception.toString());
@@ -76,12 +59,13 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   List<Piece> _getPieces() {
     final concepts = Stage.getConceptsByDifficulty(_currentStage.sentence, _currentDifficulty);
     _liveStage = LiveStage(concepts: concepts);
+    liveStageBloc = LiveStageBloc(
+        concepts: concepts,
+        shapeConfig: _shapeConfig,
+        onCompleted: () => dispatch(LevelCompleted()),
+    );
     return PieceFactory.getPieces(_liveStage.concepts);
   }
-
-  GameState _renderFail(final FailedAttempt event) => FailContentState(event.concept, event.attempts);
-
-  GameState _renderPieceSuccess(final PieceSuccess event) => WaitingForAnimationState(event.concept);
 
   Future<GameState> _renderLevelCompleted() async {
     return (_currentDifficulty == _currentStage.maxDifficulty) ? _renderNextStage() : _renderNextLevel();

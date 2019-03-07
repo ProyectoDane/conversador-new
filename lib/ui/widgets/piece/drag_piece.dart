@@ -1,7 +1,6 @@
 import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_syntactic_sorter/app/game/game_bloc.dart';
+import 'package:flutter_syntactic_sorter/app/game/live_stage/live_stage_bloc.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
 import 'package:flutter_syntactic_sorter/model/shape/shape_config.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/util/operators.dart';
@@ -14,16 +13,17 @@ class DragPiece extends StatefulWidget {
   final Piece piece;
   final ShapeConfig shapeConfig;
   final Offset initPosition;
+  final LiveStageBloc bloc;
+  final bool disabled;
 
-  DragPiece({@required this.piece, @required this.shapeConfig, @required this.initPosition});
+  DragPiece({@required this.piece, @required this.shapeConfig, @required this.initPosition, @required this.bloc, @required this.disabled});
 
   @override
   State<StatefulWidget> createState() => _DragPieceState();
 }
 
 class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
-  GameBloc _bloc;
-  int _attempts;
+  LiveStageBloc _bloc;
   Offset _origin;
   Offset _position;
   bool _isDisabled;
@@ -34,15 +34,14 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _setUp();
+    _setUpAnimation();
   }
 
   void _setUp() {
-    _bloc = BlocProvider.of(context);
-    _attempts = 0;
     _origin = widget.initPosition;
     _position = widget.initPosition;
-    _isDisabled = false;
-    _setUpAnimation();
+    _isDisabled = widget.disabled;
+    _bloc = widget.bloc;
   }
 
   void _setUpAnimation() {
@@ -55,6 +54,9 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
   void didUpdateWidget(Widget oldWidget) {
     super.didUpdateWidget(oldWidget);
     _setUp();
+    if ((oldWidget as DragPiece).initPosition != widget.initPosition) {
+      _setUpAnimation();
+    }
   }
 
   void dispose() {
@@ -63,7 +65,10 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
   }
 
   @override
-  Widget build(BuildContext context) => AnimatedBuilder(
+  Widget build(BuildContext context) => _render();
+
+  Widget _render() {
+    return AnimatedBuilder(
       animation: _movementAnimation,
       builder: (BuildContext context, Widget child) {
         return Positioned(
@@ -71,35 +76,31 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
           top: _movementAnimation.value.dy,
           child: _isDisabled
               ? widget.piece.buildWidget(
-                  pieceType: Piece.DRAG_COMPLETED,
-                  shapeConfig: widget.shapeConfig,
-                )
+            pieceType: Piece.DRAG_COMPLETED,
+            shapeConfig: widget.shapeConfig,
+          )
               : _buildDraggable(),
         );
       },
     );
-
+  }
 
   Widget _buildDraggable() => Draggable(
-      data: widget.piece.concept.value,
+      data: widget.piece,
       child: widget.piece.buildWidget(
         pieceType: Piece.DRAG_INITIAL,
         shapeConfig: widget.shapeConfig,
       ),
       onDraggableCanceled: (_, offset) {
-        _render(Operator.failure(
+        _renderOperator(Operator.failure(
           newState: () {
             _position = offset;
+            _bloc.pieceFailure(widget.piece);
           },
         ));
       },
       onDragCompleted: () {
-        _render(Operator.success(
-          newState: () {
-            _bloc.pieceSuccess(widget.piece.concept);
-            _isDisabled = true;
-          },
-        ));
+        _renderOperator(Operator.success(newState: (){ }));
       },
       feedback: widget.piece.buildWidget(
         pieceType: Piece.DRAG_FEEDBACK,
@@ -107,31 +108,14 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
       ),
     );
 
-  void _render(final Operator operator) {
+  void _renderOperator(final Operator operator) {
     setState(operator.newState);
     widget.audioCache.play(operator.sound);
     _playAnimation();
-    _notifyFailure(operator.shouldNotifyFailure);
   }
 
   void _playAnimation() {
     _setUpAnimation();
     _controller.forward();
-  }
-
-  void _notifyFailure(final bool shouldNotify) {
-    if (!shouldNotify) {
-      return;
-    }
-
-    _attempts = _attempts + 1;
-    if (_attempts < 3) {
-      _bloc.failedAttempt(widget.piece.concept, _attempts);
-      return;
-    }
-
-    // attempts == 3
-    setState(() => _isDisabled = true);
-    _bloc.pieceSuccess(widget.piece.concept);
   }
 }
