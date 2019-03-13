@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
 
 class PositionHelper {
+  
+  static const BORDER_PROPORTION = 0.1;
+  
   static List<double> generateEquidistantXPositions(
     final BuildContext context,
     final int numberOfPieces,
   ) {
     final width = MediaQuery.of(context).size.width;
-    final widthIncludingBorder = width * 0.9;
+    final widthIncludingBorder = width * (1-BORDER_PROPORTION);
     final blocks = widthIncludingBorder / numberOfPieces;
 
     final List<double> positions = [];
     for (int i = 0; i < numberOfPieces; i++) {
-      final centerPositionInBlock = blocks * (i + 1 / 2) + width * 0.05;
+      final centerPositionInBlock = blocks * (i + 1 / 2) + width * BORDER_PROPORTION/2;
       final centerShapeInBlock = centerPositionInBlock - Piece.BASE_SIZE / 2;
       positions.add(centerShapeInBlock);
     }

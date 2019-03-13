@@ -29,14 +29,11 @@ class _LiveStageState extends State<LiveStageWidget> {
   }
 
   Widget _render(final LiveStageState state) {
-    _toRender = SafeArea(
-      child: Builder(builder: (context) {
-        return Stack(children: _buildDraggableAndTargets(
+    _toRender = Stack(children: _buildDraggableAndTargets(
         context,
         state.dragPieces,
         state.targetPieces,
-            state.shapeConfig));
-      }),
+        state.shapeConfig),
     );
     return _toRender;
   }
