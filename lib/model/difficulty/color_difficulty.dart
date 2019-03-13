@@ -21,4 +21,15 @@ class ColorDifficulty extends GameDifficulty {
   @override
   ShapeConfig apply(final ShapeConfig shapeConfig) =>
       ShapeConfig.cloneWithAssign(shapeConfig: shapeConfig, colorByConceptType: colorByConceptType);
+
+  @override
+  String get imageUri => 'assets/images/game_settings/colors.png';
+
+  @override
+  bool operator==(o) => o is ColorDifficulty;
+
+  @override
+  int get hashCode => imageUri.hashCode;
+
+
 }

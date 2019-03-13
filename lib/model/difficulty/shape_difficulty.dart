@@ -23,4 +23,14 @@ class ShapeDifficulty extends GameDifficulty {
   @override
   ShapeConfig apply(final ShapeConfig shapeConfig) =>
       ShapeConfig.cloneWithAssign(shapeConfig: shapeConfig, shapeByConceptType: shapeByConceptType);
+
+  @override
+  String get imageUri => 'assets/images/game_settings/shapes.png';
+
+  @override
+  bool operator==(o) => o is ShapeDifficulty;
+
+  @override
+  int get hashCode => imageUri.hashCode;
+
 }

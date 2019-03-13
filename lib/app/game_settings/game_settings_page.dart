@@ -14,6 +14,7 @@ import 'package:flutter_syntactic_sorter/ui/widgets/platform/platform_scaffold.d
 import 'package:flutter_syntactic_sorter/ui/widgets/text/custom_text.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/util/widget_utils.dart';
 import 'package:flutter_syntactic_sorter/util/dimen.dart';
+import 'package:tuple/tuple.dart';
 
 class GameSettingsPage extends StatelessWidget {
   final GameSettingsBloc _bloc;
@@ -27,62 +28,41 @@ class GameSettingsPage extends StatelessWidget {
       );
 }
 
-class _GameSettingsBody extends StatefulWidget {
+class _GameSettingsBody extends StatelessWidget {
   final GameSettingsBloc bloc;
 
   _GameSettingsBody(this.bloc);
 
   @override
-  State createState() => _GameSettingsBodyState();
-}
-
-class _GameSettingsBodyState extends State<_GameSettingsBody> {
-  Widget _toRender;
-  bool hasColor = true;
-  bool hasShape = true;
-
-  @override
   Widget build(BuildContext context) => BlocBuilder<GameSettingsEvent, GameSettingsState>(
-        bloc: widget.bloc,
-        builder: (BuildContext context, GameSettingsState state) => _render(state),
-      );
+    bloc: bloc,
+    builder: (BuildContext context, GameSettingsState state) => _render(context, state),
+  );
 
-  Widget _render(final GameSettingsState state) {
-    if (state is InitialState) {
-      _toRender = _renderInitial();
-    }
-
-    if (state is ErrorState) {
-      _toRender = _renderError(state);
-    }
-
-    return _toRender;
-  }
-
-  Widget _renderInitial() => Container(
+  Widget _render(BuildContext context, GameSettingsState state) => Container(
         constraints: BoxConstraints.expand(),
         decoration: WidgetUtils.getBackground('assets/images/all/background.png'),
         child: SafeArea(child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Expanded(flex: 1, child: _getTitleAndButton()),
-            Expanded(flex: 2, child: _getImages()),
+            Expanded(flex: 1, child: _getTitleAndButton(context)),
+            Expanded(flex: 2, child: _getImages(state.difficulties)),
           ],
         )),
       );
 
-  Widget _getTitleAndButton() => Container(
+  Widget _getTitleAndButton(BuildContext context) => Container(
         margin: const EdgeInsets.only(bottom: Dimen.SPACING_NORMAL),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            _getTitle(),
-            _getButton(),
+            _getTitle(context),
+            _getButton(context),
           ],
         ),
       );
 
-  Widget _getTitle() => Container(
+  Widget _getTitle(BuildContext context) => Container(
         margin: const EdgeInsets.only(right: Dimen.SPACING_NORMAL),
         child: CustomText(
           text: LangLocalizations.of(context).trans('game_settings_title'),
@@ -93,60 +73,36 @@ class _GameSettingsBodyState extends State<_GameSettingsBody> {
         ),
       );
 
-  Widget _getButton() => CustomButton(
-        onPressed: _submitWithDifficulties,
+  Widget _getButton(BuildContext context) => CustomButton(
+        onPressed: () => _submitWithDifficulties(context),
         text: LangLocalizations.of(context).trans('game_settings_start'),
       );
 
-  Widget _getImages() => Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Expanded(flex: 1, child: _getShapeImage()),
-          Expanded(flex: 1, child: _getColorImage()),
-        ],
-      );
-
-  Widget _getShapeImage() => GestureDetector(
-        onTap: () => setState(() => hasShape = !hasShape),
+  Widget _getImages(List<Tuple2<GameDifficulty, bool>> difficulties) => Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: difficulties.map((tuple) => Expanded(
+      flex: 1,
+      child: GestureDetector(
+        onTap: () => bloc.tappedOnDifficulty(tuple.item1),
         child: Container(
           margin: EdgeInsets.only(
             left: Dimen.SPACING_BIG,
             right: Dimen.SPACING_SMALL,
             bottom: Dimen.SPACING_BIG,
           ),
+          // The image represents the hint, the difficulty
+          // is the lack of what the image shows:
           child: CustomImage(
-            imageUri: 'assets/images/game_settings/shapes.png',
-            isActive: hasShape,
+            imageUri: tuple.item1.imageUri,
+            isActive: !tuple.item2,
           ),
         ),
-      );
+      ),
+    )).toList()
+  );
 
-  Widget _getColorImage() => GestureDetector(
-        onTap: () => setState(() => hasColor = !hasColor),
-        child: Container(
-          margin: EdgeInsets.only(
-            left: Dimen.SPACING_SMALL,
-            right: Dimen.SPACING_BIG,
-            bottom: Dimen.SPACING_BIG,
-          ),
-          child: CustomImage(
-            imageUri: 'assets/images/game_settings/colors.png',
-            isActive: hasColor,
-          ),
-        ),
-      );
-
-  void _submitWithDifficulties() {
-    final List<GameDifficulty> difficulties = [];
-    if (!hasColor) {
-      difficulties.add(ColorDifficulty());
-    }
-    if (!hasShape) {
-      difficulties.add(ShapeDifficulty());
-    }
-    // TODO use events if possible
-    widget.bloc.setDifficulty(difficulties).whenComplete(() => Navigator.pushNamed(context, Router.GAME_PAGE));
+  void _submitWithDifficulties(BuildContext context) {
+    bloc.saveDifficulties().whenComplete(() => Navigator.pushNamed(context, Router.GAME_PAGE));
   }
 
-  Widget _renderError(final ErrorState state) => Center(child: Text(state.errorMessage));
 }

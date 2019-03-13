@@ -1,9 +1,21 @@
 import 'package:flutter_syntactic_sorter/model/difficulty/game_difficulty.dart';
 
-abstract class GameSettingsEvent {}
+class GameSettingsEvent {
+  GameSettingsEventType type;
+  GameDifficulty difficulty;
 
-class SetDifficulty extends GameSettingsEvent {
-  final List<GameDifficulty> difficulties;
+  GameSettingsEvent(this.type, this.difficulty);
 
-  SetDifficulty(this.difficulties);
+  factory GameSettingsEvent.deactivate(GameDifficulty difficulty) {
+    return GameSettingsEvent(GameSettingsEventType.difficultyDeactivated, difficulty);
+  }
+
+  factory GameSettingsEvent.activate(GameDifficulty difficulty) {
+    return GameSettingsEvent(GameSettingsEventType.difficultyActivated, difficulty);
+  }
+}
+
+enum GameSettingsEventType {
+  difficultyActivated,
+  difficultyDeactivated
 }
