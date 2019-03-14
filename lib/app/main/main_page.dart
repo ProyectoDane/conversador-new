@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_syntactic_sorter/app/main/main_bloc.dart';
-import 'package:flutter_syntactic_sorter/app/main/main_event.dart';
-import 'package:flutter_syntactic_sorter/app/main/main_state.dart';
 import 'package:flutter_syntactic_sorter/ui/router.dart';
 import 'package:flutter_syntactic_sorter/ui/settings/lang/lang_localizations.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/buttons/custom_button.dart';
@@ -12,58 +8,32 @@ import 'package:flutter_syntactic_sorter/ui/widgets/util/widget_utils.dart';
 import 'package:flutter_syntactic_sorter/util/dimen.dart';
 
 class MainPage extends StatelessWidget {
-  final MainBloc _bloc;
 
-  MainPage(this._bloc);
+  MainPage();
 
   @override
-  Widget build(BuildContext context) => PlatformScaffold(body: _MainBody(_bloc));
+  Widget build(BuildContext context) => PlatformScaffold(body: _MainBody());
 }
 
-class _MainBody extends StatefulWidget {
-  final MainBloc bloc;
+class _MainBody extends StatelessWidget {
 
-  _MainBody(this.bloc);
-
-  @override
-  State createState() => _MainBodyState();
-}
-
-class _MainBodyState extends State<_MainBody> {
-  Widget _toRender;
+  _MainBody();
 
   @override
-  Widget build(BuildContext context) => BlocBuilder<MainEvent, MainState>(
-        bloc: widget.bloc,
-        builder: (BuildContext context, MainState state) => _render(state),
-      );
-
-  Widget _render(final MainState state) {
-    if (state is InitialState) {
-      _toRender = _renderInitial();
-    }
-
-    if (state is ErrorState) {
-      _toRender = _renderError(state);
-    }
-
-    return _toRender;
-  }
-
-  Widget _renderInitial() => Container(
+  Widget build(BuildContext context) => Container(
         constraints: BoxConstraints.expand(),
         decoration: WidgetUtils.getBackground('assets/images/all/background.png'),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            _getTitle(),
-            _getButton(),
+            _getTitle(context),
+            _getButton(context),
           ],
         ),
       );
 
-  Widget _getTitle() => Container(
+  Widget _getTitle(BuildContext context) => Container(
         margin: const EdgeInsets.only(bottom: Dimen.SPACING_NORMAL),
         child: CustomText(
           text: LangLocalizations.of(context).trans('main_title'),
@@ -74,10 +44,9 @@ class _MainBodyState extends State<_MainBody> {
         ),
       );
 
-  Widget _getButton() => CustomButton(
+  Widget _getButton(BuildContext context) => CustomButton(
         onPressed: () => Navigator.pushNamed(context, Router.GAME_SETTINGS_PAGE),
         text: LangLocalizations.of(context).trans('main_btn_start'),
       );
 
-  Widget _renderError(final ErrorState state) => Center(child: Text(state.errorMessage));
 }
