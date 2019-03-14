@@ -31,7 +31,7 @@ class PlatformScaffold extends PlatformBase<CupertinoPageScaffold, Scaffold> {
           navigationBar: null,
           child: Stack(children: [
             new Positioned(child: body),
-            new Positioned(child: PlatformBackButton())
+            new Positioned(child: PlatformBackButton(), left: 10, top: 10),
           ])
       );
     } else {

@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/platform/platform_base.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/util/widget_utils.dart';
-import 'package:flutter_syntactic_sorter/util/dimen.dart';
 
 class PlatformBackButton extends PlatformBase<Widget, Widget> {
   final Key key;
@@ -16,7 +15,7 @@ class PlatformBackButton extends PlatformBase<Widget, Widget> {
 
   @override
   Widget buildIOSWidget(final BuildContext context) {
-    final size = 50.0;
+    final size = 35.0;
     final route = ModalRoute.of(context);
     final iconColor = Theme.of(context).iconTheme.color;
     final imageUri = route is PageRoute && route.fullscreenDialog ? 'assets/images/utils/close_icon.png' : 'assets/images/utils/back_arrow_icon.png';
@@ -31,18 +30,18 @@ class PlatformBackButton extends PlatformBase<Widget, Widget> {
             borderRadius: BorderRadius.circular(size),
           ),
           child: RaisedButton(
-              onPressed: (){ Navigator.pop(context); return true; },
-              child: WidgetUtils.getImage(imageUri, color: iconColor),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(size)),
-              color: color,
-              clipBehavior: Clip.hardEdge,
-          )
+            onPressed: (){ Navigator.pop(context); return true; },
+            child: WidgetUtils.getImage(imageUri, color: iconColor),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(size)),
+            color: color,
+            padding: const EdgeInsets.all(10.0),
+          ),
       ),
     ) : SizedBox();
-    return Container(
-      margin: EdgeInsets.all(Dimen.SPACING_NORMAL),
-      child: child,
-    );
-
+//    return Container(
+//      margin: EdgeInsets.all(10),
+//      child: child,
+//    );
+    return child;
   }
 }
