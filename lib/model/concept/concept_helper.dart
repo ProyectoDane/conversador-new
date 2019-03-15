@@ -8,31 +8,60 @@ import 'package:flutter_syntactic_sorter/model/concept/sentence.dart';
 import 'package:flutter_syntactic_sorter/model/concept/subject.dart';
 
 class ConceptHelper {
-  static List<Concept> getEasyConcepts(final Sentence sentence) => <Concept>[
-        Subject(value: _getSubjectValue(sentence)),
-        Predicate(value: _getPredicateValue(sentence)),
-      ];
 
-  static List<Concept> getNormalConcepts(final Sentence sentence) => <Concept>[
-        Modifier(value: _getSubjectModifierValue(sentence)),
-        Entity(value: _getSubjectEntityValue(sentence)),
-        Predicate(value: _getPredicateValue(sentence)),
-      ];
+  /// EASY
+  static List<Concept> getEasyConcepts(final Sentence sentence)
+    => getSubjectEasyConcepts(sentence) + getPredicateEasyConcepts(sentence);
 
-  static List<Concept> getHardConcepts(final Sentence sentence) => <Concept>[
-        Modifier(value: _getSubjectModifierValue(sentence)),
-        Entity(value: _getSubjectEntityValue(sentence)),
-        Action(value: _getActionValue(sentence)),
-        Complement(value: _getComplementValue(sentence)),
-      ];
+  static List<Concept> getSubjectEasyConcepts(final Sentence sentence) => <Concept>[
+    Subject(value: _getSubjectValue(sentence)),
+  ];
 
-  static List<Concept> getMaxConcepts(final Sentence sentence) => <Concept>[
-        Modifier(value: _getSubjectModifierValue(sentence)),
-        Entity(value: _getSubjectEntityValue(sentence)),
-        Action(value: _getActionValue(sentence)),
-        Modifier(value: _getPredicateModifierValue(sentence)),
-        Entity(value: _getPredicateEntityValue(sentence)),
-      ];
+  static List<Concept> getPredicateEasyConcepts(final Sentence sentence) => <Concept>[
+    Predicate(value: _getPredicateValue(sentence)),
+  ];
+
+  /// NORMAL
+  static List<Concept> getNormalConcepts(final Sentence sentence)
+    => getSubjectNormalConcepts(sentence) + getPredicateNormalConcepts(sentence);
+
+  static List<Concept> getSubjectNormalConcepts(final Sentence sentence) => <Concept>[
+    Modifier(value: _getSubjectModifierValue(sentence)),
+    Entity(value: _getSubjectEntityValue(sentence)),
+  ];
+
+  static List<Concept> getPredicateNormalConcepts(final Sentence sentence) => <Concept>[
+    Predicate(value: _getPredicateValue(sentence)),
+  ];
+
+  /// HARD
+  static List<Concept> getHardConcepts(final Sentence sentence)
+    => getSubjectHardConcepts(sentence) + getPredicateHardConcepts(sentence);
+
+  static List<Concept> getSubjectHardConcepts(final Sentence sentence) => <Concept>[
+    Modifier(value: _getSubjectModifierValue(sentence)),
+    Entity(value: _getSubjectEntityValue(sentence)),
+  ];
+
+  static List<Concept> getPredicateHardConcepts(final Sentence sentence) => <Concept>[
+    Action(value: _getActionValue(sentence)),
+    Complement(value: _getComplementValue(sentence)),
+  ];
+
+  /// MAX
+  static List<Concept> getMaxConcepts(final Sentence sentence)
+    => getSubjectMaxConcepts(sentence) + getPredicateMaxConcepts(sentence);
+
+  static List<Concept> getSubjectMaxConcepts(final Sentence sentence) => <Concept>[
+    Modifier(value: _getSubjectModifierValue(sentence)),
+    Entity(value: _getSubjectEntityValue(sentence)),
+  ];
+
+  static List<Concept> getPredicateMaxConcepts(final Sentence sentence) => <Concept>[
+    Action(value: _getActionValue(sentence)),
+    Modifier(value: _getPredicateModifierValue(sentence)),
+    Entity(value: _getPredicateEntityValue(sentence)),
+  ];
 
   static String _getSubjectValue(final Sentence sentence) => _reduceChildren(_getSubjectChildren(sentence));
 

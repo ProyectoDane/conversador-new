@@ -45,11 +45,11 @@ class ShapeConfig {
       };
 
   static Map<int, Shape> Function(Color) defaultShapeByConceptType = (final Color color) => {
-        Subject.TYPE: Shape(decoration: Rectangle(color)),
-        Entity.TYPE: Shape(decoration: Rectangle(color)),
+        Subject.TYPE: Shape(decoration: Rectangle(color: color)),
+        Entity.TYPE: Shape(decoration: Rectangle(color: color)),
         Predicate.TYPE: Shape(decoration: Circle(color)),
         Action.TYPE: Shape(decoration: Circle(color)),
-        Modifier.TYPE: Shape(decoration: Rectangle(color)),
+        Modifier.TYPE: Shape(decoration: Rectangle(color: color)),
         Complement.TYPE: Shape(decoration: Circle(color)),
       };
 

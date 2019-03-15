@@ -40,7 +40,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     _currentStage = stage;
     final liveStage = _currentStage.getLiveStageForDifficulty(_currentDifficulty);
     final liveStageBloc = LiveStageBloc(
-      concepts: liveStage.concepts,
+      subjectConcepts: liveStage.subjectConcepts,
+      predicateConcepts: liveStage.predicateConcepts,
       shapeConfig: _shapeConfig,
       onCompleted: () => dispatch(LiveStageCompleted()),
     );
@@ -54,7 +55,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     } else {
       _currentDifficulty = nextLiveStage.difficulty;
       final liveStageBloc = LiveStageBloc(
-        concepts: nextLiveStage.concepts,
+        subjectConcepts: nextLiveStage.subjectConcepts,
+        predicateConcepts: nextLiveStage.predicateConcepts,
         shapeConfig: _shapeConfig,
         onCompleted: () => dispatch(LiveStageCompleted()),
       );

@@ -12,12 +12,12 @@ import 'package:flutter_syntactic_sorter/model/shape/shape_config.dart';
 
 class ShapeDifficulty extends GameDifficulty {
   final Map<int, Shape> Function(Color) shapeByConceptType = (Color color) => {
-        Subject.TYPE: Shape(decoration: Rectangle(color)),
-        Entity.TYPE: Shape(decoration: Rectangle(color)),
-        Predicate.TYPE: Shape(decoration: Rectangle(color)),
-        Action.TYPE: Shape(decoration: Rectangle(color)),
-        Modifier.TYPE: Shape(decoration: Rectangle(color)),
-        Complement.TYPE: Shape(decoration: Rectangle(color)),
+        Subject.TYPE: Shape(decoration: Rectangle(color: color)),
+        Entity.TYPE: Shape(decoration: Rectangle(color: color)),
+        Predicate.TYPE: Shape(decoration: Rectangle(color: color)),
+        Action.TYPE: Shape(decoration: Rectangle(color: color)),
+        Modifier.TYPE: Shape(decoration: Rectangle(color: color)),
+        Complement.TYPE: Shape(decoration: Rectangle(color: color)),
       };
 
   @override

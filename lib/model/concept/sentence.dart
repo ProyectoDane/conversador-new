@@ -13,18 +13,31 @@ class Sentence {
   static List<Concept> getConceptsByDifficulty(final Sentence sentence, final int currentDifficulty) =>
       _mapDifficultyToConceptGenerators[currentDifficulty](sentence);
 
+  static List<Concept> getSubjectConceptsByDifficulty(final Sentence sentence, final int currentDifficulty) =>
+      _mapDifficultyToSubjectConceptGenerators[currentDifficulty](sentence);/////
+
+  static List<Concept> getPredicateConceptsByDifficulty(final Sentence sentence, final int currentDifficulty) =>
+      _mapDifficultyToPredicateConceptGenerators[currentDifficulty](sentence);/////
+
   static const Map<int, List<Concept> Function(Sentence)> _mapDifficultyToConceptGenerators = {
-    Stage.DIFFICULTY_EASY: _getEasyConcepts,
-    Stage.DIFFICULTY_NORMAL: _getNormalConcepts,
-    Stage.DIFFICULTY_HARD: _getHardConcepts,
-    Stage.DIFFICULTY_MAX: _getMaxConcepts
+    Stage.DIFFICULTY_EASY: ConceptHelper.getEasyConcepts,
+    Stage.DIFFICULTY_NORMAL: ConceptHelper.getNormalConcepts,
+    Stage.DIFFICULTY_HARD: ConceptHelper.getHardConcepts,
+    Stage.DIFFICULTY_MAX: ConceptHelper.getMaxConcepts
   };
 
-  static List<Concept> _getEasyConcepts(final Sentence sentence) => ConceptHelper.getEasyConcepts(sentence);
+  static const Map<int, List<Concept> Function(Sentence)> _mapDifficultyToSubjectConceptGenerators = {
+    Stage.DIFFICULTY_EASY: ConceptHelper.getSubjectEasyConcepts,
+    Stage.DIFFICULTY_NORMAL: ConceptHelper.getSubjectNormalConcepts,
+    Stage.DIFFICULTY_HARD: ConceptHelper.getSubjectHardConcepts,
+    Stage.DIFFICULTY_MAX: ConceptHelper.getSubjectMaxConcepts
+  };
 
-  static List<Concept> _getNormalConcepts(final Sentence sentence) => ConceptHelper.getNormalConcepts(sentence);
+  static const Map<int, List<Concept> Function(Sentence)> _mapDifficultyToPredicateConceptGenerators = {
+    Stage.DIFFICULTY_EASY: ConceptHelper.getPredicateEasyConcepts,
+    Stage.DIFFICULTY_NORMAL: ConceptHelper.getPredicateNormalConcepts,
+    Stage.DIFFICULTY_HARD: ConceptHelper.getPredicateHardConcepts,
+    Stage.DIFFICULTY_MAX: ConceptHelper.getPredicateMaxConcepts
+  };
 
-  static List<Concept> _getHardConcepts(final Sentence sentence) => ConceptHelper.getHardConcepts(sentence);
-
-  static List<Concept> _getMaxConcepts(final Sentence sentence) => ConceptHelper.getMaxConcepts(sentence);
 }

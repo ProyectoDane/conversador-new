@@ -6,22 +6,62 @@ import 'package:meta/meta.dart';
 class LiveStageState {
   final ShapeConfig shapeConfig;
   final List<DragPieceState> dragPieces;
-  final List<TargetPieceState> targetPieces;
+  final List<TargetPieceState> subjectTargetPieces;
+  final List<TargetPieceState> predicateTargetPieces;
 
-  LiveStageState(this.shapeConfig, this.dragPieces, this.targetPieces);
+  LiveStageState(this.shapeConfig, this.dragPieces, this.subjectTargetPieces, this.predicateTargetPieces);
   LiveStageState changeDragPiece(int index, DragPieceState newPiece) {
     List<DragPieceState> newDragPieces = List.from(dragPieces);
     newDragPieces[index] = newPiece;
-    return LiveStageState(shapeConfig, newDragPieces, targetPieces);
+    return LiveStageState(
+        shapeConfig,
+        newDragPieces,
+        List.from(subjectTargetPieces),
+        List.from(predicateTargetPieces)
+    );
   }
+  LiveStageState changeSubjectTargetPiece(int index, TargetPieceState newPiece) {
+    List<TargetPieceState> newSubjectTargetPieces = List.from(subjectTargetPieces);
+    newSubjectTargetPieces[index] = newPiece;
+    return LiveStageState(
+        shapeConfig,
+        List.from(dragPieces),
+        newSubjectTargetPieces,
+        List.from(predicateTargetPieces)
+    );
+  }
+  LiveStageState changePredicateTargetPiece(int index, TargetPieceState newPiece) {
+    List<TargetPieceState> newPredicateTargetPieces = List.from(predicateTargetPieces);
+    newPredicateTargetPieces[index] = newPiece;
+    return LiveStageState(
+        shapeConfig,
+        List.from(dragPieces),
+        List.from(subjectTargetPieces),
+        newPredicateTargetPieces
+    );
+  }
+
+  List<TargetPieceState> get targetPieces => subjectTargetPieces + predicateTargetPieces;
+
   LiveStageState changeTargetPiece(int index, TargetPieceState newPiece) {
-    List<TargetPieceState> newTargetPieces = List.from(targetPieces);
-    newTargetPieces[index] = newPiece;
-    return LiveStageState(shapeConfig, dragPieces, newTargetPieces);
+    List<TargetPieceState> newSubjectTargetPieces = List.from(subjectTargetPieces);
+    List<TargetPieceState> newPredicateTargetPieces = List.from(predicateTargetPieces);
+    if (index >= subjectTargetPieces.length) {
+      final predicateIndex = index - subjectTargetPieces.length;
+      newPredicateTargetPieces[predicateIndex] = newPiece;
+    } else {
+      newSubjectTargetPieces[index] = newPiece;
+    }
+    return LiveStageState(
+        shapeConfig,
+        List.from(dragPieces),
+        newSubjectTargetPieces,
+        newPredicateTargetPieces
+    );
   }
 
   bool get isCompleted => reduce(
-      targetPieces,
+      subjectTargetPieces + predicateTargetPieces,
       true,
           (bool allCompleted, TargetPieceState newTarget) => allCompleted && newTarget.visualState == TargetPieceVisualState.animated
   );

@@ -13,16 +13,20 @@ class LiveStageBloc extends Bloc<LiveStageEvent, LiveStageState> {
   final int maxAttempts;
   final int attemptsRemainingForWarning;
   final ShapeConfig shapeConfig;
-  final List<Concept> concepts;
+  final List<Concept> subjectConcepts;
+  final List<Concept> predicateConcepts;
   final List<Concept> mixedConcepts;
   final Function() onCompleted;
 
-  LiveStageBloc({@required this.concepts,
+  LiveStageBloc({
+    @required this.subjectConcepts,
+    @required this.predicateConcepts,
     @required this.shapeConfig,
     @required this.onCompleted,
     this.maxAttempts = 3,
-    this.attemptsRemainingForWarning = 1}) :
-    this.mixedConcepts = shuffled(concepts);
+    this.attemptsRemainingForWarning = 1
+  }) :
+    this.mixedConcepts = shuffled(subjectConcepts + predicateConcepts);
 
   void pieceFailure(Piece dragPiece) {
     dispatch(LiveStageEvent.failed(dragPiece));
@@ -42,17 +46,22 @@ class LiveStageBloc extends Bloc<LiveStageEvent, LiveStageState> {
 
   @override
   LiveStageState get initialState {
-    final List<Piece> targetPieces = enumerated(this.concepts).map((tuple) =>
+    final List<Piece> subjectTargetPieces = enumerated(this.subjectConcepts).map((tuple) =>
         Piece(concept: tuple.item2, index: tuple.item1)
+    ).toList();
+    final List<Piece> predicateTargetPieces = enumerated(this.predicateConcepts).map((tuple) =>
+        Piece(concept: tuple.item2, index: tuple.item1 + subjectConcepts.length)
     ).toList();
 
     final List<Piece> dragPieces = enumerated(this.mixedConcepts).map((tuple) => Piece(concept: tuple.item2, index: tuple.item1)).toList();
     final List<DragPieceState> dragStates = dragPieces.map((piece) => DragPieceState(piece: piece, attemptsRemaining: maxAttempts)).toList();
-    final List<TargetPieceState> targetStates = targetPieces.map((piece) => TargetPieceState(piece: piece)).toList();
+    final List<TargetPieceState> subjectTargetStates = subjectTargetPieces.map((piece) => TargetPieceState(piece: piece)).toList();
+    final List<TargetPieceState> predicateTargetStates = predicateTargetPieces.map((piece) => TargetPieceState(piece: piece)).toList();
     return LiveStageState(
       shapeConfig,
       dragStates,
-      targetStates,
+      subjectTargetStates,
+      predicateTargetStates,
     );
   }
 
