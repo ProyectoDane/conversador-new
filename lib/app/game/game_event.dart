@@ -2,4 +2,4 @@ abstract class GameEvent {}
 
 class StartStage extends GameEvent {}
 
-class LevelCompleted extends GameEvent {}
+class LiveStageCompleted extends GameEvent {}
