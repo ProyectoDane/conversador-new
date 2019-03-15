@@ -82,10 +82,7 @@ class _LiveStageState extends State<LiveStageWidget> {
       final xPosition = positions.removeAt(0);
       final yPosition = PositionHelper.generateEquidistantYPosition(context, atTheTop);
       final offset = Offset(xPosition, yPosition);
-      return BlocProvider(
-        bloc: widget.bloc,
-        child: getWidget(element, offset)
-      );
+      return getWidget(element, offset);
     }).toList();
   }
 
