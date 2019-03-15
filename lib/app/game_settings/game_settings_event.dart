@@ -4,14 +4,17 @@ class GameSettingsEvent {
   GameSettingsEventType type;
   GameDifficulty difficulty;
 
-  GameSettingsEvent(this.type, this.difficulty);
+  GameSettingsEvent._internal(GameSettingsEventType type, GameDifficulty difficulty) {
+    this.type = type;
+    this.difficulty = difficulty;
+  }
 
   factory GameSettingsEvent.deactivate(GameDifficulty difficulty) {
-    return GameSettingsEvent(GameSettingsEventType.difficultyDeactivated, difficulty);
+    return GameSettingsEvent._internal(GameSettingsEventType.difficultyDeactivated, difficulty);
   }
 
   factory GameSettingsEvent.activate(GameDifficulty difficulty) {
-    return GameSettingsEvent(GameSettingsEventType.difficultyActivated, difficulty);
+    return GameSettingsEvent._internal(GameSettingsEventType.difficultyActivated, difficulty);
   }
 }
 
