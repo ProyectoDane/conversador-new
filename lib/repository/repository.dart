@@ -9,9 +9,9 @@ class Repository {
   static var _instance = Repository.internal();
 
   // TODO save the config
-  List<GameDifficulty> difficulties;
+  List<GameDifficulty> difficulties = List();
 
-  factory Repository({apiService, dao}) => _instance;
+  factory Repository() => _instance;
 
   Repository.internal();
 

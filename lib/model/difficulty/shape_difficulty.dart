@@ -11,7 +11,7 @@ import 'package:flutter_syntactic_sorter/model/shape/shape.dart';
 import 'package:flutter_syntactic_sorter/model/shape/shape_config.dart';
 
 class ShapeDifficulty extends GameDifficulty {
-  final Function shapeByConceptType = (Color color) => {
+  final Map<int, Shape> Function(Color) shapeByConceptType = (Color color) => {
         Subject.TYPE: Shape(decoration: Rectangle(color)),
         Entity.TYPE: Shape(decoration: Rectangle(color)),
         Predicate.TYPE: Shape(decoration: Rectangle(color)),
@@ -28,7 +28,7 @@ class ShapeDifficulty extends GameDifficulty {
   String get imageUri => 'assets/images/game_settings/shapes.png';
 
   @override
-  bool operator==(o) => o is ShapeDifficulty;
+  bool operator==(dynamic o) => o is ShapeDifficulty;
 
   @override
   int get hashCode => imageUri.hashCode;

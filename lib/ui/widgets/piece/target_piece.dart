@@ -52,7 +52,7 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
   }
 
   @override
-  void didUpdateWidget(Widget oldWidget) {
+  void didUpdateWidget(TargetPiece oldWidget) {
     super.didUpdateWidget(oldWidget);
     _setUpData();
     _setUpRender();

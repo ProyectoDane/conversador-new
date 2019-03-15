@@ -51,10 +51,10 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
   }
 
   @override
-  void didUpdateWidget(Widget oldWidget) {
+  void didUpdateWidget(DragPiece oldWidget) {
     super.didUpdateWidget(oldWidget);
     _setUp();
-    if ((oldWidget as DragPiece).initPosition != widget.initPosition) {
+    if (oldWidget.initPosition != widget.initPosition) {
       _setUpAnimation();
     }
   }

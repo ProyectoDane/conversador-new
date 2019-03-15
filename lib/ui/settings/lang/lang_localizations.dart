@@ -13,8 +13,8 @@ class LangLocalizations {
 
   static Future<LangLocalizations> load(Locale locale) async {
     final data = await rootBundle.loadString('assets/lang/${locale.languageCode}.json');
-    final Map<String, dynamic> _result = json.decode(data);
-    final strings = _result.map((key, value) => MapEntry(key, value.toString()));
+    final Map<String, dynamic> _result = json.decode(data) as Map<String, dynamic>;
+    final strings = _result.map((key, dynamic value) => MapEntry(key, value.toString()));
     return LangLocalizations._internal(strings);
   }
 

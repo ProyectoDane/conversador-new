@@ -75,7 +75,7 @@ class _LiveStageState extends State<LiveStageWidget> {
     @required final BuildContext context,
     @required final List<E> elements,
     @required final bool atTheTop,
-    @required Function getWidget
+    @required Widget Function(E, Offset) getWidget
   }) {
     final positions = PositionHelper.generateEquidistantXPositions(context, elements.length);
     return elements.map((element) {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_syntactic_sorter/util/dimen.dart';
 
 class CustomButton extends StatelessWidget {
-  final Function onPressed;
+  final void Function() onPressed;
   final String text;
 
   CustomButton({@required this.onPressed, @required this.text});

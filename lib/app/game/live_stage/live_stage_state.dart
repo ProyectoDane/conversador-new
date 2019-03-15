@@ -23,7 +23,7 @@ class LiveStageState {
   bool get isCompleted => reduce(
       targetPieces,
       true,
-          (allCompleted, newTarget) => allCompleted && newTarget.visualState == TargetPieceVisualState.animated
+          (bool allCompleted, TargetPieceState newTarget) => allCompleted && newTarget.visualState == TargetPieceVisualState.animated
   );
 }
 

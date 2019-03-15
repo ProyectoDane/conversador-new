@@ -9,7 +9,7 @@ import 'package:flutter_syntactic_sorter/model/difficulty/game_difficulty.dart';
 import 'package:flutter_syntactic_sorter/model/shape/shape_config.dart';
 
 class ColorDifficulty extends GameDifficulty {
-  final Function colorByConceptType = () => {
+  final Map<int, Color> Function() colorByConceptType = () => {
         Subject.TYPE: Colors.grey,
         Entity.TYPE: Colors.grey,
         Predicate.TYPE: Colors.grey,
@@ -26,7 +26,7 @@ class ColorDifficulty extends GameDifficulty {
   String get imageUri => 'assets/images/game_settings/colors.png';
 
   @override
-  bool operator==(o) => o is ColorDifficulty;
+  bool operator==(dynamic o) => o is ColorDifficulty;
 
   @override
   int get hashCode => imageUri.hashCode;

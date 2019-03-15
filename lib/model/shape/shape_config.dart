@@ -12,17 +12,17 @@ import 'package:flutter_syntactic_sorter/model/shape/decorators/rectangle.dart';
 import 'package:flutter_syntactic_sorter/model/shape/shape.dart';
 
 class ShapeConfig {
-  final Function colorByConceptType;
-  final Function shapeByConceptType;
-  final Function colorByPieceType;
+  final Map<int, Color> Function() colorByConceptType;
+  final Map<int, Shape> Function(Color) shapeByConceptType;
+  final Map<int, Color> Function(Color) colorByPieceType;
 
   ShapeConfig({this.colorByConceptType, this.shapeByConceptType, this.colorByPieceType});
 
-  static ShapeConfig cloneWithAssign(
-          {ShapeConfig shapeConfig,
-          Function colorByConceptType,
-          Function shapeByConceptType,
-          Function colorByPieceType}) =>
+  static ShapeConfig cloneWithAssign({
+    ShapeConfig shapeConfig,
+    Map<int, Color> Function() colorByConceptType,
+    Map<int, Shape> Function(Color) shapeByConceptType,
+    Map<int, Color> Function(Color) colorByPieceType}) =>
       ShapeConfig(
         colorByConceptType: colorByConceptType == null ? shapeConfig.colorByConceptType : colorByConceptType,
         shapeByConceptType: shapeByConceptType == null ? shapeConfig.shapeByConceptType : shapeByConceptType,
@@ -35,7 +35,7 @@ class ShapeConfig {
         colorByPieceType: ShapeConfig.defaultColorByPieceType,
       );
 
-  static Function defaultColorByConceptType = () => {
+  static Map<int, Color> Function() defaultColorByConceptType = () => {
         Subject.TYPE: Colors.green,
         Entity.TYPE: Colors.green,
         Predicate.TYPE: Colors.red,
@@ -44,7 +44,7 @@ class ShapeConfig {
         Complement.TYPE: Colors.orange,
       };
 
-  static Function defaultShapeByConceptType = (final Color color) => {
+  static Map<int, Shape> Function(Color) defaultShapeByConceptType = (final Color color) => {
         Subject.TYPE: Shape(decoration: Rectangle(color)),
         Entity.TYPE: Shape(decoration: Rectangle(color)),
         Predicate.TYPE: Shape(decoration: Circle(color)),
@@ -53,7 +53,7 @@ class ShapeConfig {
         Complement.TYPE: Shape(decoration: Circle(color)),
       };
 
-  static Function defaultColorByPieceType = (final Color color) => {
+  static Map<int, Color> Function(Color) defaultColorByPieceType = (final Color color) => {
         Piece.TARGET_INITIAL: Colors.black26,
         Piece.TARGET_COMPLETED: color,
         Piece.DRAG_INITIAL: color,

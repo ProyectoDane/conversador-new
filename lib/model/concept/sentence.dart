@@ -10,21 +10,21 @@ class Sentence {
 
   Sentence(this.subject, this.predicate);
 
-  static List<Concept> getConceptsByDifficulty(final sentence, final currentDifficulty) =>
+  static List<Concept> getConceptsByDifficulty(final Sentence sentence, final int currentDifficulty) =>
       _mapDifficultyToConceptGenerators[currentDifficulty](sentence);
 
-  static const Map<int, Function> _mapDifficultyToConceptGenerators = {
+  static const Map<int, List<Concept> Function(Sentence)> _mapDifficultyToConceptGenerators = {
     Stage.DIFFICULTY_EASY: _getEasyConcepts,
     Stage.DIFFICULTY_NORMAL: _getNormalConcepts,
     Stage.DIFFICULTY_HARD: _getHardConcepts,
     Stage.DIFFICULTY_MAX: _getMaxConcepts
   };
 
-  static List<Concept> _getEasyConcepts(final sentence) => ConceptHelper.getEasyConcepts(sentence);
+  static List<Concept> _getEasyConcepts(final Sentence sentence) => ConceptHelper.getEasyConcepts(sentence);
 
-  static List<Concept> _getNormalConcepts(final sentence) => ConceptHelper.getNormalConcepts(sentence);
+  static List<Concept> _getNormalConcepts(final Sentence sentence) => ConceptHelper.getNormalConcepts(sentence);
 
-  static List<Concept> _getHardConcepts(final sentence) => ConceptHelper.getHardConcepts(sentence);
+  static List<Concept> _getHardConcepts(final Sentence sentence) => ConceptHelper.getHardConcepts(sentence);
 
-  static List<Concept> _getMaxConcepts(final sentence) => ConceptHelper.getMaxConcepts(sentence);
+  static List<Concept> _getMaxConcepts(final Sentence sentence) => ConceptHelper.getMaxConcepts(sentence);
 }
