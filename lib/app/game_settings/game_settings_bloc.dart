@@ -19,7 +19,7 @@ class GameSettingsBloc extends Bloc<GameSettingsEvent, GameSettingsState> {
     Tuple2(ColorDifficulty(), false),
   ]);
 
-  Future<bool> saveDifficulties() async => repository.setShapeConfig(currentState.difficulties.where((tuple) => tuple.item2).map((tuple) => tuple.item1).toList());
+  Future<bool> saveDifficulties() async => repository.setPieceConfig(currentState.difficulties.where((tuple) => tuple.item2).map((tuple) => tuple.item1).toList());
   
   void tappedOnDifficulty(GameDifficulty difficulty) {
     final tuple = currentState.difficulties.firstWhere((tuple) => tuple.item1 == difficulty);

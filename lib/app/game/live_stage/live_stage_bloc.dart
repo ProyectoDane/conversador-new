@@ -5,14 +5,14 @@ import 'package:flutter_syntactic_sorter/app/game/live_stage/live_stage_event.da
 import 'package:flutter_syntactic_sorter/app/game/live_stage/live_stage_state.dart';
 import 'package:flutter_syntactic_sorter/model/concept/concept.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
-import 'package:flutter_syntactic_sorter/model/shape/shape_config.dart';
+import 'package:flutter_syntactic_sorter/model/piece/piece_config.dart';
 import 'package:flutter_syntactic_sorter/util/list_extensions.dart';
 import 'package:meta/meta.dart';
 
 class LiveStageBloc extends Bloc<LiveStageEvent, LiveStageState> {
   final int maxAttempts;
   final int attemptsRemainingForWarning;
-  final ShapeConfig shapeConfig;
+  final PieceConfig pieceConfig;
   final List<Concept> subjectConcepts;
   final List<Concept> predicateConcepts;
   final List<Concept> mixedConcepts;
@@ -21,7 +21,7 @@ class LiveStageBloc extends Bloc<LiveStageEvent, LiveStageState> {
   LiveStageBloc({
     @required this.subjectConcepts,
     @required this.predicateConcepts,
-    @required this.shapeConfig,
+    @required this.pieceConfig,
     @required this.onCompleted,
     this.maxAttempts = 3,
     this.attemptsRemainingForWarning = 1
@@ -58,7 +58,7 @@ class LiveStageBloc extends Bloc<LiveStageEvent, LiveStageState> {
     final List<TargetPieceState> subjectTargetStates = subjectTargetPieces.map((piece) => TargetPieceState(piece: piece)).toList();
     final List<TargetPieceState> predicateTargetStates = predicateTargetPieces.map((piece) => TargetPieceState(piece: piece)).toList();
     return LiveStageState(
-      shapeConfig,
+      pieceConfig,
       dragStates,
       subjectTargetStates,
       predicateTargetStates,

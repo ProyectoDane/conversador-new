@@ -1,43 +1,49 @@
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
-import 'package:flutter_syntactic_sorter/model/shape/shape_config.dart';
+import 'package:flutter_syntactic_sorter/model/piece/piece_config.dart';
 import 'package:flutter_syntactic_sorter/util/list_extensions.dart';
 import 'package:meta/meta.dart';
 
 class LiveStageState {
-  final ShapeConfig shapeConfig;
+  final PieceConfig pieceConfig;
   final List<DragPieceState> dragPieces;
   final List<TargetPieceState> subjectTargetPieces;
   final List<TargetPieceState> predicateTargetPieces;
 
-  LiveStageState(this.shapeConfig, this.dragPieces, this.subjectTargetPieces, this.predicateTargetPieces);
+  LiveStageState(
+    this.pieceConfig,
+    this.dragPieces,
+    this.subjectTargetPieces,
+    this.predicateTargetPieces
+  );
+
   LiveStageState changeDragPiece(int index, DragPieceState newPiece) {
     List<DragPieceState> newDragPieces = List.from(dragPieces);
     newDragPieces[index] = newPiece;
     return LiveStageState(
-        shapeConfig,
-        newDragPieces,
-        List.from(subjectTargetPieces),
-        List.from(predicateTargetPieces)
+      pieceConfig,
+      newDragPieces,
+      List.from(subjectTargetPieces),
+      List.from(predicateTargetPieces)
     );
   }
   LiveStageState changeSubjectTargetPiece(int index, TargetPieceState newPiece) {
     List<TargetPieceState> newSubjectTargetPieces = List.from(subjectTargetPieces);
     newSubjectTargetPieces[index] = newPiece;
     return LiveStageState(
-        shapeConfig,
-        List.from(dragPieces),
-        newSubjectTargetPieces,
-        List.from(predicateTargetPieces)
+      pieceConfig,
+      List.from(dragPieces),
+      newSubjectTargetPieces,
+      List.from(predicateTargetPieces)
     );
   }
   LiveStageState changePredicateTargetPiece(int index, TargetPieceState newPiece) {
     List<TargetPieceState> newPredicateTargetPieces = List.from(predicateTargetPieces);
     newPredicateTargetPieces[index] = newPiece;
     return LiveStageState(
-        shapeConfig,
-        List.from(dragPieces),
-        List.from(subjectTargetPieces),
-        newPredicateTargetPieces
+      pieceConfig,
+      List.from(dragPieces),
+      List.from(subjectTargetPieces),
+      newPredicateTargetPieces
     );
   }
 
@@ -53,10 +59,10 @@ class LiveStageState {
       newSubjectTargetPieces[index] = newPiece;
     }
     return LiveStageState(
-        shapeConfig,
-        List.from(dragPieces),
-        newSubjectTargetPieces,
-        newPredicateTargetPieces
+      pieceConfig,
+      List.from(dragPieces),
+      newSubjectTargetPieces,
+      newPredicateTargetPieces
     );
   }
 
@@ -65,6 +71,7 @@ class LiveStageState {
       true,
           (bool allCompleted, TargetPieceState newTarget) => allCompleted && newTarget.visualState == TargetPieceVisualState.animated
   );
+
 }
 
 class DragPieceState {

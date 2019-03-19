@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class Shape {
+class Figure {
   final Decoration decoration;
 
-  Shape({this.decoration});
+  Figure({this.decoration});
 
   Widget buildWidget({@required int pieceType, @required String content, @required double size}) {
     return Container(
