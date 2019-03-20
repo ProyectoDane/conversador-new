@@ -7,8 +7,8 @@ import 'package:flutter_syntactic_sorter/model/concept/predicate.dart';
 import 'package:flutter_syntactic_sorter/model/concept/subject.dart';
 import 'package:flutter_syntactic_sorter/model/difficulty/game_difficulty.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
-import 'package:flutter_syntactic_sorter/model/figure/decorators/circle.dart';
-import 'package:flutter_syntactic_sorter/model/figure/decorators/rectangle.dart';
+import 'package:flutter_syntactic_sorter/model/figure/shape/circle.dart';
+import 'package:flutter_syntactic_sorter/model/figure/shape/rectangle.dart';
 import 'package:flutter_syntactic_sorter/model/figure/figure.dart';
 
 class PieceConfig {

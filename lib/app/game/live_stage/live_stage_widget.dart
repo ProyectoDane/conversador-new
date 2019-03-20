@@ -7,7 +7,7 @@ import 'package:flutter_syntactic_sorter/app/game/live_stage/live_stage_state.da
 import 'package:flutter_syntactic_sorter/app/game/live_stage/live_stage_event.dart';
 import 'package:flutter_syntactic_sorter/app/game/util/positions_helper.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
-import 'package:flutter_syntactic_sorter/model/figure/decorators/rectangle.dart';
+import 'package:flutter_syntactic_sorter/model/figure/shape/rectangle.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece_config.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/drag_piece.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/target_piece.dart';

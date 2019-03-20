@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_syntactic_sorter/model/figure/shape/shape.dart';
 
-class Rectangle extends BoxDecoration {
+class Rectangle extends Shape {
   static const int ID = 1;
 
   Rectangle({@required Color color, Color borderColor}) : super(
       color: color,
       borderRadius: BorderRadius.all(Radius.circular(5.0)),
-      border: (borderColor != null) ? Border.all(
-        color: borderColor,
-        width: 1.0,
-      ) : null,
-  );
+      borderColor: borderColor,
+      shape: BoxShape.rectangle,
+      id: ID);
 }

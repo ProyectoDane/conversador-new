@@ -9,6 +9,9 @@ import 'package:flutter_syntactic_sorter/model/difficulty/game_difficulty.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece_config.dart';
 
 class ColorDifficulty extends GameDifficulty {
+  static final NAME = "ColorDifficulty";
+  String get name => NAME;
+
   final Map<int, Color> Function() colorByConceptType = () => {
         Subject.TYPE: Colors.grey,
         Entity.TYPE: Colors.grey,
@@ -30,6 +33,5 @@ class ColorDifficulty extends GameDifficulty {
 
   @override
   int get hashCode => imageUri.hashCode;
-
 
 }

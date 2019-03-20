@@ -4,14 +4,14 @@ import 'package:flutter_syntactic_sorter/app/game_settings/game_settings_state.d
 import 'package:flutter_syntactic_sorter/model/difficulty/game_difficulty.dart';
 import 'package:flutter_syntactic_sorter/model/difficulty/color_difficulty.dart';
 import 'package:flutter_syntactic_sorter/model/difficulty/shape_difficulty.dart';
-import 'package:flutter_syntactic_sorter/repository/repository.dart';
+import 'package:flutter_syntactic_sorter/repository/piece_config_repository.dart';
 import 'package:tuple/tuple.dart';
 
 class GameSettingsBloc extends Bloc<GameSettingsEvent, GameSettingsState> {
-  Repository repository;
+  PieceConfigRepository repository;
 
   GameSettingsBloc({this.repository}) {
-    this.repository ??= Repository();
+    this.repository ??= PieceConfigRepository();
   }
 
   GameSettingsState get initialState => GameSettingsState([
@@ -19,7 +19,7 @@ class GameSettingsBloc extends Bloc<GameSettingsEvent, GameSettingsState> {
     Tuple2(ColorDifficulty(), false),
   ]);
 
-  Future<bool> saveDifficulties() async => repository.setPieceConfig(currentState.difficulties.where((tuple) => tuple.item2).map((tuple) => tuple.item1).toList());
+  Future<bool> saveDifficulties() async => repository.setPieceConfigAdditionals(currentState.difficulties.where((tuple) => tuple.item2).map((tuple) => tuple.item1).toList());
   
   void tappedOnDifficulty(GameDifficulty difficulty) {
     final tuple = currentState.difficulties.firstWhere((tuple) => tuple.item1 == difficulty);

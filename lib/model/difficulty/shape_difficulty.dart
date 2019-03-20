@@ -6,10 +6,13 @@ import 'package:flutter_syntactic_sorter/model/concept/modifier.dart';
 import 'package:flutter_syntactic_sorter/model/concept/predicate.dart';
 import 'package:flutter_syntactic_sorter/model/concept/subject.dart';
 import 'package:flutter_syntactic_sorter/model/difficulty/game_difficulty.dart';
-import 'package:flutter_syntactic_sorter/model/figure/decorators/rectangle.dart';
+import 'package:flutter_syntactic_sorter/model/figure/shape/rectangle.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece_config.dart';
 
 class ShapeDifficulty extends GameDifficulty {
+
+  static final NAME = "ShapeDifficulty";
+  String get name => NAME;
 
   final Map<int, BoxDecoration> Function(Color) shapeByConceptType = (Color color) => {
         Subject.TYPE: Rectangle(color: color),
