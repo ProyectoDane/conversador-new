@@ -74,4 +74,5 @@ class ShapeConfig {
     final colorByPiece = colorByPieceType(colorByConcept)[pieceType];
     return shapeByConceptType(colorByPiece)[conceptType];
   }
+
 }

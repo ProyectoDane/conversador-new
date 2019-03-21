@@ -12,6 +12,8 @@ import 'package:flutter_syntactic_sorter/model/shape/shape_config.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/drag_piece.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/target_piece.dart';
 import 'package:flutter_syntactic_sorter/util/list_extensions.dart';
+import 'package:flutter_syntactic_sorter/model/concept/subject.dart';
+import 'package:flutter_syntactic_sorter/model/concept/predicate.dart';
 
 class LiveStageWidget extends StatefulWidget {
   final LiveStageBloc bloc;
@@ -99,8 +101,10 @@ class _LiveStageState extends State<LiveStageWidget> {
     final positions = PositionHelper.generateEquidistantXPositions(context, targets.length);
     final yPosition = PositionHelper.generateEquidistantYPosition(context, false);
     final double piecesSeparation = positions[1] - (positions[0] + Piece.BASE_SIZE);
-    addTargets(widgets, positions, subjectTargets, yPosition, shapeConfig, 0, Colors.green.withAlpha(60), piecesSeparation);
-    addTargets(widgets, positions, predicateTargets, yPosition, shapeConfig, 1, Colors.red.withAlpha(60), piecesSeparation);
+    final subjectColor = shapeConfig.colorByConceptType()[Subject.TYPE];
+    final predicateColor = shapeConfig.colorByConceptType()[Predicate.TYPE];
+    addTargets(widgets, positions, subjectTargets, yPosition, shapeConfig, 0, subjectColor.withAlpha(60), piecesSeparation);
+    addTargets(widgets, positions, predicateTargets, yPosition, shapeConfig, 1, predicateColor.withAlpha(60), piecesSeparation);
     return widgets;
   }
 
