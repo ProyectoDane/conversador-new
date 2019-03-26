@@ -23,21 +23,21 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   GameState get initialState => GameState.loading();
 
   void viewWasShown() {
-    dispatch(StartStage((GameState oldState) async {
+    dispatch(StartStage((GameState oldState) async* {
       _pieceConfig = await pieceConfigRepository.getPieceConfig();
-      return _getNewStage();
+      yield await _getNewStage();
     }));
   }
 
   void liveStageWasFinished() {
-    dispatch(LiveStageCompleted((GameState oldState) async {
-      return _getNext(oldState);
+    dispatch(LiveStageCompleted((GameState oldState) async* {
+      yield await _getNext(oldState);
     }));
   }
 
   @override
   Stream<GameState> mapEventToState(final GameState state, final GameEvent event) async* {
-    yield await event.mutateState(state);
+    yield* event.mutateState(state);
   }
 
   Future<GameState> _getNewStage() async {
