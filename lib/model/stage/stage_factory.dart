@@ -24,14 +24,10 @@ class StageFactory {
       Stage(
         value: 1,
         maxDifficulty: Stage.DIFFICULTY_EASY,
-        backgroundUri: 'assets/images/game/run.jpg',
+        backgroundUri: 'assets/images/game/juan_suenia.jpg',
         sentence: Sentence(
-          Subject(children: <Concept>[
-            Entity(value: 'Gaston'),
-          ]),
-          Predicate(children: <Concept>[
-            Action(value: 'corre'),
-          ]),
+          Subject(value: 'Juan'),
+          Predicate(value: 'sueña'),
         ),
       )
     ];
@@ -44,15 +40,13 @@ class StageFactory {
       Stage(
         value: 1,
         maxDifficulty: Stage.DIFFICULTY_NORMAL,
-        backgroundUri: 'assets/images/game/paint.jpg',
+        backgroundUri: 'assets/images/game/el_perro_come.jpg',
         sentence: Sentence(
-          Subject(children: <Concept>[
+          Subject.containing(<Concept>[
             Modifier(value: 'el'),
-            Entity(value: 'abuelo'),
+            Entity(value: 'perro'),
           ]),
-          Predicate(children: <Concept>[
-            Action(value: 'pinta'),
-          ]),
+          Predicate(value: 'come'),
         ),
       )
     ];
@@ -65,16 +59,18 @@ class StageFactory {
       Stage(
         value: 1,
         maxDifficulty: Stage.DIFFICULTY_HARD,
-        backgroundUri: 'assets/images/game/football.jpg',
+        backgroundUri: 'assets/images/game/mariana_y_carla_juegan.jpg',
         sentence: Sentence(
-            Subject(children: <Concept>[
-              Modifier(value: 'el'),
-              Entity(value: 'niño'),
+            Subject.containing( <Concept>[
+              Entity(value: 'Mariana'),
+              Modifier(value: 'y'),
+              Entity(value: 'Carla'),
             ]),
-            Predicate(children: <Concept>[
-              Action(value: 'juega'),
-              Complement(value: 'alegremente'),
-            ])),
+            Predicate.containing([
+              Action(value: 'juegan'),
+              Complement(value: 'juntas')
+            ]),
+        )
       )
     ];
     final randomStageIndex = Random().nextInt(stages.length);
@@ -86,19 +82,20 @@ class StageFactory {
       Stage(
         value: 1,
         maxDifficulty: Stage.DIFFICULTY_MAX,
-        backgroundUri: 'assets/images/game/food.jpg',
+        backgroundUri: 'assets/images/game/el_ninio_salta_la_sogajpg',
         sentence: Sentence(
-            Subject(children: <Concept>[
-              Modifier(value: 'la'),
-              Entity(value: 'niña'),
+            Subject.containing(<Concept>[
+              Modifier(value: 'el'),
+              Entity(value: 'niño'),
             ]),
-            Predicate(children: <Concept>[
-              Action(value: 'come'),
-              Complement(children: <Concept>[
+            Predicate.containing(<Concept>[
+              Action(value: 'salta'),
+              Complement.containing(<Concept>[
                 Modifier(value: 'la'),
-                Entity(value: 'comida'),
+                Entity(value: 'soga'),
               ])
-            ])),
+            ])
+        ),
       )
     ];
     final randomStageIndex = Random().nextInt(stages.length);
