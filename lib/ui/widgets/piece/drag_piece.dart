@@ -2,7 +2,7 @@ import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_syntactic_sorter/app/game/live_stage/live_stage_bloc.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
-import 'package:flutter_syntactic_sorter/model/shape/shape_config.dart';
+import 'package:flutter_syntactic_sorter/model/piece/piece_config.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/util/operators.dart';
 
 class DragPiece extends StatefulWidget {
@@ -11,12 +11,12 @@ class DragPiece extends StatefulWidget {
   final audioCache = AudioCache();
 
   final Piece piece;
-  final ShapeConfig shapeConfig;
+  final PieceConfig pieceConfig;
   final Offset initPosition;
   final LiveStageBloc bloc;
   final bool disabled;
 
-  DragPiece({@required this.piece, @required this.shapeConfig, @required this.initPosition, @required this.bloc, @required this.disabled});
+  DragPiece({@required this.piece, @required this.pieceConfig, @required this.initPosition, @required this.bloc, @required this.disabled});
 
   @override
   State<StatefulWidget> createState() => _DragPieceState();
@@ -77,7 +77,7 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
           child: _isDisabled
               ? widget.piece.buildWidget(
             pieceType: Piece.DRAG_COMPLETED,
-            shapeConfig: widget.shapeConfig,
+            pieceConfig: widget.pieceConfig,
           )
               : _buildDraggable(),
         );
@@ -89,7 +89,7 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
       data: widget.piece,
       child: widget.piece.buildWidget(
         pieceType: Piece.DRAG_INITIAL,
-        shapeConfig: widget.shapeConfig,
+        pieceConfig: widget.pieceConfig,
       ),
       onDraggableCanceled: (_, offset) {
         _renderOperator(Operator.failure(
@@ -104,7 +104,7 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
       },
       feedback: widget.piece.buildWidget(
         pieceType: Piece.DRAG_FEEDBACK,
-        shapeConfig: widget.shapeConfig,
+        pieceConfig: widget.pieceConfig,
       ),
     );
 

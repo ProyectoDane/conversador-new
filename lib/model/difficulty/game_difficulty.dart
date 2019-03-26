@@ -1,6 +1,6 @@
-import 'package:flutter_syntactic_sorter/model/shape/shape_config.dart';
+import 'package:flutter_syntactic_sorter/model/piece/piece_config.dart';
 
 abstract class GameDifficulty {
-  ShapeConfig apply(final ShapeConfig shapeConfig);
+  PieceConfig apply(final PieceConfig pieceConfig);
   String get imageUri;
 }

@@ -7,8 +7,8 @@ import 'package:flutter_syntactic_sorter/app/game/live_stage/live_stage_state.da
 import 'package:flutter_syntactic_sorter/app/game/live_stage/live_stage_event.dart';
 import 'package:flutter_syntactic_sorter/app/game/util/positions_helper.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
-import 'package:flutter_syntactic_sorter/model/shape/decorators/rectangle.dart';
-import 'package:flutter_syntactic_sorter/model/shape/shape_config.dart';
+import 'package:flutter_syntactic_sorter/model/figure/decorators/rectangle.dart';
+import 'package:flutter_syntactic_sorter/model/piece/piece_config.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/drag_piece.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/target_piece.dart';
 import 'package:flutter_syntactic_sorter/util/list_extensions.dart';
@@ -41,7 +41,8 @@ class _LiveStageState extends State<LiveStageWidget> {
         state.dragPieces,
         state.subjectTargetPieces,
         state.predicateTargetPieces,
-        state.shapeConfig),
+        state.pieceConfig
+      ),
     );
     return _toRender;
   }
@@ -51,12 +52,12 @@ class _LiveStageState extends State<LiveStageWidget> {
       final List<DragPieceState> draggables,
       final List<TargetPieceState> subjectTargets,
       final List<TargetPieceState> predicateTargets,
-      final ShapeConfig shapeConfig) {
+      final PieceConfig pieceConfig) {
     final targetPieces = _buildTargetPieces(
       context: context,
       subjectTargets: subjectTargets,
       predicateTargets: predicateTargets,
-      shapeConfig: shapeConfig,
+      pieceConfig: pieceConfig,
     );
     final dragPieces = _buildPieces(
       context: context,
@@ -64,7 +65,7 @@ class _LiveStageState extends State<LiveStageWidget> {
       atTheTop: true,
       getWidget: (DragPieceState drag, Offset offset){
         return DragPiece(piece: drag.piece,
-          shapeConfig: shapeConfig,
+          pieceConfig: pieceConfig,
           initPosition: offset,
           bloc: widget.bloc,
           disabled: drag.disabled,
@@ -94,17 +95,17 @@ class _LiveStageState extends State<LiveStageWidget> {
     @required final BuildContext context,
     @required final List<TargetPieceState> subjectTargets,
     @required final List<TargetPieceState> predicateTargets,
-    @required final ShapeConfig shapeConfig,
+    @required final PieceConfig pieceConfig,
   }) {
     List<Widget> widgets = List();
     final targets = subjectTargets + predicateTargets;
     final positions = PositionHelper.generateEquidistantXPositions(context, targets.length);
     final yPosition = PositionHelper.generateEquidistantYPosition(context, false);
     final double piecesSeparation = positions[1] - (positions[0] + Piece.BASE_SIZE);
-    final subjectColor = shapeConfig.colorByConceptType()[Subject.TYPE];
-    final predicateColor = shapeConfig.colorByConceptType()[Predicate.TYPE];
-    addTargets(widgets, positions, subjectTargets, yPosition, shapeConfig, 0, subjectColor.withAlpha(60), piecesSeparation);
-    addTargets(widgets, positions, predicateTargets, yPosition, shapeConfig, 1, predicateColor.withAlpha(60), piecesSeparation);
+    final subjectColor = pieceConfig.colorByConceptType()[Subject.TYPE];
+    final predicateColor = pieceConfig.colorByConceptType()[Predicate.TYPE];
+    addTargets(widgets, positions, subjectTargets, yPosition, pieceConfig, 0, subjectColor.withAlpha(60), piecesSeparation);
+    addTargets(widgets, positions, predicateTargets, yPosition, pieceConfig, 1, predicateColor.withAlpha(60), piecesSeparation);
     return widgets;
   }
 
@@ -113,7 +114,7 @@ class _LiveStageState extends State<LiveStageWidget> {
     List<double> positions,
       List<TargetPieceState> targets,
       double yPosition,
-      ShapeConfig shapeConfig,
+      PieceConfig pieceConfig,
       int boxIndex,
       Color boxColor,
       double piecesSeparation
@@ -125,7 +126,7 @@ class _LiveStageState extends State<LiveStageWidget> {
       final offset = Offset(xPosition, yPosition);
       widgets.add(TargetPiece(
           piece: target.piece,
-          shapeConfig: shapeConfig,
+          pieceConfig: pieceConfig,
           initPosition: offset,
           visualState: target.visualState,
           bloc: widget.bloc

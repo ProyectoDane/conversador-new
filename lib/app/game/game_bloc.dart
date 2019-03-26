@@ -3,14 +3,14 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_syntactic_sorter/app/game/game_event.dart';
 import 'package:flutter_syntactic_sorter/app/game/game_state.dart';
 import 'package:flutter_syntactic_sorter/app/game/live_stage/live_stage_bloc.dart';
-import 'package:flutter_syntactic_sorter/model/shape/shape_config.dart';
+import 'package:flutter_syntactic_sorter/model/piece/piece_config.dart';
 import 'package:flutter_syntactic_sorter/model/stage/stage.dart';
 import 'package:flutter_syntactic_sorter/repository/repository.dart';
 
 class GameBloc extends Bloc<GameEvent, GameState> {
   Stage _currentStage;
   int _currentDifficulty;
-  ShapeConfig _shapeConfig;
+  PieceConfig _pieceConfig;
   Repository repository;
 
   GameBloc({this.repository}) {
@@ -26,7 +26,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   @override
   Stream<GameState> mapEventToState(final GameState state, final GameEvent event) async* {
     if (event is StartStage) {
-      _shapeConfig = await repository.getShapeConfig();
+      _pieceConfig = await repository.getPieceConfig();
       yield await _getNewStage();
     }
     if (event is LiveStageCompleted) {
@@ -42,7 +42,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     final liveStageBloc = LiveStageBloc(
       subjectConcepts: liveStage.subjectConcepts,
       predicateConcepts: liveStage.predicateConcepts,
-      shapeConfig: _shapeConfig,
+      pieceConfig: _pieceConfig,
       onCompleted: () => dispatch(LiveStageCompleted()),
     );
     return GameState(false, stage.backgroundUri, liveStageBloc);
@@ -57,7 +57,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       final liveStageBloc = LiveStageBloc(
         subjectConcepts: nextLiveStage.subjectConcepts,
         predicateConcepts: nextLiveStage.predicateConcepts,
-        shapeConfig: _shapeConfig,
+        pieceConfig: _pieceConfig,
         onCompleted: () => dispatch(LiveStageCompleted()),
       );
       return GameState(false, _currentStage.backgroundUri, liveStageBloc);

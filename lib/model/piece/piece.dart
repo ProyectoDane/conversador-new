@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_syntactic_sorter/model/concept/concept.dart';
-import 'package:flutter_syntactic_sorter/model/shape/shape_config.dart';
+import 'package:flutter_syntactic_sorter/model/piece/piece_config.dart';
 
 class Piece {
   static const double BASE_SIZE = 90.0;
@@ -16,8 +16,8 @@ class Piece {
 
   Piece({@required this.concept, @required this.index});
 
-  Widget buildWidget({@required int pieceType, @required ShapeConfig shapeConfig, double size = BASE_SIZE}) {
-    final shape = shapeConfig.createShape(concept.type, pieceType);
-    return shape.buildWidget(pieceType: pieceType, content: concept.value, size: size);
+  Widget buildWidget({@required int pieceType, @required PieceConfig pieceConfig, double size = BASE_SIZE}) {
+    final figure = pieceConfig.createFigure(concept.type, pieceType);
+    return figure.buildWidget(pieceType: pieceType, content: concept.value, size: size);
   }
 }

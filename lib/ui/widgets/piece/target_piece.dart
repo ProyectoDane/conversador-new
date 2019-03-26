@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
-import 'package:flutter_syntactic_sorter/model/shape/shape_config.dart';
+import 'package:flutter_syntactic_sorter/model/piece/piece_config.dart';
 import 'package:flutter_syntactic_sorter/app/game/live_stage/live_stage_bloc.dart';
 import 'package:flutter_syntactic_sorter/app/game/live_stage/live_stage_state.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/animations/opacity_animation.dart';
@@ -12,13 +12,13 @@ class TargetPiece extends StatefulWidget {
   static const Duration FAST = const Duration(milliseconds: _ANIMATION_TIME_FAST_MS);
 
   final Piece piece;
-  final ShapeConfig shapeConfig;
+  final PieceConfig pieceConfig;
   final Offset initPosition;
   final TargetPieceVisualState visualState;
   final LiveStageBloc bloc;
 
   TargetPiece({@required this.piece,
-    @required this.shapeConfig,
+    @required this.pieceConfig,
     @required this.initPosition,
     @required this.visualState,
     @required this.bloc});
@@ -37,7 +37,7 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
 
   LiveStageBloc _bloc;
   Piece _piece;
-  ShapeConfig _shapeConfig;
+  PieceConfig _pieceConfig;
   Offset _initPosition;
   TargetPieceVisualState _visualState;
   TargetPieceVisualState _oldVisualState;
@@ -61,7 +61,7 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
   void _setUpData() {
     _visualState = widget.visualState;
     _initPosition = widget.initPosition;
-    _shapeConfig = widget.shapeConfig;
+    _pieceConfig = widget.pieceConfig;
     _piece = widget.piece;
     _bloc = widget.bloc;
   }
@@ -130,7 +130,7 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
                 opacityAnimation: _opacityAnimation,
                 sizeAnimation: _sizeAnimation,
                 piece: _piece,
-                shapeConfig: _shapeConfig,
+                pieceConfig: _pieceConfig,
               );
             }),
       );
@@ -142,7 +142,7 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
       opacityAnimation: _opacityAnimation,
       sizeAnimation: _sizeAnimation,
       piece: _piece,
-      shapeConfig: _shapeConfig,
+      pieceConfig: _pieceConfig,
     ),
   );
 }
