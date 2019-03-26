@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 
 class WidgetUtils {
-  static Decoration getBackground(final String imageUri) => BoxDecoration(
+  static Decoration getBackgroundImage(final String imageUri) => BoxDecoration(
         image: DecorationImage(
           image: AssetImage(imageUri),
           fit: BoxFit.fill,
         ),
       );
+
+  static Decoration getColoredBackgroundWith(final Color color, final String imageUri) => BoxDecoration(
+    color: color,
+    image: DecorationImage(
+      image: AssetImage(imageUri),
+      fit: BoxFit.contain,
+    ),
+  );
 
   static Image getImage(final String imageUri,
       {final Color color,

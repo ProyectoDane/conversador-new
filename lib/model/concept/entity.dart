@@ -6,4 +6,5 @@ class Entity extends Concept {
 
   Entity({@required String value})
       : super.terminal(value: value, type: TYPE);
+
 }
