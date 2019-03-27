@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 
 class Figure {
-  final Decoration decoration;
 
   Figure({this.decoration});
 
-  Widget buildWidget({@required int pieceType, @required String content, @required double size}) {
-    return Container(
+  final Decoration decoration;
+
+  Widget buildWidget({
+    @required int pieceType,
+    @required String content,
+    @required double size
+  }) =>
+    Container(
       width: size,
       height: size,
       decoration: decoration,
@@ -14,9 +19,13 @@ class Figure {
         child: Text(
           content,
           textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.white, decoration: TextDecoration.none, fontSize: 13.0),
+          style: TextStyle(
+              color: Colors.white,
+              decoration: TextDecoration.none,
+              fontSize: 13
+          ),
         ),
       ),
     );
-  }
+
 }

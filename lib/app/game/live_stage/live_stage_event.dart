@@ -1,9 +1,6 @@
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
 
 class LiveStageEvent {
-  LiveStageEventType type;
-  Piece originPiece;
-  Piece targetPiece;
 
   LiveStageEvent._internal(this.type, this.originPiece, this.targetPiece);
 
@@ -12,21 +9,35 @@ class LiveStageEvent {
       dragPiece,
       null
   );
-  factory LiveStageEvent.success(Piece dragPiece, Piece targetPiece) => LiveStageEvent._internal(
+
+  factory LiveStageEvent.success(
+    Piece dragPiece,
+    Piece targetPiece
+  ) => LiveStageEvent._internal(
       LiveStageEventType.pieceDraggedToCorrectTarget,
       dragPiece,
       targetPiece
   );
-  factory LiveStageEvent.endWarning(Piece targetPiece) => LiveStageEvent._internal(
+
+  factory LiveStageEvent.endWarning(Piece targetPiece) =>
+    LiveStageEvent._internal(
       LiveStageEventType.targetFinishedAnimatingWarning,
       null,
       targetPiece
   );
-  factory LiveStageEvent.end(Piece targetPiece) => LiveStageEvent._internal(
+
+  factory LiveStageEvent.end(Piece targetPiece) =>
+    LiveStageEvent._internal(
       LiveStageEventType.targetFinishedAnimatingCompletion,
       null,
       targetPiece
   );
+
+
+  LiveStageEventType type;
+  Piece originPiece;
+  Piece targetPiece;
+
 }
 
 enum LiveStageEventType {

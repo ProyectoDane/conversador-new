@@ -6,7 +6,6 @@ abstract class GameDifficulty {
   PieceConfig apply(final PieceConfig pieceConfig);
   String get imageUri;
 
-  static String NAME;
   String name;
 
   static GameDifficulty fromName(String name) {

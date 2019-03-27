@@ -16,94 +16,152 @@ import 'package:flutter_syntactic_sorter/util/color_extensions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PieceConfigRepository {
-  static var _instance = PieceConfigRepository._internal();
 
   factory PieceConfigRepository() => _instance;
 
   PieceConfigRepository._internal();
 
-  // MARK: - Difficulties
-  static final _DIFFICULTIES_KEY = "settings.difficulties";
+  static final PieceConfigRepository _instance =
+    PieceConfigRepository._internal();
 
-  Future<bool> setPieceConfigAdditionals(final List<GameDifficulty> difficulties) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final difficultiesStrings = difficulties.map((difficulty) => difficulty.name).toList();
+  // MARK: - Difficulties
+  static const String _DIFFICULTIES_KEY = 'settings.difficulties';
+
+  Future<bool> setPieceConfigAdditionals(
+      final List<GameDifficulty> difficulties
+  ) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final List<String> difficultiesStrings = difficulties
+        .map((GameDifficulty difficulty) => difficulty.name)
+        .toList();
     return prefs.setStringList(_DIFFICULTIES_KEY, difficultiesStrings);
   }
 
   // MARK: - Set piece config parameters
   Future<bool> setPieceColorForConcept(int conceptId, Color color) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.setString(_COLOR_BY_CONCEPT_KEY(conceptId), colorToHex(color));
   }
 
   Future<bool> setPieceColorForPieceType(int pieceType, Color color) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.setString(_COLOR_BY_PIECE_KEY(pieceType), colorToHex(color));
   }
 
   Future<bool> setPieceAlphaForPieceType(int pieceType, double alpha) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.setDouble(_COLOR_BY_PIECE_KEY(pieceType), alpha);
   }
 
   Future<bool> setPieceShapeForConcept(int conceptId, int shapeId) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.setInt(_SHAPE_BY_CONCEPT_KEY(conceptId), shapeId);
   }
 
   Future<PieceConfig> getPieceConfig() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final pieceConfig = _getDefaultConfig(prefs);
-    final difficulties = prefs.getStringList(_DIFFICULTIES_KEY).map((difficultyName) => GameDifficulty.fromName(difficultyName)).toList();
-    final pieceConfigWithDifficulties = PieceConfig.applyDifficulties(pieceConfig, difficulties);
-    return Future.value(pieceConfigWithDifficulties);
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final PieceConfig pieceConfig = _getDefaultConfig(prefs);
+    final List<GameDifficulty> difficulties = prefs
+        .getStringList(_DIFFICULTIES_KEY)
+        .map(GameDifficulty.fromName)
+        .toList();
+    final PieceConfig pieceConfigWithDifficulties =
+      PieceConfig.applyDifficulties(pieceConfig, difficulties);
+    return Future<PieceConfig>.value(pieceConfigWithDifficulties);
   }
 
   // MARK: - Piece config values
-  PieceConfig _getDefaultConfig(SharedPreferences prefs) {
-    return PieceConfig(
+  PieceConfig _getDefaultConfig(SharedPreferences prefs) =>
+    PieceConfig(
       colorByConceptType: _getColorByConceptFrom(prefs),
       colorByPieceType: _getColorByPieceFrom(prefs),
       shapeByConceptType: _getShapeByConceptFrom(prefs),
     );
-  }
 
-  static final String Function(int) _COLOR_BY_CONCEPT_KEY = (conceptType) => "COLOR_BY_CONCEPT.$conceptType";
+  // ignore: prefer_function_declarations_over_variables, non_constant_identifier_names
+  static final String Function(int) _COLOR_BY_CONCEPT_KEY =
+      (int conceptType) => 'COLOR_BY_CONCEPT.$conceptType';
 
   Map<int, Color> Function() _getColorByConceptFrom(SharedPreferences prefs) {
-    final String subjectColor = prefs.getString(_COLOR_BY_CONCEPT_KEY(Subject.TYPE));
-    final String entityColor = prefs.getString(_COLOR_BY_CONCEPT_KEY(Entity.TYPE));
-    final String predicateColor = prefs.getString(_COLOR_BY_CONCEPT_KEY(Predicate.TYPE));
-    final String actionColor = prefs.getString(_COLOR_BY_CONCEPT_KEY(Action.TYPE));
-    final String modifierColor = prefs.getString(_COLOR_BY_CONCEPT_KEY(Modifier.TYPE));
-    final String complementColor = prefs.getString(_COLOR_BY_CONCEPT_KEY(Complement.TYPE));
-    return () => {
-      Subject.TYPE: subjectColor != null ? hexToColor(subjectColor) : Colors.green,
-      Entity.TYPE: entityColor != null ? hexToColor(entityColor) : Colors.green,
-      Predicate.TYPE: predicateColor != null ? hexToColor(predicateColor) : Colors.red,
-      Action.TYPE: actionColor != null ? hexToColor(actionColor) : Colors.red,
-      Modifier.TYPE: modifierColor != null ? hexToColor(modifierColor) : Colors.blue,
-      Complement.TYPE: complementColor != null ? hexToColor(complementColor) : Colors.orange,
+    final String subjectColor = prefs
+        .getString(_COLOR_BY_CONCEPT_KEY(Subject.TYPE));
+    final String entityColor = prefs
+        .getString(_COLOR_BY_CONCEPT_KEY(Entity.TYPE));
+    final String predicateColor = prefs
+        .getString(_COLOR_BY_CONCEPT_KEY(Predicate.TYPE));
+    final String actionColor = prefs
+        .getString(_COLOR_BY_CONCEPT_KEY(Action.TYPE));
+    final String modifierColor = prefs
+        .getString(_COLOR_BY_CONCEPT_KEY(Modifier.TYPE));
+    final String complementColor = prefs
+        .getString(_COLOR_BY_CONCEPT_KEY(Complement.TYPE));
+    return () => <int, Color>{
+      Subject.TYPE: subjectColor != null
+          ? hexToColor(subjectColor)
+          : Colors.green,
+      Entity.TYPE: entityColor != null
+          ? hexToColor(entityColor)
+          : Colors.green,
+      Predicate.TYPE: predicateColor != null
+          ? hexToColor(predicateColor)
+          : Colors.red,
+      Action.TYPE: actionColor != null
+          ? hexToColor(actionColor)
+          : Colors.red,
+      Modifier.TYPE: modifierColor != null
+          ? hexToColor(modifierColor)
+          : Colors.blue,
+      Complement.TYPE: complementColor != null
+          ? hexToColor(complementColor)
+          : Colors.orange,
     };
   }
 
-  static final String Function(int) _COLOR_BY_PIECE_KEY = (pieceType) => "COLOR_BY_PIECE.$pieceType";
+  // ignore: prefer_function_declarations_over_variables, non_constant_identifier_names
+  static final String Function(int) _COLOR_BY_PIECE_KEY =
+      (int pieceType) => 'COLOR_BY_PIECE.$pieceType';
 
-  Map<int, Color> Function(Color) _getColorByPieceFrom(SharedPreferences prefs) {
-    final dynamic targetInitial = prefs.get(_COLOR_BY_PIECE_KEY(Piece.TARGET_INITIAL));
-    final dynamic targetCompleted = prefs.get(_COLOR_BY_PIECE_KEY(Piece.TARGET_COMPLETED));
-    final dynamic dragInitial = prefs.get(_COLOR_BY_PIECE_KEY(Piece.DRAG_INITIAL));
-    final dynamic dragFeedback = prefs.get(_COLOR_BY_PIECE_KEY(Piece.DRAG_FEEDBACK));
-    final dynamic dragCompleted = prefs.get(_COLOR_BY_PIECE_KEY(Piece.DRAG_COMPLETED));
+  Map<int, Color> Function(Color) _getColorByPieceFrom(
+      SharedPreferences prefs
+  ) {
+    final dynamic targetInitial = prefs
+        .get(_COLOR_BY_PIECE_KEY(Piece.TARGET_INITIAL));
+    final dynamic targetCompleted = prefs
+        .get(_COLOR_BY_PIECE_KEY(Piece.TARGET_COMPLETED));
+    final dynamic dragInitial = prefs
+        .get(_COLOR_BY_PIECE_KEY(Piece.DRAG_INITIAL));
+    final dynamic dragFeedback = prefs
+        .get(_COLOR_BY_PIECE_KEY(Piece.DRAG_FEEDBACK));
+    final dynamic dragCompleted = prefs
+        .get(_COLOR_BY_PIECE_KEY(Piece.DRAG_COMPLETED));
 
-    final Color Function(Color) targetInitialFunction = _getDefaulted(targetInitial, Colors.black26, null);
-    final Color Function(Color) targetCompletedFunction = _getDefaulted(targetCompleted, null, 1);
-    final Color Function(Color) dragInitialFunction = _getDefaulted(dragInitial, null, 1);
-    final Color Function(Color) dragFeedbackFunction = _getDefaulted(dragFeedback, null, 0.5);
-    final Color Function(Color) dragCompletedFunction = _getDefaulted(dragCompleted, null, 0.5);
+    final Color Function(Color) targetInitialFunction = _getDefaulted(
+        targetInitial,
+        Colors.black26,
+        null
+    );
+    final Color Function(Color) targetCompletedFunction = _getDefaulted(
+        targetCompleted,
+        null,
+        1
+    );
+    final Color Function(Color) dragInitialFunction = _getDefaulted(
+        dragInitial,
+        null,
+        1
+    );
+    final Color Function(Color) dragFeedbackFunction = _getDefaulted(
+        dragFeedback,
+        null,
+        0.5
+    );
+    final Color Function(Color) dragCompletedFunction = _getDefaulted(
+        dragCompleted,
+        null,
+        0.5
+    );
 
-    return (Color color) => {
+    return (Color color) => <int, Color>{
       Piece.TARGET_INITIAL: targetInitialFunction(color),
       Piece.TARGET_COMPLETED: targetCompletedFunction(color),
       Piece.DRAG_INITIAL: dragInitialFunction(color),
@@ -112,26 +170,36 @@ class PieceConfigRepository {
     };
   }
 
-  Color Function(Color) _getDefaulted(dynamic value, Color defaultColor, double defaultOpacity) {
+  Color Function(Color) _getDefaulted(
+      dynamic value,
+      Color defaultColor,
+      double defaultOpacity
+  ) {
     if (value == null) {
-      return (color) => defaultColor ?? color.withOpacity(defaultOpacity);
+      return (Color color) => defaultColor ?? color.withOpacity(defaultOpacity);
     }
     if (value is String) {
-      return (color) => hexToColor(value);
+      return (Color color) => hexToColor(value);
     }
-    return (color) => color.withOpacity(value as double);
+    // ignore: avoid_as
+    return (Color color) => color.withOpacity(value as double);
   }
 
-  static final String Function(int) _SHAPE_BY_CONCEPT_KEY = (conceptType) => "SHAPE_BY_CONCEPT.$conceptType";
+  // ignore: prefer_function_declarations_over_variables, non_constant_identifier_names
+  static final String Function(int) _SHAPE_BY_CONCEPT_KEY =
+      (int conceptType) => 'SHAPE_BY_CONCEPT.$conceptType';
 
-  Map<int, Shape> Function(Color) _getShapeByConceptFrom(SharedPreferences prefs) {
-    final int subjectId = prefs.get(_SHAPE_BY_CONCEPT_KEY(Subject.TYPE)) as int;
-    final int entityId = prefs.get(_SHAPE_BY_CONCEPT_KEY(Entity.TYPE)) as int;
-    final int predicateId = prefs.get(_SHAPE_BY_CONCEPT_KEY(Predicate.TYPE)) as int;
-    final int actionId = prefs.get(_SHAPE_BY_CONCEPT_KEY(Action.TYPE)) as int;
-    final int modifierId = prefs.get(_SHAPE_BY_CONCEPT_KEY(Modifier.TYPE)) as int;
-    final int complementId = prefs.get(_SHAPE_BY_CONCEPT_KEY(Complement.TYPE)) as int;
-    return (Color color) => {
+  Map<int, Shape> Function(Color) _getShapeByConceptFrom(
+      SharedPreferences prefs
+  ) {
+    final int subjectId = prefs.getInt(_SHAPE_BY_CONCEPT_KEY(Subject.TYPE));
+    final int entityId = prefs.getInt(_SHAPE_BY_CONCEPT_KEY(Entity.TYPE));
+    final int predicateId = prefs.getInt(_SHAPE_BY_CONCEPT_KEY(Predicate.TYPE));
+    final int actionId = prefs.getInt(_SHAPE_BY_CONCEPT_KEY(Action.TYPE));
+    final int modifierId = prefs.getInt(_SHAPE_BY_CONCEPT_KEY(Modifier.TYPE));
+    final int complementId = prefs
+        .getInt(_SHAPE_BY_CONCEPT_KEY(Complement.TYPE));
+    return (Color color) => <int, Shape>{
       Subject.TYPE: Shape.fromID(subjectId ?? Rectangle.ID, color),
       Entity.TYPE: Shape.fromID(entityId ?? Rectangle.ID, color),
       Predicate.TYPE: Shape.fromID(predicateId ?? Circle.ID, color),

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_syntactic_sorter/model/concept/concept.dart';
+import 'package:flutter_syntactic_sorter/model/figure/figure.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece_config.dart';
 
 class Piece {
-  static const double BASE_SIZE = 90.0;
+
+  Piece({@required this.concept, @required this.index});
+
+  static const double BASE_SIZE = 90;
 
   static const int TARGET_INITIAL = 1;
   static const int TARGET_COMPLETED = 2;
@@ -14,10 +18,17 @@ class Piece {
   final Concept concept;
   final int index;
 
-  Piece({@required this.concept, @required this.index});
 
-  Widget buildWidget({@required int pieceType, @required PieceConfig pieceConfig, double size = BASE_SIZE}) {
-    final figure = pieceConfig.createFigure(concept.type, pieceType);
-    return figure.buildWidget(pieceType: pieceType, content: concept.value, size: size);
+  Widget buildWidget({
+    @required int pieceType,
+    @required PieceConfig pieceConfig,
+    double size = BASE_SIZE
+  }) {
+    final Figure figure = pieceConfig.createFigure(concept.type, pieceType);
+    return figure.buildWidget(
+        pieceType: pieceType,
+        content: concept.value,
+        size: size
+    );
   }
 }

@@ -2,13 +2,15 @@ import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
 
-abstract class PlatformBase<I extends Widget, A extends Widget> extends StatelessWidget {
-  final Key key;
+abstract class PlatformBase<I extends Widget, A extends Widget>
+    extends StatelessWidget {
 
-  PlatformBase(this.key) : super(key: key);
+  const PlatformBase(Key key) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Platform.isIOS ? buildIOSWidget(context) : buildAndroidWidget(context);
+  Widget build(BuildContext context) => Platform.isIOS
+      ? buildIOSWidget(context)
+      : buildAndroidWidget(context);
 
   I buildIOSWidget(final BuildContext context);
 

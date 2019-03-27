@@ -9,10 +9,12 @@ import 'package:flutter_syntactic_sorter/model/difficulty/game_difficulty.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece_config.dart';
 
 class ColorDifficulty extends GameDifficulty {
-  static final NAME = "ColorDifficulty";
+  static const String NAME = 'ColorDifficulty';
+
+  @override
   String get name => NAME;
 
-  final Map<int, Color> Function() colorByConceptType = () => {
+  Map<int, Color> colorByConceptType() => <int, Color>{
         Subject.TYPE: Colors.grey,
         Entity.TYPE: Colors.grey,
         Predicate.TYPE: Colors.grey,
@@ -23,13 +25,16 @@ class ColorDifficulty extends GameDifficulty {
 
   @override
   PieceConfig apply(final PieceConfig pieceConfig) =>
-      PieceConfig.cloneWithAssign(pieceConfig: pieceConfig, colorByConceptType: colorByConceptType);
+      PieceConfig.cloneWithAssign(
+          pieceConfig: pieceConfig,
+          colorByConceptType: colorByConceptType
+      );
 
   @override
   String get imageUri => 'assets/images/game_settings/colors.png';
 
   @override
-  bool operator==(dynamic o) => o is ColorDifficulty;
+  bool operator==(dynamic other) => other is ColorDifficulty;
 
   @override
   int get hashCode => imageUri.hashCode;

@@ -6,9 +6,18 @@ import 'package:flutter_syntactic_sorter/model/piece/piece_config.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/util/operators.dart';
 
 class DragPiece extends StatefulWidget {
+
+  DragPiece({
+    @required this.piece,
+    @required this.pieceConfig,
+    @required this.initPosition,
+    @required this.bloc,
+    @required this.disabled
+  });
+
   static const int ANIMATION_TIME_MS = 1500;
-  static const Duration DURATION = const Duration(milliseconds: ANIMATION_TIME_MS);
-  final audioCache = AudioCache();
+  static const Duration DURATION = Duration(milliseconds: ANIMATION_TIME_MS);
+  final AudioCache audioCache = AudioCache();
 
   final Piece piece;
   final PieceConfig pieceConfig;
@@ -16,7 +25,6 @@ class DragPiece extends StatefulWidget {
   final LiveStageBloc bloc;
   final bool disabled;
 
-  DragPiece({@required this.piece, @required this.pieceConfig, @required this.initPosition, @required this.bloc, @required this.disabled});
 
   @override
   State<StatefulWidget> createState() => _DragPieceState();
@@ -45,9 +53,15 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
   }
 
   void _setUpAnimation() {
-    _controller = AnimationController(duration: DragPiece.DURATION, vsync: this);
+    _controller = AnimationController(
+        duration: DragPiece.DURATION,
+        vsync: this
+    );
     _movementAnimation = Tween<Offset>(begin: _position, end: _origin)
-        .animate(CurvedAnimation(parent: _controller, curve: Curves.elasticOut));
+        .animate(CurvedAnimation(
+          parent: _controller,
+          curve: Curves.elasticOut
+        ));
   }
 
   @override
@@ -59,6 +73,7 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
     }
   }
 
+  @override
   void dispose() {
     _controller.dispose();
     super.dispose();
@@ -67,11 +82,11 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) => _render();
 
-  Widget _render() {
-    return AnimatedBuilder(
+  Widget _render() =>
+    AnimatedBuilder(
       animation: _movementAnimation,
-      builder: (BuildContext context, Widget child) {
-        return Positioned(
+      builder: (BuildContext context, Widget child) =>
+        Positioned(
           left: _movementAnimation.value.dx,
           top: _movementAnimation.value.dy,
           child: _isDisabled
@@ -80,18 +95,16 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
             pieceConfig: widget.pieceConfig,
           )
               : _buildDraggable(),
-        );
-      },
+        )
     );
-  }
 
-  Widget _buildDraggable() => Draggable(
+  Widget _buildDraggable() => Draggable<Piece>(
       data: widget.piece,
       child: widget.piece.buildWidget(
         pieceType: Piece.DRAG_INITIAL,
         pieceConfig: widget.pieceConfig,
       ),
-      onDraggableCanceled: (_, offset) {
+      onDraggableCanceled: (_, Offset offset) {
         _renderOperator(Operator.failure(
           newState: () {
             _position = offset;

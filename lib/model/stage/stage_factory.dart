@@ -11,7 +11,8 @@ import 'package:flutter_syntactic_sorter/model/concept/subject.dart';
 import 'package:flutter_syntactic_sorter/model/stage/stage.dart';
 
 class StageFactory {
-  static Stage getStage(final int difficulty) => {
+
+  static Stage getStage(final int difficulty) => <int, Stage>{
         Stage.DIFFICULTY_EASY: _getEasyStage(),
         Stage.DIFFICULTY_NORMAL: _getNormalStage(),
         Stage.DIFFICULTY_HARD: _getHardStage(),
@@ -19,7 +20,7 @@ class StageFactory {
       }[difficulty];
 
   static Stage _getEasyStage() {
-    final List<Stage> stages = [
+    final List<Stage> stages = <Stage>[
       Stage(
         value: 100,
         maxDifficulty: Stage.DIFFICULTY_EASY,
@@ -39,12 +40,12 @@ class StageFactory {
         ),
       ),
     ];
-    final randomStageIndex = Random().nextInt(stages.length);
+    final int randomStageIndex = Random().nextInt(stages.length);
     return stages[randomStageIndex];
   }
 
   static Stage _getNormalStage() {
-    final List<Stage> stages = [
+    final List<Stage> stages = <Stage>[
       Stage(
         value: 200,
         maxDifficulty: Stage.DIFFICULTY_NORMAL,
@@ -83,12 +84,12 @@ class StageFactory {
         ),
       ),
     ];
-    final randomStageIndex = Random().nextInt(stages.length);
+    final int randomStageIndex = Random().nextInt(stages.length);
     return stages[randomStageIndex];
   }
 
   static Stage _getHardStage() {
-    final List<Stage> stages = [
+    final List<Stage> stages = <Stage>[
       Stage(
         value: 300,
         maxDifficulty: Stage.DIFFICULTY_HARD,
@@ -99,19 +100,19 @@ class StageFactory {
               Modifier(value: 'y'),
               Entity(value: 'Carla'),
             ]),
-            Predicate.containing([
+            Predicate.containing(<Concept>[
               Action(value: 'juegan'),
               Complement(value: 'juntas')
             ]),
         )
       ),
     ];
-    final randomStageIndex = Random().nextInt(stages.length);
+    final int randomStageIndex = Random().nextInt(stages.length);
     return stages[randomStageIndex];
   }
 
   static Stage _getMaxStage() {
-    final List<Stage> stages = [
+    final List<Stage> stages = <Stage>[
       Stage(
         value: 400,
         maxDifficulty: Stage.DIFFICULTY_MAX,
@@ -172,11 +173,11 @@ class StageFactory {
         backgroundUri: 'assets/images/game/juan_suenia_con_su_perro.jpg',
         sentence: Sentence(
           Subject(value: 'Juan'),
-          Predicate.containing([
+          Predicate.containing(<Concept>[
             Action(value: 'sueña'),
-            Complement.containing([
+            Complement.containing(<Concept>[
               Complement(value: 'con'),
-              Complement.containing([
+              Complement.containing(<Concept>[
                 Modifier(value: 'su'),
                 Entity(value: 'perro')
               ]),
@@ -185,7 +186,7 @@ class StageFactory {
         ),
       ),
     ];
-    final randomStageIndex = Random().nextInt(stages.length);
+    final int randomStageIndex = Random().nextInt(stages.length);
     return stages[randomStageIndex];
   }
 }

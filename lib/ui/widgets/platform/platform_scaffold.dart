@@ -4,16 +4,21 @@ import 'package:flutter_syntactic_sorter/ui/widgets/platform/platform_base.dart'
 import 'package:flutter_syntactic_sorter/ui/widgets/platform/platform_back_button.dart';
 
 class PlatformScaffold extends PlatformBase<CupertinoPageScaffold, Scaffold> {
+
+  const PlatformScaffold({
+    @required this.body,
+    this.title,
+    this.enableBack,
+    Key key
+  }) : super(key);
+
   final Widget body;
   final String title;
   final bool enableBack;
-  final Key key;
-
-  PlatformScaffold({@required this.body, this.title, this.enableBack, this.key}) : super(key);
 
   @override
   Scaffold buildAndroidWidget(final BuildContext context) {
-    final bar = title == null ? null : AppBar(title: Text(title));
+    final AppBar bar = title == null ? null : AppBar(title: Text(title));
     return Scaffold(appBar: bar, body: body);
   }
 
@@ -21,7 +26,7 @@ class PlatformScaffold extends PlatformBase<CupertinoPageScaffold, Scaffold> {
   CupertinoPageScaffold buildIOSWidget(final BuildContext context) {
     final bool backEnabled = enableBack ?? true;
     if (title != null) {
-      final bar = CupertinoNavigationBar(
+      final CupertinoNavigationBar bar = CupertinoNavigationBar(
           middle: Text(title),
           automaticallyImplyLeading: backEnabled,
       );
@@ -29,9 +34,9 @@ class PlatformScaffold extends PlatformBase<CupertinoPageScaffold, Scaffold> {
     } else if (backEnabled) {
       return CupertinoPageScaffold(
           navigationBar: null,
-          child: Stack(children: [
-            new Positioned(child: body),
-            new Positioned(child: PlatformBackButton(), left: 10, top: 10),
+          child: Stack(children: <Widget>[
+            Positioned(child: body),
+            const Positioned(child: PlatformBackButton(), left: 10, top: 10),
           ])
       );
     } else {

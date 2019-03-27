@@ -10,8 +10,8 @@ class RadiusAnimation {
   }) =>
       AnimatedBuilder(
         animation: sizeAnimation,
-        builder: (BuildContext context, Widget child) {
-          return Center(
+        builder: (BuildContext context, Widget child) =>
+          Center(
             child: Stack(
               alignment: Alignment.center,
               children: <Widget>[
@@ -24,11 +24,13 @@ class RadiusAnimation {
                     pieceConfig: pieceConfig,
                   ),
                 ),
-                piece.buildWidget(pieceType: Piece.TARGET_INITIAL, pieceConfig: pieceConfig),
+                piece.buildWidget(
+                    pieceType: Piece.TARGET_INITIAL,
+                    pieceConfig: pieceConfig
+                ),
               ],
             ),
-          );
-        },
+          )
       );
 
   static Decoration _getDecoration({
@@ -36,10 +38,10 @@ class RadiusAnimation {
     @required final int pieceType,
     @required final PieceConfig pieceConfig,
   }) {
-    final conceptType = piece.concept.type;
-    final baseColor = pieceConfig.colorByConceptType()[conceptType];
-    final color = pieceConfig.colorByPieceType(baseColor)[pieceType];
-    final shape = pieceConfig.shapeByConceptType(color)[conceptType];
+    final int conceptType = piece.concept.type;
+    final Color baseColor = pieceConfig.colorByConceptType()[conceptType];
+    final Color color = pieceConfig.colorByPieceType(baseColor)[pieceType];
+    final Decoration shape = pieceConfig.shapeByConceptType(color)[conceptType];
     return shape;
   }
 }

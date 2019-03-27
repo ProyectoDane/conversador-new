@@ -11,10 +11,13 @@ import 'package:flutter_syntactic_sorter/model/piece/piece_config.dart';
 
 class ShapeDifficulty extends GameDifficulty {
 
-  static final NAME = "ShapeDifficulty";
+  static const String NAME = 'ShapeDifficulty';
+
+  @override
   String get name => NAME;
 
-  final Map<int, BoxDecoration> Function(Color) shapeByConceptType = (Color color) => {
+  Map<int, BoxDecoration> shapeByConceptType (Color color) =>
+      <int, BoxDecoration>{
         Subject.TYPE: Rectangle(color: color),
         Entity.TYPE: Rectangle(color: color),
         Predicate.TYPE: Rectangle(color: color),
@@ -25,13 +28,16 @@ class ShapeDifficulty extends GameDifficulty {
 
   @override
   PieceConfig apply(final PieceConfig pieceConfig) =>
-      PieceConfig.cloneWithAssign(pieceConfig: pieceConfig, shapeByConceptType: shapeByConceptType);
+      PieceConfig.cloneWithAssign(
+          pieceConfig: pieceConfig,
+          shapeByConceptType: shapeByConceptType
+      );
 
   @override
   String get imageUri => 'assets/images/game_settings/shapes.png';
 
   @override
-  bool operator==(dynamic o) => o is ShapeDifficulty;
+  bool operator==(dynamic other) => other is ShapeDifficulty;
 
   @override
   int get hashCode => imageUri.hashCode;

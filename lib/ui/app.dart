@@ -13,12 +13,14 @@ class GameApp extends StatelessWidget {
       theme: _getTheme(),
       localizationsDelegates: LangLocalizationsDelegate.localizationDelegates(),
       supportedLocales: LangLocalizationsDelegate.supportedLocales(),
-      localeResolutionCallback: LangLocalizationsDelegate.localeResolutionCallback,
+      localeResolutionCallback:
+        LangLocalizationsDelegate.localeResolutionCallback,
       routes: Router.getRoutes(),
     );
   }
 
-  void _setOrientation() => SystemChrome.setPreferredOrientations([
+  void _setOrientation() => SystemChrome.setPreferredOrientations(
+      <DeviceOrientation>[
         DeviceOrientation.landscapeRight,
         DeviceOrientation.landscapeLeft,
       ]);

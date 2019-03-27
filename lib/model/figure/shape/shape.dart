@@ -3,7 +3,6 @@ import 'package:flutter_syntactic_sorter/model/figure/shape/circle.dart';
 import 'package:flutter_syntactic_sorter/model/figure/shape/rectangle.dart';
 
 abstract class Shape extends BoxDecoration {
-  final int id;
   Shape({
     @required this.id,
     Color color,
@@ -15,9 +14,11 @@ abstract class Shape extends BoxDecoration {
       borderRadius: borderRadius,
       border: (borderColor != null) ? Border.all(
         color: borderColor,
-        width: 1.0,
+        width: 1,
       ) : null,
   );
+
+  final int id;
 
   static Shape fromID(int id, Color color) {
     if (id == Circle.ID) {

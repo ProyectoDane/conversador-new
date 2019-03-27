@@ -11,11 +11,14 @@ class OpacityAnimation {
           @required final PieceConfig pieceConfig}) =>
       AnimatedBuilder(
         animation: opacityAnimation,
-        builder: (BuildContext context, Widget child) {
-          return Opacity(
+        builder: (BuildContext context, Widget child) =>
+          Opacity(
             opacity: 1 - opacityAnimation.value,
-            child: RadiusAnimation.animate(sizeAnimation: sizeAnimation, piece: piece, pieceConfig: pieceConfig),
-          );
-        },
+            child: RadiusAnimation.animate(
+                sizeAnimation: sizeAnimation,
+                piece: piece,
+                pieceConfig: pieceConfig
+            ),
+          )
       );
 }

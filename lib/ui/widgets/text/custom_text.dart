@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 class CustomText extends StatelessWidget {
+
+  const CustomText({@required this.text, this.style});
+
   final String text;
   final TextStyle style;
-
-  CustomText({@required this.text, this.style});
 
   @override
   Widget build(BuildContext context) => Material(

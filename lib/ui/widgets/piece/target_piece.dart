@@ -6,10 +6,19 @@ import 'package:flutter_syntactic_sorter/app/game/live_stage/live_stage_state.da
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/animations/opacity_animation.dart';
 
 class TargetPiece extends StatefulWidget {
+
+  const TargetPiece({
+    @required this.piece,
+    @required this.pieceConfig,
+    @required this.initPosition,
+    @required this.visualState,
+    @required this.bloc
+  });
+
   static const int _ANIMATION_TIME_MS = 1500;
   static const int _ANIMATION_TIME_FAST_MS = _ANIMATION_TIME_MS ~/ 2;
-  static const Duration NORMAL = const Duration(milliseconds: _ANIMATION_TIME_MS);
-  static const Duration FAST = const Duration(milliseconds: _ANIMATION_TIME_FAST_MS);
+  static const Duration NORMAL = Duration(milliseconds: _ANIMATION_TIME_MS);
+  static const Duration FAST = Duration(milliseconds: _ANIMATION_TIME_FAST_MS);
 
   final Piece piece;
   final PieceConfig pieceConfig;
@@ -17,17 +26,15 @@ class TargetPiece extends StatefulWidget {
   final TargetPieceVisualState visualState;
   final LiveStageBloc bloc;
 
-  TargetPiece({@required this.piece,
-    @required this.pieceConfig,
-    @required this.initPosition,
-    @required this.visualState,
-    @required this.bloc});
-
   @override
   State<StatefulWidget> createState() => _TargetPieceState();
 }
 
-class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin {
+class _TargetPieceState
+    extends State<TargetPiece>
+    with TickerProviderStateMixin {
+
+  _TargetPieceState();
 
   AnimationController _sizeController;
   AnimationController _opacityController;
@@ -42,7 +49,6 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
   TargetPieceVisualState _visualState;
   TargetPieceVisualState _oldVisualState;
 
-  _TargetPieceState();
 
   @override
   void initState() {
@@ -82,12 +88,23 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
   }
 
   void _setUpAnimation() {
-    _sizeController = AnimationController(duration: TargetPiece.NORMAL, vsync: this);
-    _sizeAnimation = Tween(begin: 0.0, end: Piece.BASE_SIZE).animate(_sizeController);
-    _opacityController = AnimationController(duration: TargetPiece.FAST, vsync: this);
-    _opacityAnimation = CurvedAnimation(parent: _opacityController, curve: Curves.decelerate);
+    _sizeController = AnimationController(
+        duration: TargetPiece.NORMAL,
+        vsync: this
+    );
+    _sizeAnimation = Tween<double>(begin: 0, end: Piece.BASE_SIZE)
+        .animate(_sizeController);
+    _opacityController = AnimationController(
+        duration: TargetPiece.FAST,
+        vsync: this
+    );
+    _opacityAnimation = CurvedAnimation(
+        parent: _opacityController,
+        curve: Curves.decelerate
+    );
   }
 
+  @override
   void dispose() {
     _sizeController.dispose();
     _opacityController.dispose();
@@ -105,10 +122,13 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
         case TargetPieceVisualState.animated:
           break;
         case TargetPieceVisualState.warning:
-          _opacityController.forward().whenComplete(_opacityController.reverse).whenComplete((){ _bloc.completedWarningAnimation(_piece); });
+          _opacityController.forward()
+              .whenComplete(_opacityController.reverse)
+              .whenComplete((){ _bloc.completedWarningAnimation(_piece); });
           break;
         case TargetPieceVisualState.completed:
-          _sizeController.forward().whenComplete((){ _bloc.completedSuccessAnimation(_piece); });
+          _sizeController.forward()
+              .whenComplete((){ _bloc.completedSuccessAnimation(_piece); });
           break;
       }
     }
@@ -118,21 +138,21 @@ class _TargetPieceState extends State<TargetPiece> with TickerProviderStateMixin
   Widget _renderInitial() => Positioned(
         left: _initPosition.dx,
         top: _initPosition.dy,
-        child: DragTarget(
-            onWillAccept: (Piece piece){
-              return piece.concept == _piece.concept;
-            },
-            onAccept: (Piece piece){
+        child: DragTarget<Piece>(
+            onWillAccept: (Piece piece) => piece.concept == _piece.concept,
+            onAccept: (Piece piece) {
               _bloc.pieceSuccess(dragPiece: piece, targetPiece: _piece);
             },
-            builder: (context, accepted, rejected) {
-              return OpacityAnimation.animate(
+            builder: (BuildContext context,
+                List<Piece> accepted,
+                List<dynamic> rejected) =>
+              OpacityAnimation.animate(
                 opacityAnimation: _opacityAnimation,
                 sizeAnimation: _sizeAnimation,
                 piece: _piece,
                 pieceConfig: _pieceConfig,
-              );
-            }),
+              ),
+            ),
       );
 
   Widget _renderAnimated() => Positioned(

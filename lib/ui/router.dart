@@ -6,15 +6,15 @@ import 'package:flutter_syntactic_sorter/app/game_settings/game_settings_page.da
 import 'package:flutter_syntactic_sorter/app/main/main_page.dart';
 
 class Router {
-  static const MAIN_PAGE = '/';
-  static const GAME_SETTINGS_PAGE = '/game_settings';
-  static const GAME_PAGE = '/game';
+  static const String MAIN_PAGE = '/';
+  static const String GAME_SETTINGS_PAGE = '/game_settings';
+  static const String GAME_PAGE = '/game';
 
-  static Map<String, WidgetBuilder> getRoutes() {
-    return {
-      MAIN_PAGE: (BuildContext context) => MainPage(),
-      GAME_SETTINGS_PAGE: (BuildContext context) => GameSettingsPage(GameSettingsBloc()),
+  static Map<String, WidgetBuilder> getRoutes() =>
+    <String, WidgetBuilder>{
+      MAIN_PAGE: (BuildContext context) => const MainPage(),
+      GAME_SETTINGS_PAGE: (BuildContext context) =>
+          GameSettingsPage(GameSettingsBloc()),
       GAME_PAGE: (BuildContext context) => GamePage(GameBloc()),
     };
-  }
 }
