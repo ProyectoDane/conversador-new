@@ -7,7 +7,11 @@ import 'package:flutter_syntactic_sorter/app/game/live_stage/live_stage_widget.d
 import 'package:flutter_syntactic_sorter/ui/widgets/platform/platform_scaffold.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/util/widget_utils.dart';
 
+/// Page for the Game part.
+/// It shows the stage image on the background and loads
+/// the LiveStageWidget for the current stage's current level.
 class GamePage extends StatelessWidget {
+  /// Creates a GamePage with a GameBloc.
   const GamePage(this._bloc);
 
   final GameBloc _bloc;

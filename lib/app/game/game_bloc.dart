@@ -9,10 +9,14 @@ import 'package:flutter_syntactic_sorter/model/stage/stage.dart';
 import 'package:flutter_syntactic_sorter/repository/piece_config_repository.dart';
 import 'package:flutter_syntactic_sorter/repository/stage_repository.dart';
 
+/// Bloc for Game part of the app.
+/// It takes care of selecting a stage and moving through its
+/// levels and then on to another stage.
 class GameBloc extends Bloc<GameEvent, GameState> {
 
   /// Creates a GameBloc that uses the repositories
   /// to get the stages and the configured piece configuration.
+  /// There are default values for both repositories.
   GameBloc({
     PieceConfigRepository pieceConfigRepository,
     StageRepository stageRepository
@@ -30,6 +34,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   @override
   GameState get initialState => GameState.loading();
 
+  /// The view was shown for the first time.
   void viewWasShown() {
     dispatch(StartStage((GameState oldState) async* {
       _pieceConfig = await _pieceConfigRepository.getPieceConfig();

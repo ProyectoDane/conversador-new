@@ -16,9 +16,18 @@ import 'package:flutter_syntactic_sorter/model/concept/subject.dart';
 import 'package:flutter_syntactic_sorter/model/concept/predicate.dart';
 import 'package:tuple/tuple.dart';
 
+/// Widget for LiveStage.
+/// It places the pieces and configures them as expected,
+/// as well as the subject and predicate containing boxes.
+/// It also handles:
+/// - the dragging
+/// - the animations (after an incorrect drag or a match and the warnings)
+/// - the sounds (success or failure)
 class LiveStageWidget extends StatefulWidget {
+  /// Creates a LiveStageWidget from a LiveStageBloc
   const LiveStageWidget(this.bloc);
 
+  /// The LiveStageBloc associated
   final LiveStageBloc bloc;
 
   @override

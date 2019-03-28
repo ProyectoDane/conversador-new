@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
 
+/// Helper for calculating Piece's coordinates.
 class PositionHelper {
-  
+
+  /// How much border (unused space) will we leave in proportion to the width
   static const double BORDER_PROPORTION = 0.1;
-  
+
+  /// Based on the quantity of pieces, the width available and a piece size,
+  /// it calculates each piece's left border X coordinate.
   static List<double> generateEquidistantXPositions(
     final BuildContext context,
     final int numberOfPieces,
@@ -25,6 +29,9 @@ class PositionHelper {
     return positions;
   }
 
+  /// Based on the height available, a piece size and whether they should
+  /// go on top of the screen or the bottom,
+  /// it calculates each piece's top border Y coordinate.
   static double generateEquidistantYPosition(
       final BuildContext context,
       final bool shouldGoOnTop
