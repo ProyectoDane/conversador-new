@@ -42,6 +42,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     }));
   }
 
+  /// Called when the current live stage was completed
   void liveStageWasFinished() {
     dispatch(LiveStageCompleted((GameState oldState) async* {
       yield await _getNext(oldState);

@@ -4,23 +4,34 @@ import 'package:flutter_syntactic_sorter/model/concept/predicate.dart';
 import 'package:flutter_syntactic_sorter/model/concept/subject.dart';
 import 'package:flutter_syntactic_sorter/model/stage/stage.dart';
 
+/// Class representing a sentence with its
+/// two main concepts: subject and predicate.
 class Sentence {
 
+  /// Creates a Sentence from a Subject and a Predicate
   Sentence(this.subject, this.predicate);
 
+  /// Subject of the sentence
   final Subject subject;
+  /// Predicate of the sentence
   final Predicate predicate;
 
+  /// Get a list of concepts from the sentence
+  /// going as deep as the difficulty provided.
   static List<Concept> getConceptsByDifficulty(
       final Sentence sentence,
       final int currentDifficulty
     ) => _mapDifficultyToConceptGenerators[currentDifficulty](sentence);
 
+  /// Get a list of concepts from the subject
+  /// going as deep as the difficulty provided.
   static List<Concept> getSubjectConceptsByDifficulty(
       final Sentence sentence,
       final int currentDifficulty
     ) => _mapDifficultyToSubjectConceptGenerators[currentDifficulty](sentence);
 
+  /// Get a list of concepts from the predicate
+  /// going as deep as the difficulty provided.
   static List<Concept> getPredicateConceptsByDifficulty(
       final Sentence sentence,
       final int currentDifficulty

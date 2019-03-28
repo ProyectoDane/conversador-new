@@ -9,6 +9,8 @@ abstract class GameEvent {
   /// corresponding state mutating function
   GameEvent(this.mutateState);
 
+  /// Function that holds the know-how on how
+  /// to get the new state from the old one.
   final Stream<GameState> Function (GameState) mutateState;
 
 }
