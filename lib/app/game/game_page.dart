@@ -49,7 +49,7 @@ class _GameBodyState extends State<_GameBody> {
     child: (state.loading)
         ? CircularProgressIndicator()
         : Container(
-            decoration: WidgetUtils.getBackground(state.backgroundUri),
+            decoration: WidgetUtils.getColoredBackgroundWith(Colors.white, state.backgroundUri),
             child: LiveStageWidget(state.liveStageBloc)
           )
   );

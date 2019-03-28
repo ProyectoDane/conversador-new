@@ -39,7 +39,7 @@ class _GameSettingsBody extends StatelessWidget {
 
   Widget _render(BuildContext context, GameSettingsState state) => Container(
         constraints: BoxConstraints.expand(),
-        decoration: WidgetUtils.getBackground('assets/images/all/background.png'),
+        decoration: WidgetUtils.getBackgroundImage('assets/images/all/background.png'),
         child: SafeArea(child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[

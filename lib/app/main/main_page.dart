@@ -22,7 +22,7 @@ class _MainBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         constraints: BoxConstraints.expand(),
-        decoration: WidgetUtils.getBackground('assets/images/all/background.png'),
+        decoration: WidgetUtils.getBackgroundImage('assets/images/all/background.png'),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
