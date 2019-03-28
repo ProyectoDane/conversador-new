@@ -7,8 +7,13 @@ import 'package:flutter_syntactic_sorter/model/difficulty/shape_difficulty.dart'
 import 'package:flutter_syntactic_sorter/repository/piece_config_repository.dart';
 import 'package:tuple/tuple.dart';
 
+/// Bloc for the Game Settings
+/// Handles the selection of the GameDifficulties
+/// and saves them.
 class GameSettingsBloc extends Bloc<GameSettingsEvent, GameSettingsState> {
 
+  /// Creates the bloc with the repository to save settings to.
+  /// Repository has a default value if passed null.
   GameSettingsBloc({PieceConfigRepository repository}) :
     _repository = repository ?? PieceConfigRepository();
 
@@ -19,14 +24,18 @@ class GameSettingsBloc extends Bloc<GameSettingsEvent, GameSettingsState> {
     <Tuple2<GameDifficulty, bool>>[
       Tuple2<GameDifficulty, bool>(ShapeDifficulty(), false),
       Tuple2<GameDifficulty, bool>(ColorDifficulty(), false),
-    ]);
+    ]
+  );
 
+  /// Save difficulties to repository.
+  /// Called when user wants to save all changes.
   Future<bool> saveDifficulties() async =>
       _repository.setPieceConfigAdditionals(currentState.difficulties
           .where((Tuple2<GameDifficulty, bool> tuple) => tuple.item2)
           .map((Tuple2<GameDifficulty, bool> tuple) => tuple.item1)
           .toList());
-  
+
+  /// Called when the user tapped on a difficulty to switch its enabled state.
   void tappedOnDifficulty(GameDifficulty difficulty) {
     final Tuple2<GameDifficulty, bool> tuple = currentState.difficulties
         .firstWhere((Tuple2<GameDifficulty, bool> tuple) =>

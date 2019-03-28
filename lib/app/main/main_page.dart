@@ -7,8 +7,11 @@ import 'package:flutter_syntactic_sorter/ui/widgets/text/custom_text.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/util/widget_utils.dart';
 import 'package:flutter_syntactic_sorter/util/dimen.dart';
 
+/// HomePage of the app.
+/// First screen, waits for user confirmation to continue.
 class MainPage extends StatelessWidget {
 
+  /// Creates the main page.
   const MainPage();
 
   @override

@@ -14,8 +14,12 @@ import 'package:flutter_syntactic_sorter/ui/widgets/util/widget_utils.dart';
 import 'package:flutter_syntactic_sorter/util/dimen.dart';
 import 'package:tuple/tuple.dart';
 
+/// Page for GameSettings
+/// Takes care of the GameDifficulty selection (activation and deactivation).
+/// Also, it moves on to next screen.
 class GameSettingsPage extends StatelessWidget {
 
+  /// Creates the Page based on the GameSettingsBloc
   const GameSettingsPage(this._bloc);
 
   final GameSettingsBloc _bloc;
