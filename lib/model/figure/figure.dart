@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 
+/// Class that can build the necessary widget for a certain piece.
 class Figure {
 
+  /// Creates a Figure based on a Decoration
   Figure({this.decoration});
 
+  /// Decoration used for this figure
   final Decoration decoration;
 
+  /// Builds a piece widget based on the piece type,
+  /// the related concept content or value
+  /// and the size it should have
   Widget buildWidget({
     @required int pieceType,
     @required String content,

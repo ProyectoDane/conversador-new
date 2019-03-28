@@ -8,12 +8,18 @@ import 'package:flutter_syntactic_sorter/model/concept/subject.dart';
 import 'package:flutter_syntactic_sorter/model/difficulty/game_difficulty.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece_config.dart';
 
+/// GameDifficulty based on eliminating any color segmentation that
+/// may help the user relate concepts easier.
 class ColorDifficulty extends GameDifficulty {
+
+  /// This GameDifficulty type name
   static const String NAME = 'ColorDifficulty';
 
   @override
   String get name => NAME;
 
+  /// Function that returns the color related to each concept
+  /// according to this difficulty.
   Map<int, Color> colorByConceptType() => <int, Color>{
         Subject.TYPE: Colors.grey,
         Entity.TYPE: Colors.grey,
