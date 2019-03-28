@@ -22,19 +22,22 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
   GameState get initialState => GameState.loading();
 
-  void viewWasShown() async {
-    dispatch(StartStage());
+  void viewWasShown() {
+    dispatch(StartStage((GameState oldState) async* {
+      _pieceConfig = await pieceConfigRepository.getPieceConfig();
+      yield await _getNewStage();
+    }));
+  }
+
+  void liveStageWasFinished() {
+    dispatch(LiveStageCompleted((GameState oldState) async* {
+      yield await _getNext(oldState);
+    }));
   }
 
   @override
   Stream<GameState> mapEventToState(final GameState state, final GameEvent event) async* {
-    if (event is StartStage) {
-      _pieceConfig = await pieceConfigRepository.getPieceConfig();
-      yield await _getNewStage();
-    }
-    if (event is LiveStageCompleted) {
-      yield await _getNext(state);
-    }
+    yield* event.mutateState(state);
   }
 
   Future<GameState> _getNewStage() async {
@@ -46,7 +49,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       subjectConcepts: liveStage.subjectConcepts,
       predicateConcepts: liveStage.predicateConcepts,
       pieceConfig: _pieceConfig,
-      onCompleted: () => dispatch(LiveStageCompleted()),
+      onCompleted: liveStageWasFinished,
     );
     return GameState(false, stage.backgroundUri, liveStageBloc);
   }
@@ -61,7 +64,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
         subjectConcepts: nextLiveStage.subjectConcepts,
         predicateConcepts: nextLiveStage.predicateConcepts,
         pieceConfig: _pieceConfig,
-        onCompleted: () => dispatch(LiveStageCompleted()),
+        onCompleted: liveStageWasFinished,
       );
       return GameState(false, _currentStage.backgroundUri, liveStageBloc);
     }
