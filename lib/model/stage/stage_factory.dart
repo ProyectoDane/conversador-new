@@ -10,7 +10,6 @@ import 'package:flutter_syntactic_sorter/model/concept/sentence.dart';
 import 'package:flutter_syntactic_sorter/model/concept/subject.dart';
 import 'package:flutter_syntactic_sorter/model/stage/stage.dart';
 
-// TODO there is a bug when the word is repeated
 class StageFactory {
   static Stage getStage(final int difficulty) => {
         Stage.DIFFICULTY_EASY: _getEasyStage(),
