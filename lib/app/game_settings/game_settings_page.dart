@@ -4,7 +4,7 @@ import 'package:flutter_syntactic_sorter/app/game_settings/game_settings_bloc.da
 import 'package:flutter_syntactic_sorter/app/game_settings/game_settings_event.dart';
 import 'package:flutter_syntactic_sorter/app/game_settings/game_settings_state.dart';
 import 'package:flutter_syntactic_sorter/model/difficulty/game_difficulty.dart';
-import 'package:flutter_syntactic_sorter/ui/router.dart';
+import 'package:flutter_syntactic_sorter/router.dart';
 import 'package:flutter_syntactic_sorter/ui/settings/lang/lang_localizations.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/buttons/custom_button.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/images/custom_image.dart';

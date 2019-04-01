@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/platform/platform_base.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/util/widget_utils.dart';
 
+/// Back button that only appears in iOS, since
+/// Android has the native back button.
 class PlatformBackButton extends PlatformBase<Widget, Widget> {
 
+  /// Creates a PlatformBackButton
   const PlatformBackButton({Key key}) : super(key);
 
   @override

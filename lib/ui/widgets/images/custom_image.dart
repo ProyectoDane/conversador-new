@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 
+/// Image that has an green inner border if active
 class CustomImage extends StatelessWidget {
 
+  /// Creates a CustomImage from the image uri
+  /// and adds a border to it if isActive.
   const CustomImage({@required this.imageUri, @required this.isActive});
 
+  /// Image uri
   final String imageUri;
+  /// Is active (should have border) or not
   final bool isActive;
 
   @override

@@ -1,15 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_syntactic_sorter/model/concept/action.dart';
-import 'package:flutter_syntactic_sorter/model/concept/complement.dart';
-import 'package:flutter_syntactic_sorter/model/concept/entity.dart';
-import 'package:flutter_syntactic_sorter/model/concept/modifier.dart';
-import 'package:flutter_syntactic_sorter/model/concept/predicate.dart';
-import 'package:flutter_syntactic_sorter/model/concept/subject.dart';
 import 'package:flutter_syntactic_sorter/model/difficulty/game_difficulty.dart';
 import 'package:flutter_syntactic_sorter/model/figure/shape/shape.dart';
-import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
-import 'package:flutter_syntactic_sorter/model/figure/shape/circle.dart';
-import 'package:flutter_syntactic_sorter/model/figure/shape/rectangle.dart';
 import 'package:flutter_syntactic_sorter/model/figure/figure.dart';
 
 /// Piece configuration.
@@ -44,12 +35,6 @@ class PieceConfig {
           ? pieceConfig.colorByPieceType
           : colorByPieceType;
 
-  /// PieceConfig built from default values.
-  PieceConfig.getDefaultConfig() :
-        colorByConceptType = PieceConfig.defaultColorByConceptType,
-        shapeByConceptType = PieceConfig.defaultShapeByConceptType,
-        colorByPieceType = PieceConfig.defaultColorByPieceType;
-
   /// Function that defines which color
   /// should be used based on the concept type
   final Map<int, Color> Function() colorByConceptType;
@@ -61,37 +46,6 @@ class PieceConfig {
   /// color should be used given the piece type's
   /// necessary modifications
   final Map<int, Color> Function(Color) colorByPieceType;
-
-  /// Default colors based on concept type
-  static Map<int, Color> defaultColorByConceptType() => <int, Color>{
-        Subject.TYPE: Colors.green,
-        Entity.TYPE: Colors.green,
-        Predicate.TYPE: Colors.red,
-        Action.TYPE: Colors.red,
-        Modifier.TYPE: Colors.blue,
-        Complement.TYPE: Colors.orange,
-      };
-
-  /// Default shapes based on concept type
-  static Map<int, Shape> defaultShapeByConceptType(final Color color) =>
-      <int, Shape>{
-        Subject.TYPE: Rectangle(color: color),
-        Entity.TYPE: Rectangle(color: color),
-        Predicate.TYPE: Circle(color),
-        Action.TYPE: Circle(color),
-        Modifier.TYPE: Rectangle(color: color),
-        Complement.TYPE: Circle(color),
-      };
-
-  /// Default colors based on piece type
-  static Map<int, Color> defaultColorByPieceType(final Color color) =>
-      <int, Color>{
-        Piece.TARGET_INITIAL: Colors.black26,
-        Piece.TARGET_COMPLETED: color,
-        Piece.DRAG_INITIAL: color,
-        Piece.DRAG_FEEDBACK: color.withOpacity(0.5),
-        Piece.DRAG_COMPLETED: color.withOpacity(0.5),
-      };
 
   /// Returns a new PieceConfig based on the given one
   /// and the difficulties that have to be applied to it.
@@ -112,6 +66,14 @@ class PieceConfig {
     final Color colorByConcept = colorByConceptType()[conceptType];
     final Color colorByPiece = colorByPieceType(colorByConcept)[pieceType];
     return Figure(decoration: shapeByConceptType(colorByPiece)[conceptType]);
+  }
+
+  /// Returns the decoration that should be used
+  /// for the concept and piece type specified.
+  Decoration createDecoration(final int conceptType, final int pieceType) {
+    final Color colorByConcept = colorByConceptType()[conceptType];
+    final Color colorByPiece = colorByPieceType(colorByConcept)[pieceType];
+    return shapeByConceptType(colorByPiece)[conceptType];
   }
 
 }

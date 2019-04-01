@@ -3,8 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/platform/platform_base.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/platform/platform_back_button.dart';
 
+/// A scaffold wrapper that handles different
+/// app bars, scaffolds and back button
+/// based on the platform we are in.
 class PlatformScaffold extends PlatformBase<CupertinoPageScaffold, Scaffold> {
 
+  /// Creates a PlatformScaffold with:
+  /// - a body to show
+  /// - title to show in app bar (if wanted)
+  /// - whether we should enable or not the back button
   const PlatformScaffold({
     @required this.body,
     this.title,
@@ -12,8 +19,11 @@ class PlatformScaffold extends PlatformBase<CupertinoPageScaffold, Scaffold> {
     Key key
   }) : super(key);
 
+  /// Body of the page/scaffold
   final Widget body;
+  /// Title of the page, if there is any
   final String title;
+  /// Whether we should show a back button or not.
   final bool enableBack;
 
   @override

@@ -15,8 +15,11 @@ import 'package:flutter_syntactic_sorter/model/piece/piece_config.dart';
 import 'package:flutter_syntactic_sorter/util/color_extensions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// Repository for getting and setting
+/// the piece configuration.
 class PieceConfigRepository {
 
+  /// Returns a repository
   factory PieceConfigRepository() => _instance;
 
   PieceConfigRepository._internal();
@@ -27,6 +30,7 @@ class PieceConfigRepository {
   // MARK: - Difficulties
   static const String _DIFFICULTIES_KEY = 'settings.difficulties';
 
+  /// Add difficulties to default configuration
   Future<bool> setPieceConfigAdditionals(
       final List<GameDifficulty> difficulties
   ) async {
@@ -38,26 +42,33 @@ class PieceConfigRepository {
   }
 
   // MARK: - Set piece config parameters
+  /// Change the color corresponding to the concept with that id
   Future<bool> setPieceColorForConcept(int conceptId, Color color) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.setString(_COLOR_BY_CONCEPT_KEY(conceptId), colorToHex(color));
   }
 
+  /// Change the final color it should use for the piece type specified
   Future<bool> setPieceColorForPieceType(int pieceType, Color color) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.setString(_COLOR_BY_PIECE_KEY(pieceType), colorToHex(color));
   }
 
+  /// Change the alpha to be applied to the concept color,
+  /// for the specified piece type.
   Future<bool> setPieceAlphaForPieceType(int pieceType, double alpha) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.setDouble(_COLOR_BY_PIECE_KEY(pieceType), alpha);
   }
 
+  /// Change the shape to be used for the concept with the specified id.
   Future<bool> setPieceShapeForConcept(int conceptId, int shapeId) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.setInt(_SHAPE_BY_CONCEPT_KEY(conceptId), shapeId);
   }
 
+  // MARK: - Get piece config
+  /// Get the configured piece configuration
   Future<PieceConfig> getPieceConfig() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final PieceConfig pieceConfig = _getDefaultConfig(prefs);

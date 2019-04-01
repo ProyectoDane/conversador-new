@@ -5,8 +5,16 @@ import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece_config.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/util/operators.dart';
 
+/// Piece to be dragged around to match a target.
+/// It contains a string and is configured by PieceConfig.
 class DragPiece extends StatefulWidget {
 
+  /// Creates a DragPiece from
+  /// - the piece to represent
+  /// - the piece configuration to follow
+  /// - the position where it should start (top left corner)
+  /// - whether it's disabled or not
+  /// - the Bloc to which to notify events.
   DragPiece({
     @required this.piece,
     @required this.pieceConfig,
@@ -14,15 +22,20 @@ class DragPiece extends StatefulWidget {
     @required this.bloc,
     @required this.disabled
   });
+  
+  static const int _ANIMATION_TIME_MS = 1500;
+  static const Duration _DURATION = Duration(milliseconds: _ANIMATION_TIME_MS);
+  final AudioCache _audioCache = AudioCache();
 
-  static const int ANIMATION_TIME_MS = 1500;
-  static const Duration DURATION = Duration(milliseconds: ANIMATION_TIME_MS);
-  final AudioCache audioCache = AudioCache();
-
+  /// Piece which this represents
   final Piece piece;
+  /// Configuration to mold the piece by
   final PieceConfig pieceConfig;
+  /// Origin of the piece (top left corner)
   final Offset initPosition;
+  /// Bloc to which to notify events
   final LiveStageBloc bloc;
+  /// Whether the piece is disabled or not
   final bool disabled;
 
 
@@ -54,7 +67,7 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
 
   void _setUpAnimation() {
     _controller = AnimationController(
-        duration: DragPiece.DURATION,
+        duration: DragPiece._DURATION,
         vsync: this
     );
     _movementAnimation = Tween<Offset>(begin: _position, end: _origin)
@@ -123,7 +136,7 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
 
   void _renderOperator(final Operator operator) {
     setState(operator.newState);
-    widget.audioCache.play(operator.sound);
+    widget._audioCache.play(operator.sound);
     _playAnimation();
   }
 

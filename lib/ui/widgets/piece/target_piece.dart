@@ -4,9 +4,18 @@ import 'package:flutter_syntactic_sorter/model/piece/piece_config.dart';
 import 'package:flutter_syntactic_sorter/app/game/live_stage/live_stage_bloc.dart';
 import 'package:flutter_syntactic_sorter/app/game/live_stage/live_stage_state.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/animations/opacity_animation.dart';
+import 'package:flutter_syntactic_sorter/ui/widgets/piece/animations/radius_animation.dart';
 
+/// Static piece that serves as a target for the drag pieces.
+/// It contains a string and can be configured by a PieceConfig.
 class TargetPiece extends StatefulWidget {
 
+  /// Creates a TargetPiece from
+  /// - the piece to represent
+  /// - the piece configuration to follow
+  /// - the position where it should start (top left corner)
+  /// - the visual state it's in (normal, warning or completed)
+  /// - the Bloc to which to notify events.
   const TargetPiece({
     @required this.piece,
     @required this.pieceConfig,
@@ -17,13 +26,18 @@ class TargetPiece extends StatefulWidget {
 
   static const int _ANIMATION_TIME_MS = 1500;
   static const int _ANIMATION_TIME_FAST_MS = _ANIMATION_TIME_MS ~/ 2;
-  static const Duration NORMAL = Duration(milliseconds: _ANIMATION_TIME_MS);
-  static const Duration FAST = Duration(milliseconds: _ANIMATION_TIME_FAST_MS);
+  static const Duration _NORMAL = Duration(milliseconds: _ANIMATION_TIME_MS);
+  static const Duration _FAST = Duration(milliseconds: _ANIMATION_TIME_FAST_MS);
 
+  /// Piece which this represents
   final Piece piece;
+  /// Configuration to mold the piece by
   final PieceConfig pieceConfig;
+  /// Origin of the piece (top left corner)
   final Offset initPosition;
+  /// The TargetPieceVisualState it should be in
   final TargetPieceVisualState visualState;
+  /// Bloc to which to notify events
   final LiveStageBloc bloc;
 
   @override
@@ -89,13 +103,13 @@ class _TargetPieceState
 
   void _setUpAnimation() {
     _sizeController = AnimationController(
-        duration: TargetPiece.NORMAL,
+        duration: TargetPiece._NORMAL,
         vsync: this
     );
     _sizeAnimation = Tween<double>(begin: 0, end: Piece.BASE_SIZE)
         .animate(_sizeController);
     _opacityController = AnimationController(
-        duration: TargetPiece.FAST,
+        duration: TargetPiece._FAST,
         vsync: this
     );
     _opacityAnimation = CurvedAnimation(
@@ -145,24 +159,27 @@ class _TargetPieceState
             },
             builder: (BuildContext context,
                 List<Piece> accepted,
-                List<dynamic> rejected) =>
-              OpacityAnimation.animate(
-                opacityAnimation: _opacityAnimation,
-                sizeAnimation: _sizeAnimation,
-                piece: _piece,
-                pieceConfig: _pieceConfig,
-              ),
+                List<dynamic> rejected) => _completedWidget(),
             ),
       );
 
   Widget _renderAnimated() => Positioned(
     left: _initPosition.dx,
     top: _initPosition.dy,
-    child: OpacityAnimation.animate(
-      opacityAnimation: _opacityAnimation,
-      sizeAnimation: _sizeAnimation,
-      piece: _piece,
-      pieceConfig: _pieceConfig,
-    ),
+    child: _completedWidget(),
   );
+
+  Widget _completedWidget() => OpacityAnimation.animate(
+      opacityAnimation: _opacityAnimation,
+      childWidget: SizeAnimation.animate(
+        sizeAnimation: _sizeAnimation,
+        backDecoration: _piece.buildDecoration(
+            pieceType: Piece.TARGET_COMPLETED,
+            pieceConfig: _pieceConfig),
+        frontChild: _piece.buildWidget(
+            pieceType: Piece.TARGET_INITIAL,
+            pieceConfig: _pieceConfig),
+      )
+  );
+
 }

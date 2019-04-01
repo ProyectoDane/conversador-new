@@ -20,6 +20,7 @@ class Figure {
     Container(
       width: size,
       height: size,
+      padding: const EdgeInsets.all(1),
       decoration: decoration,
       child: Center(
         child: Text(

@@ -46,4 +46,13 @@ class Piece {
         size: size
     );
   }
+
+  /// Function that builds a Decoration to represent the piece
+  /// based on the given piece configuration and size.
+  Decoration buildDecoration({
+    @required int pieceType,
+    @required PieceConfig pieceConfig,
+    double size = BASE_SIZE
+  }) => pieceConfig.createDecoration(concept.type, pieceType);
+
 }
