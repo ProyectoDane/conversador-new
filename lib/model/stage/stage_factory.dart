@@ -33,7 +33,7 @@ class StageFactory {
         ),
       ),
       Stage(
-        id: 100,
+        id: 101,
         maxDifficulty: Stage.DIFFICULTY_EASY,
         backgroundUri: 'assets/images/game/pelusa_ronronea.jpg',
         sentence: Sentence(
@@ -63,6 +63,20 @@ class StageFactory {
       Stage(
         id: 201,
         maxDifficulty: Stage.DIFFICULTY_NORMAL,
+        backgroundUri: 'assets/images/game/kim_come_fideos.jpg',
+        sentence: Sentence(
+            Subject(value: 'Kim'),
+            Predicate.containing(<Concept>[
+              Action(value: 'come'),
+              Complement.containing(<Concept>[
+                Entity(value: 'fideos'),
+              ])
+            ])
+        ),
+      ),
+      Stage(
+        id: 202,
+        maxDifficulty: Stage.DIFFICULTY_NORMAL,
         backgroundUri: 'assets/images/game/maria_y_alan_rien.jpg',
         sentence: Sentence(
           Subject.containing(<Concept>[
@@ -74,7 +88,7 @@ class StageFactory {
         ),
       ),
       Stage(
-        id: 202,
+        id: 203,
         maxDifficulty: Stage.DIFFICULTY_NORMAL,
         backgroundUri: 'assets/images/game/la_abuela_pinta.jpg',
         sentence: Sentence(
@@ -104,7 +118,7 @@ class StageFactory {
             ]),
             Predicate.containing(<Concept>[
               Action(value: 'juegan'),
-              Complement(value: 'juntas')
+              Complement(value: 'contentas')
             ]),
         )
       ),
@@ -136,24 +150,6 @@ class StageFactory {
       Stage(
         id: 401,
         maxDifficulty: Stage.DIFFICULTY_MAX,
-        backgroundUri: 'assets/images/game/el_ninio_come_la_comida.jpg',
-        sentence: Sentence(
-            Subject.containing(<Concept>[
-              Modifier(value: 'el'),
-              Entity(value: 'niño'),
-            ]),
-            Predicate.containing(<Concept>[
-              Action(value: 'come'),
-              Complement.containing(<Concept>[
-                Modifier(value: 'la'),
-                Entity(value: 'comida'),
-              ])
-            ])
-        ),
-      ),
-      Stage(
-        id: 402,
-        maxDifficulty: Stage.DIFFICULTY_MAX,
         backgroundUri: 'assets/images/game/las_chicas_juegan_al_futbol.jpg',
         sentence: Sentence(
             Subject.containing(<Concept>[
@@ -170,7 +166,7 @@ class StageFactory {
         ),
       ),
       Stage(
-        id: 403,
+        id: 402,
         maxDifficulty: Stage.DIFFICULTY_MAX,
         backgroundUri: 'assets/images/game/juan_suenia_con_su_perro.jpg',
         sentence: Sentence(
