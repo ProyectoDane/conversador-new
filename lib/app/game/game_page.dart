@@ -7,23 +7,26 @@ import 'package:flutter_syntactic_sorter/app/game/live_stage/live_stage_widget.d
 import 'package:flutter_syntactic_sorter/ui/widgets/platform/platform_scaffold.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/util/widget_utils.dart';
 
+/// Page for the Game part.
+/// It shows the stage image on the background and loads
+/// the LiveStageWidget for the current stage's current level.
 class GamePage extends StatelessWidget {
+  /// Creates a GamePage with a GameBloc.
+  const GamePage(this._bloc);
+
   final GameBloc _bloc;
 
-  GamePage(this._bloc);
-
   @override
-  Widget build(BuildContext context) {
-    return PlatformScaffold(
+  Widget build(BuildContext context) =>
+    PlatformScaffold(
       body: _GameBody(_bloc),
     );
-  }
 }
 
 class _GameBody extends StatefulWidget {
-  final GameBloc bloc;
+  const _GameBody(this.bloc);
 
-  _GameBody(this.bloc);
+  final GameBloc bloc;
 
   @override
   State createState() => _GameBodyState();
@@ -38,18 +41,20 @@ class _GameBodyState extends State<_GameBody> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<GameEvent, GameState>(
+  Widget build(BuildContext context) =>
+    BlocBuilder<GameEvent, GameState>(
       bloc: widget.bloc,
       builder: (BuildContext context, GameState state) => _render(state),
     );
-  }
 
   Widget _render(final GameState state) => Center(
     child: (state.loading)
-        ? CircularProgressIndicator()
+        ? const CircularProgressIndicator()
         : Container(
-            decoration: WidgetUtils.getColoredBackgroundWith(Colors.white, state.backgroundUri),
+            decoration: WidgetUtils.getColoredBackgroundWith(
+                Colors.white,
+                state.backgroundUri
+            ),
             child: LiveStageWidget(state.liveStageBloc)
           )
   );

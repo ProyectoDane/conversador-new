@@ -4,7 +4,7 @@ import 'package:flutter_syntactic_sorter/app/game_settings/game_settings_bloc.da
 import 'package:flutter_syntactic_sorter/app/game_settings/game_settings_event.dart';
 import 'package:flutter_syntactic_sorter/app/game_settings/game_settings_state.dart';
 import 'package:flutter_syntactic_sorter/model/difficulty/game_difficulty.dart';
-import 'package:flutter_syntactic_sorter/ui/router.dart';
+import 'package:flutter_syntactic_sorter/router.dart';
 import 'package:flutter_syntactic_sorter/ui/settings/lang/lang_localizations.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/buttons/custom_button.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/images/custom_image.dart';
@@ -14,10 +14,15 @@ import 'package:flutter_syntactic_sorter/ui/widgets/util/widget_utils.dart';
 import 'package:flutter_syntactic_sorter/util/dimen.dart';
 import 'package:tuple/tuple.dart';
 
+/// Page for GameSettings
+/// Takes care of the GameDifficulty selection (activation and deactivation).
+/// Also, it moves on to next screen.
 class GameSettingsPage extends StatelessWidget {
-  final GameSettingsBloc _bloc;
 
-  GameSettingsPage(this._bloc);
+  /// Creates the Page based on the GameSettingsBloc
+  const GameSettingsPage(this._bloc);
+
+  final GameSettingsBloc _bloc;
 
   @override
   Widget build(BuildContext context) => PlatformScaffold(
@@ -27,18 +32,20 @@ class GameSettingsPage extends StatelessWidget {
 }
 
 class _GameSettingsBody extends StatelessWidget {
+
+  const _GameSettingsBody(this.bloc);
+
   final GameSettingsBloc bloc;
 
-  _GameSettingsBody(this.bloc);
-
   @override
-  Widget build(BuildContext context) => BlocBuilder<GameSettingsEvent, GameSettingsState>(
+  Widget build(BuildContext context) =>
+      BlocBuilder<GameSettingsEvent, GameSettingsState>(
     bloc: bloc,
-    builder: (BuildContext context, GameSettingsState state) => _render(context, state),
+    builder: _render,
   );
 
   Widget _render(BuildContext context, GameSettingsState state) => Container(
-        constraints: BoxConstraints.expand(),
+        constraints: const BoxConstraints.expand(),
         decoration: WidgetUtils.getBackgroundImage('assets/images/all/background.png'),
         child: SafeArea(child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -78,12 +85,12 @@ class _GameSettingsBody extends StatelessWidget {
 
   Widget _getImages(List<Tuple2<GameDifficulty, bool>> difficulties) => Row(
     mainAxisAlignment: MainAxisAlignment.center,
-    children: difficulties.map((tuple) => Expanded(
+    children: difficulties.map((Tuple2<GameDifficulty, bool> tuple) => Expanded(
       flex: 1,
       child: GestureDetector(
         onTap: () => bloc.tappedOnDifficulty(tuple.item1),
         child: Container(
-          margin: EdgeInsets.only(
+          margin: const EdgeInsets.only(
             left: Dimen.SPACING_BIG,
             right: Dimen.SPACING_SMALL,
             bottom: Dimen.SPACING_BIG,
@@ -100,7 +107,9 @@ class _GameSettingsBody extends StatelessWidget {
   );
 
   void _submitWithDifficulties(BuildContext context) {
-    bloc.saveDifficulties().whenComplete(() => Navigator.pushNamed(context, Router.GAME_PAGE));
+    bloc.saveDifficulties().whenComplete(() =>
+        Navigator.pushNamed(context, Router.GAME_PAGE)
+    );
   }
 
 }

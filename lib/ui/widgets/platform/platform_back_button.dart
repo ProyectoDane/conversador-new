@@ -3,23 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/platform/platform_base.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/util/widget_utils.dart';
 
+/// Back button that only appears in iOS, since
+/// Android has the native back button.
 class PlatformBackButton extends PlatformBase<Widget, Widget> {
-  final Key key;
 
-  PlatformBackButton({this.key}) : super(key);
+  /// Creates a PlatformBackButton
+  const PlatformBackButton({Key key}) : super(key);
 
   @override
-  Widget buildAndroidWidget(final BuildContext context) {
-    return SizedBox();
-  }
+  Widget buildAndroidWidget(final BuildContext context) =>
+    const SizedBox();
 
   @override
   Widget buildIOSWidget(final BuildContext context) {
-    final size = 35.0;
-    final route = ModalRoute.of(context);
-    final iconColor = Theme.of(context).iconTheme.color;
-    final imageUri = route is PageRoute && route.fullscreenDialog ? 'assets/images/utils/close_icon.png' : 'assets/images/utils/back_arrow_icon.png';
-    final color = Colors.lightGreen;
+    const double size = 35;
+    final ModalRoute<dynamic> route = ModalRoute.of(context);
+    final Color iconColor = Theme.of(context).iconTheme.color;
+    final String imageUri = route is PageRoute && route.fullscreenDialog
+        ? 'assets/images/utils/close_icon.png'
+        : 'assets/images/utils/back_arrow_icon.png';
+    const Color color = Colors.lightGreen;
     final Widget child = Navigator.of(context).canPop() ? Align(
       alignment: Alignment.topLeft,
       child: Container(
@@ -30,18 +33,16 @@ class PlatformBackButton extends PlatformBase<Widget, Widget> {
             borderRadius: BorderRadius.circular(size),
           ),
           child: RaisedButton(
-            onPressed: (){ Navigator.pop(context); return true; },
+            onPressed: (){ Navigator.pop(context); },
             child: WidgetUtils.getImage(imageUri, color: iconColor),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(size)),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(size)
+            ),
             color: color,
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10),
           ),
       ),
-    ) : SizedBox();
-//    return Container(
-//      margin: EdgeInsets.all(10),
-//      child: child,
-//    );
+    ) : const SizedBox();
     return child;
   }
 }

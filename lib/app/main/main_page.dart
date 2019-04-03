@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_syntactic_sorter/ui/router.dart';
+import 'package:flutter_syntactic_sorter/router.dart';
 import 'package:flutter_syntactic_sorter/ui/settings/lang/lang_localizations.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/buttons/custom_button.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/platform/platform_scaffold.dart';
@@ -7,21 +7,27 @@ import 'package:flutter_syntactic_sorter/ui/widgets/text/custom_text.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/util/widget_utils.dart';
 import 'package:flutter_syntactic_sorter/util/dimen.dart';
 
+/// HomePage of the app.
+/// First screen, waits for user confirmation to continue.
 class MainPage extends StatelessWidget {
 
-  MainPage();
+  /// Creates the main page.
+  const MainPage();
 
   @override
-  Widget build(BuildContext context) => PlatformScaffold(body: _MainBody());
+  Widget build(BuildContext context) =>
+      const PlatformScaffold(
+          body: _MainBody()
+      );
 }
 
 class _MainBody extends StatelessWidget {
 
-  _MainBody();
+  const _MainBody();
 
   @override
   Widget build(BuildContext context) => Container(
-        constraints: BoxConstraints.expand(),
+        constraints: const BoxConstraints.expand(),
         decoration: WidgetUtils.getBackgroundImage('assets/images/all/background.png'),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -45,7 +51,8 @@ class _MainBody extends StatelessWidget {
       );
 
   Widget _getButton(BuildContext context) => CustomButton(
-        onPressed: () => Navigator.pushNamed(context, Router.GAME_SETTINGS_PAGE),
+        onPressed: () =>
+            Navigator.pushNamed(context, Router.GAME_SETTINGS_PAGE),
         text: LangLocalizations.of(context).trans('main_btn_start'),
       );
 

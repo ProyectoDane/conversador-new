@@ -8,11 +8,19 @@ import 'package:flutter_syntactic_sorter/model/concept/subject.dart';
 import 'package:flutter_syntactic_sorter/model/difficulty/game_difficulty.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece_config.dart';
 
+/// GameDifficulty based on eliminating any color segmentation that
+/// may help the user relate concepts easier.
 class ColorDifficulty extends GameDifficulty {
-  static final NAME = "ColorDifficulty";
+
+  /// This GameDifficulty type name
+  static const String NAME = 'ColorDifficulty';
+
+  @override
   String get name => NAME;
 
-  final Map<int, Color> Function() colorByConceptType = () => {
+  /// Function that returns the color related to each concept
+  /// according to this difficulty.
+  Map<int, Color> colorByConceptType() => <int, Color>{
         Subject.TYPE: Colors.grey,
         Entity.TYPE: Colors.grey,
         Predicate.TYPE: Colors.grey,
@@ -23,13 +31,16 @@ class ColorDifficulty extends GameDifficulty {
 
   @override
   PieceConfig apply(final PieceConfig pieceConfig) =>
-      PieceConfig.cloneWithAssign(pieceConfig: pieceConfig, colorByConceptType: colorByConceptType);
+      PieceConfig.cloneWithAssign(
+          pieceConfig: pieceConfig,
+          colorByConceptType: colorByConceptType
+      );
 
   @override
   String get imageUri => 'assets/images/game_settings/colors.png';
 
   @override
-  bool operator==(dynamic o) => o is ColorDifficulty;
+  bool operator==(dynamic other) => other is ColorDifficulty;
 
   @override
   int get hashCode => imageUri.hashCode;

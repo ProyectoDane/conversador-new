@@ -7,22 +7,40 @@ import 'package:flutter_syntactic_sorter/model/difficulty/shape_difficulty.dart'
 import 'package:flutter_syntactic_sorter/repository/piece_config_repository.dart';
 import 'package:tuple/tuple.dart';
 
+/// Bloc for the Game Settings
+/// Handles the selection of the GameDifficulties
+/// and saves them.
 class GameSettingsBloc extends Bloc<GameSettingsEvent, GameSettingsState> {
-  PieceConfigRepository repository;
 
-  GameSettingsBloc({this.repository}) {
-    this.repository ??= PieceConfigRepository();
-  }
+  /// Creates the bloc with the repository to save settings to.
+  /// Repository has a default value if passed null.
+  GameSettingsBloc({PieceConfigRepository repository}) :
+    _repository = repository ?? PieceConfigRepository();
 
-  GameSettingsState get initialState => GameSettingsState([
-    Tuple2(ShapeDifficulty(), false),
-    Tuple2(ColorDifficulty(), false),
-  ]);
+  final PieceConfigRepository _repository;
 
-  Future<bool> saveDifficulties() async => repository.setPieceConfigAdditionals(currentState.difficulties.where((tuple) => tuple.item2).map((tuple) => tuple.item1).toList());
-  
+  @override
+  GameSettingsState get initialState => GameSettingsState(
+    <Tuple2<GameDifficulty, bool>>[
+      Tuple2<GameDifficulty, bool>(ShapeDifficulty(), false),
+      Tuple2<GameDifficulty, bool>(ColorDifficulty(), false),
+    ]
+  );
+
+  /// Save difficulties to repository.
+  /// Called when user wants to save all changes.
+  Future<bool> saveDifficulties() async =>
+      _repository.setPieceConfigAdditionals(currentState.difficulties
+          .where((Tuple2<GameDifficulty, bool> tuple) => tuple.item2)
+          .map((Tuple2<GameDifficulty, bool> tuple) => tuple.item1)
+          .toList());
+
+  /// Called when the user tapped on a difficulty to switch its enabled state.
   void tappedOnDifficulty(GameDifficulty difficulty) {
-    final tuple = currentState.difficulties.firstWhere((tuple) => tuple.item1 == difficulty);
+    final Tuple2<GameDifficulty, bool> tuple = currentState.difficulties
+        .firstWhere((Tuple2<GameDifficulty, bool> tuple) =>
+          tuple.item1 == difficulty
+    );
     if (tuple.item2) {
       dispatch(GameSettingsEvent.deactivate(difficulty));
     } else {
@@ -31,13 +49,16 @@ class GameSettingsBloc extends Bloc<GameSettingsEvent, GameSettingsState> {
   }
   
   @override
-  Stream<GameSettingsState> mapEventToState(final GameSettingsState state, final GameSettingsEvent event) async* {
+  Stream<GameSettingsState> mapEventToState(
+      final GameSettingsState currentState,
+      final GameSettingsEvent event
+  ) async* {
     switch (event.type) {
       case GameSettingsEventType.difficultyActivated:
-        yield state.activate(event.difficulty);
+        yield currentState.activate(event.difficulty);
         break;
       case GameSettingsEventType.difficultyDeactivated:
-        yield state.deactivate(event.difficulty);
+        yield currentState.deactivate(event.difficulty);
         break;
     }
   }
