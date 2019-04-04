@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_syntactic_sorter/app/game/game_event.dart';
 import 'package:flutter_syntactic_sorter/app/game/game_state.dart';
 import 'package:flutter_syntactic_sorter/app/game/live_stage/live_stage_bloc.dart';
@@ -17,14 +18,14 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   /// Creates a GameBloc that uses the repositories
   /// to get the stages and the configured piece configuration.
   /// There are default values for both repositories.
-  GameBloc({
+  GameBloc(this.context, {
     PieceConfigRepository pieceConfigRepository,
     StageRepository stageRepository
   }) :
     _pieceConfigRepository = pieceConfigRepository ?? PieceConfigRepository(),
     _stageRepository = stageRepository ?? StageRepository();
 
-
+  BuildContext context;
   Stage _currentStage;
   int _currentDifficulty;
   PieceConfig _pieceConfig;
@@ -58,7 +59,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   }
 
   Future<GameState> _getNewStage() async {
-    final Stage stage = await _stageRepository.getRandomStage();
+    final Stage stage = await _stageRepository.getRandomStage(context);
     _currentDifficulty = Stage.DIFFICULTY_EASY;
     _currentStage = stage;
     final LiveStage liveStage =

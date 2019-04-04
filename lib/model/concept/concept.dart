@@ -4,7 +4,7 @@ import 'package:meta/meta.dart';
 import 'package:flutter_syntactic_sorter/util/list_extensions.dart';
 
 /// Class representing a Concept inside a Sentence.
-/// There are many types os concepts,
+/// There are many types of concepts,
 /// there are even some ones that are larger than others
 /// and even contain other concepts.
 abstract class Concept {

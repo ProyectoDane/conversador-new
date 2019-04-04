@@ -22,6 +22,6 @@ class Router {
       MAIN_PAGE: (BuildContext context) => const MainPage(),
       GAME_SETTINGS_PAGE: (BuildContext context) =>
           GameSettingsPage(GameSettingsBloc()),
-      GAME_PAGE: (BuildContext context) => GamePage(GameBloc()),
+      GAME_PAGE: (BuildContext context) => GamePage(GameBloc(context)),
     };
 }
