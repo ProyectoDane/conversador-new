@@ -6,27 +6,20 @@ import 'package:meta/meta.dart';
 /// It has certain subject and predicate concepts
 /// and it represents a certain difficulty.
 class LiveStage {
-
   /// Creates a LiveStage based on the sentence
-  /// and the difficulty level specified
-  LiveStage({
-    @required Sentence sentence,
-    @required this.difficulty
-  }):
-    subjectConcepts = Sentence.getSubjectConceptsByDifficulty(
-        sentence,
-        difficulty
-    ),
-    predicateConcepts = Sentence.getPredicateConceptsByDifficulty(
-        sentence,
-        difficulty
-    );
+  /// and the depth specified
+  LiveStage({@required Sentence sentence, @required this.depth})
+      : subjectConcepts =
+            Sentence.getSubjectConceptsBySentenceDepth(sentence, depth),
+        predicateConcepts =
+            Sentence.getPredicateConceptsBySentenceDepth(sentence, depth);
 
   /// Subject concepts to be used in this LiveStage
   final List<Concept> subjectConcepts;
+
   /// Predicate concepts to be used in this LiveStage
   final List<Concept> predicateConcepts;
-  /// Difficulty of this LiveStage
-  final int difficulty;
 
+  /// Depth of the sentence this LiveStage represents
+  final int depth;
 }
