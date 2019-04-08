@@ -6,8 +6,10 @@ import 'package:flutter_syntactic_sorter/app/game/game_state.dart';
 import 'package:flutter_syntactic_sorter/app/game/live_stage/live_stage_widget.dart';
 import 'package:flutter_syntactic_sorter/router.dart';
 import 'package:flutter_syntactic_sorter/ui/settings/lang/lang_localizations.dart';
+import 'package:flutter_syntactic_sorter/ui/widgets/buttons/custom_button.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/platform/platform_scaffold.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/util/widget_utils.dart';
+import 'package:flutter_syntactic_sorter/util/dimen.dart';
 import 'package:sprintf/sprintf.dart';
 
 /// Page for the Game part.
@@ -49,7 +51,6 @@ class _GameBodyState extends State<_GameBody> {
           WidgetsBinding.instance.addPostFrameCallback(
               (_) => _showDialog(state.levelCompleted, context));
         }
-
         return _render(state);
       });
 
@@ -58,30 +59,43 @@ class _GameBodyState extends State<_GameBody> {
         barrierDismissible: false,
         context: context,
         builder: (BuildContext context) => AlertDialog(
-                title: Text(LangLocalizations.of(context)
-                    .trans('game.level_ended_pop_up.title')),
-                content: Text(sprintf(
-                    LangLocalizations.of(context)
-                        .trans('game.level_ended_pop_up.body'),
-                    <int>[levelNumber])),
-                actions: <Widget>[
-                  FlatButton(
-                    child: Text(LangLocalizations.of(context)
-                        .trans('game.level_ended_pop_up.no')),
-                    onPressed: () {
-                      Navigator.of(context).popUntil((Route<dynamic> route) =>
-                          route.settings.name == Router.MAIN_PAGE);
-                    },
-                  ),
-                  FlatButton(
-                    child: Text(LangLocalizations.of(context)
-                        .trans('game.level_ended_pop_up.yes')),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      widget.bloc.continueToNextLevel();
-                    },
-                  ),
-                ]));
+            title: Text(LangLocalizations.of(context)
+                .trans('game.level_ended_pop_up.title')),
+            content: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(sprintf(
+                      LangLocalizations.of(context)
+                          .trans('game.level_ended_pop_up.body'),
+                      <int>[levelNumber])),
+                  const SizedBox(height: Dimen.SPACING_NORMAL),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        CustomButton(
+                          text: LangLocalizations.of(context)
+                              .trans('game.level_ended_pop_up.no'),
+                          fontSize: Dimen.FONT_NORMAL,
+                          coloredBackground: false,
+                          onPressed: () {
+                            Navigator.of(context).popUntil(
+                                (Route<dynamic> route) =>
+                                    route.settings.name == Router.MAIN_PAGE);
+                          },
+                        ),
+                        CustomButton(
+                          text: LangLocalizations.of(context)
+                              .trans('game.level_ended_pop_up.yes'),
+                          fontSize: Dimen.FONT_NORMAL,
+                          coloredBackground: true,
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            widget.bloc.continueToNextLevel();
+                          },
+                        ),
+                      ])
+                ])));
   }
 
   Widget _render(final GameState state) => Center(
