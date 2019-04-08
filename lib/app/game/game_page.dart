@@ -5,8 +5,10 @@ import 'package:flutter_syntactic_sorter/app/game/game_event.dart';
 import 'package:flutter_syntactic_sorter/app/game/game_state.dart';
 import 'package:flutter_syntactic_sorter/app/game/live_stage/live_stage_widget.dart';
 import 'package:flutter_syntactic_sorter/router.dart';
+import 'package:flutter_syntactic_sorter/ui/settings/lang/lang_localizations.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/platform/platform_scaffold.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/util/widget_utils.dart';
+import 'package:sprintf/sprintf.dart';
 
 /// Page for the Game part.
 /// It shows the stage image on the background and loads
@@ -56,19 +58,24 @@ class _GameBodyState extends State<_GameBody> {
         barrierDismissible: false,
         context: context,
         builder: (BuildContext context) => AlertDialog(
-                title: const Text('Congratulations !'),
-                content: Text('You have just finished level $levelNumber'
-                    '. Want to continue practicing?'),
-                actions: [
+                title: Text(LangLocalizations.of(context)
+                    .trans('game.level_ended_pop_up.title')),
+                content: Text(sprintf(
+                    LangLocalizations.of(context)
+                        .trans('game.level_ended_pop_up.body'),
+                    <int>[levelNumber])),
+                actions: <Widget>[
                   FlatButton(
-                    child: const Text('No thanks'),
+                    child: Text(LangLocalizations.of(context)
+                        .trans('game.level_ended_pop_up.no')),
                     onPressed: () {
                       Navigator.of(context).popUntil((Route<dynamic> route) =>
                           route.settings.name == Router.MAIN_PAGE);
                     },
                   ),
                   FlatButton(
-                    child: const Text('Yes!'),
+                    child: Text(LangLocalizations.of(context)
+                        .trans('game.level_ended_pop_up.yes')),
                     onPressed: () {
                       Navigator.of(context).pop();
                       widget.bloc.continueToNextLevel();
