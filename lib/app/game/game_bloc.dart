@@ -54,6 +54,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     }));
   }
 
+  /// Called when the user decides to continue to the next level
   void continueToNextLevel() {
     dispatch(LevelCompleted((GameState oldState) async* {
       yield GameState.loading();

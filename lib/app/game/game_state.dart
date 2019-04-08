@@ -25,6 +25,8 @@ class GameState {
     this.liveStageBloc,
     this.levelCompleted});
 
+  /// Turns this state into one with the same information
+  /// but flagging the specified level was completed.
   GameState completeLevel(int levelNumber) =>
       GameState._internal(loading: loading,
           backgroundUri: backgroundUri,
