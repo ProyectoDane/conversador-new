@@ -11,17 +11,32 @@ class GameState {
   /// whether we are loading a stage,
   /// and the live stage bloc.
   GameState.stage({@required this.backgroundUri, @required this.liveStageBloc})
-      : loading = false;
+      : loading = false,
+        levelCompleted = null;
 
   /// Creates a GameState in the loading state which does not
   /// have a background image or a corresponding live stage bloc.
-  factory GameState.loading() => GameState._internal(
-      loading: true, backgroundUri: '', liveStageBloc: null);
+  factory GameState.loading() =>
+      GameState._internal(
+          loading: true, backgroundUri: '', liveStageBloc: null);
 
-  GameState._internal({this.loading, this.backgroundUri, this.liveStageBloc});
+  GameState._internal({this.loading,
+    this.backgroundUri,
+    this.liveStageBloc,
+    this.levelCompleted});
+
+  GameState completeLevel(int levelNumber) =>
+      GameState._internal(loading: loading,
+          backgroundUri: backgroundUri,
+          liveStageBloc: liveStageBloc,
+          levelCompleted: levelNumber);
 
   /// Whether we are loading a stage or not
   final bool loading;
+
+  /// The number of level that was just completed
+  /// or null if it hasn't been completed yet.
+  final int levelCompleted;
 
   /// The background image uri
   final String backgroundUri;

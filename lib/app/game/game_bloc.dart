@@ -54,6 +54,13 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     }));
   }
 
+  void continueToNextLevel() {
+    dispatch(LevelCompleted((GameState oldState) async* {
+      yield GameState.loading();
+      yield await _getNextLevel(oldState);
+    }));
+  }
+
   // MARK: - State
   @override
   GameState get initialState => GameState.loading();
@@ -68,17 +75,20 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     final Level level = await _levelRepository.getFirstLevel(_context);
     _currentLevel = level;
     _currentStageIndex = -1;
-    return _getNewStage();
+    return _getNewStage(null);
   }
 
-  Future<GameState> _getNewStage() async {
+  Future<GameState> _getNextLevel(GameState oldState) async {
+    _currentLevel =
+        await _levelRepository.getLevel(_currentLevel.number + 1, _context);
+    _currentLevel ??= await _levelRepository.getFirstLevel(_context);
+    _currentStageIndex = -1;
+    return _getNewStage(oldState);
+  }
+
+  Future<GameState> _getNewStage(GameState oldState) async {
     if (_currentStageIndex == _currentLevel.stages.length - 1) {
-      _currentLevel =
-          await _levelRepository.getLevel(_currentLevel.number + 1, _context);
-      if (_currentLevel == null) {
-        return _getFirstStage();
-      }
-      _currentStageIndex = -1;
+      return oldState.completeLevel(_currentLevel.number);
     }
     _currentStageIndex++;
     _currentLiveStage = _currentStage.getInitialLiveStage();
@@ -93,7 +103,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     final LiveStage nextLiveStage =
         _currentStage.getFollowingLiveStage(_currentLiveStage.depth);
     if (nextLiveStage == null) {
-      return _getNewStage();
+      return _getNewStage(state);
     } else {
       _currentLiveStage = nextLiveStage;
       final LiveStageBloc liveStageBloc = _getLiveStageBlocFrom(nextLiveStage);

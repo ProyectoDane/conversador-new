@@ -32,3 +32,8 @@ class LiveStageCompleted extends GameEvent {
   LiveStageCompleted(Stream<GameState> Function(GameState) mutateState)
       : super(mutateState);
 }
+
+class LevelCompleted extends GameEvent {
+  LevelCompleted(Stream<GameState> Function(GameState) mutateState)
+      : super(mutateState);
+}
