@@ -100,7 +100,10 @@ class _GameBodyState extends State<_GameBody> {
 
   Widget _render(final GameState state) => Center(
       child: (state.loading)
-          ? const CircularProgressIndicator()
+          ? Container(
+              child: const CircularProgressIndicator(),
+              color: Colors.white,
+            )
           : Container(
               decoration: WidgetUtils.getColoredBackgroundWith(
                   Colors.white, state.backgroundUri),
