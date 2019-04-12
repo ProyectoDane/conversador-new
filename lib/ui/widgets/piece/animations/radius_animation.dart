@@ -7,25 +7,25 @@ class SizeAnimation {
   /// appearing (or disappearing).
   static Widget animate({
     @required final Animation<double> sizeAnimation,
-    @required final Decoration backDecoration,
+    @required final CustomPainter backPainter,
     @required final Widget frontChild,
   }) =>
       AnimatedBuilder(
         animation: sizeAnimation,
-        builder: (BuildContext context, Widget child) =>
-          Center(
-            child: Stack(
-              alignment: Alignment.center,
-              children: <Widget>[
-                Container(
-                  width: sizeAnimation.value,
-                  height: sizeAnimation.value,
-                  decoration: backDecoration,
-                ),
-                frontChild,
-              ],
+        builder: (BuildContext context, Widget child) => Center(
+              child: Stack(
+                alignment: Alignment.center,
+                children: <Widget>[
+                  CustomPaint(
+                    painter: backPainter,
+                    child: Container(
+                      height: sizeAnimation.value,
+                      width: sizeAnimation.value,
+                    ),
+                  ),
+                  frontChild,
+                ],
+              ),
             ),
-          ),
       );
-
 }

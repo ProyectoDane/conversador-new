@@ -47,12 +47,12 @@ class Piece {
     );
   }
 
-  /// Function that builds a Decoration to represent the piece
+  /// Function that builds a custom painter to represent the piece
   /// based on the given piece configuration and size.
-  Decoration buildDecoration({
+  CustomPainter buildPainter({
     @required int pieceType,
     @required PieceConfig pieceConfig,
     double size = BASE_SIZE
-  }) => pieceConfig.createDecoration(concept.type, pieceType);
+  }) => pieceConfig.createPainter(concept.type, pieceType);
 
 }

@@ -173,7 +173,7 @@ class _TargetPieceState
       opacityAnimation: _opacityAnimation,
       childWidget: SizeAnimation.animate(
         sizeAnimation: _sizeAnimation,
-        backDecoration: _piece.buildDecoration(
+        backPainter: _piece.buildPainter(
             pieceType: Piece.TARGET_COMPLETED,
             pieceConfig: _pieceConfig),
         frontChild: _piece.buildWidget(

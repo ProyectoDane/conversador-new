@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_syntactic_sorter/model/difficulty/game_difficulty.dart';
-import 'package:flutter_syntactic_sorter/model/figure/shape/shape.dart';
 import 'package:flutter_syntactic_sorter/model/figure/figure.dart';
+import 'package:flutter_syntactic_sorter/model/figure/painter/shape_painter.dart';
 
 /// Piece configuration.
 /// It stores the information needed to define
@@ -14,7 +14,7 @@ class PieceConfig {
   /// - one for the color modification by piece type
   PieceConfig({
     this.colorByConceptType,
-    this.shapeByConceptType,
+    this.painterByConceptType,
     this.colorByPieceType
   });
 
@@ -23,14 +23,14 @@ class PieceConfig {
   PieceConfig.cloneWithAssign({
     @required PieceConfig pieceConfig,
     Map<int, Color> Function() colorByConceptType,
-    Map<int, Shape> Function(Color) shapeByConceptType,
+    Map<int, ShapePainter> Function(Color) painterByConceptType,
     Map<int, Color> Function(Color) colorByPieceType}) :
       colorByConceptType = colorByConceptType == null
             ? pieceConfig.colorByConceptType
             : colorByConceptType,
-      shapeByConceptType = shapeByConceptType == null
-          ? pieceConfig.shapeByConceptType
-          : shapeByConceptType,
+      painterByConceptType = painterByConceptType == null
+          ? pieceConfig.painterByConceptType
+          : painterByConceptType,
       colorByPieceType = colorByPieceType == null
           ? pieceConfig.colorByPieceType
           : colorByPieceType;
@@ -41,7 +41,7 @@ class PieceConfig {
   /// Function that given a color defines
   /// which shape should be used and filled with that color
   /// based on the concept type
-  final Map<int, Shape> Function(Color) shapeByConceptType;
+  final Map<int, ShapePainter> Function(Color) painterByConceptType;
   /// Function that defines given a color what final
   /// color should be used given the piece type's
   /// necessary modifications
@@ -63,17 +63,18 @@ class PieceConfig {
   /// Returns the figure that should be used
   /// for the concept and piece type specified.
   Figure createFigure(final int conceptType, final int pieceType) {
-    final Color colorByConcept = colorByConceptType()[conceptType];
-    final Color colorByPiece = colorByPieceType(colorByConcept)[pieceType];
-    return Figure(decoration: shapeByConceptType(colorByPiece)[conceptType]);
+    final Color clrByConcept = colorByConceptType()[conceptType];
+    final Color clrByPiece = colorByPieceType(clrByConcept)[pieceType];
+    final ShapePainter painter = painterByConceptType(clrByPiece)[conceptType];
+    return Figure(painter: painter);
   }
 
-  /// Returns the decoration that should be used
+  /// Returns the painter that should be used
   /// for the concept and piece type specified.
-  Decoration createDecoration(final int conceptType, final int pieceType) {
+  ShapePainter createPainter(final int conceptType, final int pieceType) {
     final Color colorByConcept = colorByConceptType()[conceptType];
     final Color colorByPiece = colorByPieceType(colorByConcept)[pieceType];
-    return shapeByConceptType(colorByPiece)[conceptType];
+    return painterByConceptType(colorByPiece)[conceptType];
   }
 
 }

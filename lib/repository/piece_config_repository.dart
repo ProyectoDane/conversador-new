@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_syntactic_sorter/model/concept/subject.dart';
 import 'package:flutter_syntactic_sorter/model/concept/predicate.dart';
@@ -6,14 +5,15 @@ import 'package:flutter_syntactic_sorter/model/concept/modifier.dart';
 import 'package:flutter_syntactic_sorter/model/concept/entity.dart';
 import 'package:flutter_syntactic_sorter/model/concept/action.dart';
 import 'package:flutter_syntactic_sorter/model/concept/complement.dart';
-import 'package:flutter_syntactic_sorter/model/figure/shape/circle.dart';
-import 'package:flutter_syntactic_sorter/model/figure/shape/rectangle.dart';
-import 'package:flutter_syntactic_sorter/model/figure/shape/shape.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
 import 'package:flutter_syntactic_sorter/model/difficulty/game_difficulty.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece_config.dart';
 import 'package:flutter_syntactic_sorter/util/color_extensions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_syntactic_sorter/model/figure/painter/shape_painter.dart';
+import 'package:flutter_syntactic_sorter/model/figure/painter/circle_painter.dart';
+import 'package:flutter_syntactic_sorter/model/figure/painter/rectangle_painter.dart';
+import 'package:flutter_syntactic_sorter/model/figure/painter/diamond_painter.dart';
 
 /// Repository for getting and setting
 /// the piece configuration.
@@ -86,7 +86,7 @@ class PieceConfigRepository {
     PieceConfig(
       colorByConceptType: _getColorByConceptFrom(prefs),
       colorByPieceType: _getColorByPieceFrom(prefs),
-      shapeByConceptType: _getShapeByConceptFrom(prefs),
+      painterByConceptType: _getPainterByConceptFrom(prefs),
     );
 
   // ignore: prefer_function_declarations_over_variables, non_constant_identifier_names
@@ -200,7 +200,7 @@ class PieceConfigRepository {
   static final String Function(int) _SHAPE_BY_CONCEPT_KEY =
       (int conceptType) => 'SHAPE_BY_CONCEPT.$conceptType';
 
-  Map<int, Shape> Function(Color) _getShapeByConceptFrom(
+  Map<int, ShapePainter> Function(Color) _getPainterByConceptFrom(
       SharedPreferences prefs
   ) {
     final int subjectId = prefs.getInt(_SHAPE_BY_CONCEPT_KEY(Subject.TYPE));
@@ -210,13 +210,19 @@ class PieceConfigRepository {
     final int modifierId = prefs.getInt(_SHAPE_BY_CONCEPT_KEY(Modifier.TYPE));
     final int complementId = prefs
         .getInt(_SHAPE_BY_CONCEPT_KEY(Complement.TYPE));
-    return (Color color) => <int, Shape>{
-      Subject.TYPE: Shape.fromID(subjectId ?? Rectangle.ID, color),
-      Entity.TYPE: Shape.fromID(entityId ?? Rectangle.ID, color),
-      Predicate.TYPE: Shape.fromID(predicateId ?? Circle.ID, color),
-      Action.TYPE: Shape.fromID(actionId ?? Circle.ID, color),
-      Modifier.TYPE: Shape.fromID(modifierId ?? Rectangle.ID, color),
-      Complement.TYPE: Shape.fromID(complementId ?? Circle.ID, color),
+    return (Color color) => <int, ShapePainter>{
+      Subject.TYPE: ShapePainter.fromID(
+        subjectId ?? RectanglePainter.ID, color),
+      Entity.TYPE: ShapePainter.fromID(
+        entityId ?? RectanglePainter.ID, color),
+      Predicate.TYPE: ShapePainter.fromID(
+        predicateId ?? CirclePainter.ID, color),
+      Action.TYPE: ShapePainter.fromID(
+        actionId ?? CirclePainter.ID, color),
+      Modifier.TYPE: ShapePainter.fromID(
+        modifierId ?? RectanglePainter.ID, color),
+      Complement.TYPE: ShapePainter.fromID(
+        complementId ?? DiamondPainter.ID, color),
     };
   }
 
