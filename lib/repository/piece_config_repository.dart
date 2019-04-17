@@ -32,11 +32,11 @@ class PieceConfigRepository {
 
   /// Add difficulties to default configuration
   Future<bool> setPieceConfigAdditionals(
-      final List<GameDifficulty> difficulties
+      final List<GameModeDifficulty> difficulties
   ) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final List<String> difficultiesStrings = difficulties
-        .map((GameDifficulty difficulty) => difficulty.name)
+        .map((GameModeDifficulty difficulty) => difficulty.name)
         .toList();
     return prefs.setStringList(_DIFFICULTIES_KEY, difficultiesStrings);
   }
@@ -72,9 +72,9 @@ class PieceConfigRepository {
   Future<PieceConfig> getPieceConfig() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final PieceConfig pieceConfig = _getDefaultConfig(prefs);
-    final List<GameDifficulty> difficulties = prefs
+    final List<GameModeDifficulty> difficulties = prefs
         .getStringList(_DIFFICULTIES_KEY)
-        .map(GameDifficulty.fromName)
+        .map(GameModeDifficulty.fromName)
         .toList();
     final PieceConfig pieceConfigWithDifficulties =
       PieceConfig.applyDifficulties(pieceConfig, difficulties);

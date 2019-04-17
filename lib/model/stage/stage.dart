@@ -5,7 +5,7 @@ import 'package:meta/meta.dart';
 
 /// Represents a Stage in the game:
 /// - a sentence,
-/// - the maximum difficulty it can reach
+/// - the maximum complexity it can reach
 /// - the related image's uri
 /// - its id
 class Stage {
@@ -14,25 +14,28 @@ class Stage {
       {@required this.id,
       @required this.backgroundUri,
       @required this.sentence,
-      @required this.difficulty})
+      @required this.mentalComplexity})
       : maximumDepth = ConceptHelper.getSentenceDepth(sentence);
 
+  /// Creates a stage to be stored or retrieved from the database
+  Stage.data({this.id, this.backgroundUri, this.mentalComplexity});
+
   /// Stage's id
-  final int id;
+  int id;
 
   /// Uri of the related image
   final String backgroundUri;
 
   /// Sentence used in this stage
-  final Sentence sentence;
+  Sentence sentence;
 
-  /// Difficulty of the stage
-  /// (related to the mental difficult associated with the phrase)
-  final int difficulty;
+  /// Mental complexity of the stage
+  /// (related to the mental difficulty associated with the phrase)
+  final int mentalComplexity;
 
   /// Maximum depth of the stage
   /// (Related to the phrase and its subdivisions)
-  final int maximumDepth;
+  int maximumDepth;
 
   /// First easiest LiveStage possible
   LiveStage getInitialLiveStage() => LiveStage(

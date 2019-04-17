@@ -10,11 +10,11 @@ import 'package:flutter_syntactic_sorter/model/piece/piece_config.dart';
 import 'package:flutter_syntactic_sorter/model/figure/painter/rectangle_painter.dart';
 import 'package:flutter_syntactic_sorter/model/figure/painter/shape_painter.dart';
 
-/// GameDifficulty based on eliminating any shape segmentation that
+/// GameModeDifficulty based on eliminating any shape segmentation that
 /// may help the user relate concepts easier.
-class ShapeDifficulty extends GameDifficulty {
+class ShapeDifficulty extends GameModeDifficulty {
 
-  /// This GameDifficulty type name
+  /// This GameModeDifficulty type name
   static const String NAME = 'ShapeDifficulty';
 
   @override

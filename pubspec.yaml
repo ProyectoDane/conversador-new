@@ -11,7 +11,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   rxdart: ^0.18.0
-  sqflite: any
+  sqflite: ^1.1.3
   flutter_bloc: ^0.4.1
   http: ^0.12.0
   audioplayers: ^0.7.8
@@ -34,3 +34,4 @@ flutter:
   - assets/images/game_settings/
   - assets/images/game/
   - assets/lang/
+  - assets/syntactic-sorter.db

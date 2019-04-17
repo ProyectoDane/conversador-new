@@ -10,7 +10,7 @@ import 'package:flutter_syntactic_sorter/model/stage/live_stage.dart';
 import 'package:flutter_syntactic_sorter/model/stage/stage.dart';
 import 'package:flutter_syntactic_sorter/repository/level_repository.dart';
 import 'package:flutter_syntactic_sorter/repository/piece_config_repository.dart';
-import 'package:flutter_syntactic_sorter/repository/stage_repository.dart';
+import 'package:flutter_syntactic_sorter/repository/stage_app_repository.dart';
 
 /// Bloc for Game part of the app.
 /// It takes care of selecting a stage and moving through its
@@ -24,7 +24,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       LevelRepository levelRepository}) {
     _context = context;
     _pieceConfigRepository = pieceConfigRepository ?? PieceConfigRepository();
-    _levelRepository = levelRepository ?? LevelRepository(StageRepository());
+    _levelRepository = levelRepository ?? LevelRepository(StageAppRepository());
   }
 
   BuildContext _context;

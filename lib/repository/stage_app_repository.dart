@@ -3,13 +3,13 @@ import 'package:flutter_syntactic_sorter/model/stage/stage.dart';
 import 'package:flutter_syntactic_sorter/model/stage/stage_factory.dart';
 
 /// Repository for handling the getting and setting of stages
-class StageRepository {
+class StageAppRepository {
   /// Returns a StageRepository
-  factory StageRepository() => _instance;
+  factory StageAppRepository() => _instance;
 
-  StageRepository._internal();
+  StageAppRepository._internal();
 
-  static final StageRepository _instance = StageRepository._internal();
+  static final StageAppRepository _instance = StageAppRepository._internal();
 
   // MARK: - Stages
   /// Get a random stage from the ones available for the specified difficulty.

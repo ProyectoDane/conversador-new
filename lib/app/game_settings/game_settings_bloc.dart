@@ -21,9 +21,9 @@ class GameSettingsBloc extends Bloc<GameSettingsEvent, GameSettingsState> {
 
   @override
   GameSettingsState get initialState => GameSettingsState(
-    <Tuple2<GameDifficulty, bool>>[
-      Tuple2<GameDifficulty, bool>(ShapeDifficulty(), false),
-      Tuple2<GameDifficulty, bool>(ColorDifficulty(), false),
+    <Tuple2<GameModeDifficulty, bool>>[
+      Tuple2<GameModeDifficulty, bool>(ShapeDifficulty(), false),
+      Tuple2<GameModeDifficulty, bool>(ColorDifficulty(), false),
     ]
   );
 
@@ -31,14 +31,14 @@ class GameSettingsBloc extends Bloc<GameSettingsEvent, GameSettingsState> {
   /// Called when user wants to save all changes.
   Future<bool> saveDifficulties() async =>
       _repository.setPieceConfigAdditionals(currentState.difficulties
-          .where((Tuple2<GameDifficulty, bool> tuple) => tuple.item2)
-          .map((Tuple2<GameDifficulty, bool> tuple) => tuple.item1)
+          .where((Tuple2<GameModeDifficulty, bool> tuple) => tuple.item2)
+          .map((Tuple2<GameModeDifficulty, bool> tuple) => tuple.item1)
           .toList());
 
   /// Called when the user tapped on a difficulty to switch its enabled state.
-  void tappedOnDifficulty(GameDifficulty difficulty) {
-    final Tuple2<GameDifficulty, bool> tuple = currentState.difficulties
-        .firstWhere((Tuple2<GameDifficulty, bool> tuple) =>
+  void tappedOnDifficulty(GameModeDifficulty difficulty) {
+    final Tuple2<GameModeDifficulty, bool> tuple = currentState.difficulties
+        .firstWhere((Tuple2<GameModeDifficulty, bool> tuple) =>
           tuple.item1 == difficulty
     );
     if (tuple.item2) {

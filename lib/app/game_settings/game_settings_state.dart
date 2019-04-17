@@ -9,32 +9,32 @@ class GameSettingsState {
   GameSettingsState(this.difficulties);
 
   /// List of (difficulty and if it's selected).
-  final List<Tuple2<GameDifficulty, bool>> difficulties;
+  final List<Tuple2<GameModeDifficulty, bool>> difficulties;
 
   /// Returns new state based on this one,
   /// but activating the given difficulty.
-  GameSettingsState activate(GameDifficulty difficulty) {
+  GameSettingsState activate(GameModeDifficulty difficulty) {
     final int i = difficulties.indexWhere(
-      (Tuple2<GameDifficulty, bool> tuple) => tuple.item1 == difficulty
+      (Tuple2<GameModeDifficulty, bool> tuple) => tuple.item1 == difficulty
     );
-    final List<Tuple2<GameDifficulty, bool>> newDifficulties =
-      List<Tuple2<GameDifficulty, bool>>.of(difficulties);
+    final List<Tuple2<GameModeDifficulty, bool>> newDifficulties =
+      List<Tuple2<GameModeDifficulty, bool>>.of(difficulties);
     if (i != -1 && !difficulties[i].item2) {
-      newDifficulties[i] = Tuple2<GameDifficulty, bool>(difficulty, true);
+      newDifficulties[i] = Tuple2<GameModeDifficulty, bool>(difficulty, true);
     }
     return GameSettingsState(newDifficulties);
   }
 
   /// Returns new state based on this one,
   /// but deactivating the given difficulty.
-  GameSettingsState deactivate(GameDifficulty difficulty) {
+  GameSettingsState deactivate(GameModeDifficulty difficulty) {
     final int i = difficulties.indexWhere(
-      (Tuple2<GameDifficulty, bool> tuple) => tuple.item1 == difficulty
+      (Tuple2<GameModeDifficulty, bool> tuple) => tuple.item1 == difficulty
     );
-    final List<Tuple2<GameDifficulty, bool>> newDifficulties =
-      List<Tuple2<GameDifficulty, bool>>.of(difficulties);
+    final List<Tuple2<GameModeDifficulty, bool>> newDifficulties =
+      List<Tuple2<GameModeDifficulty, bool>>.of(difficulties);
     if (i != -1 && difficulties[i].item2) {
-      newDifficulties[i] = Tuple2<GameDifficulty, bool>(difficulty, false);
+      newDifficulties[i] = Tuple2<GameModeDifficulty, bool>(difficulty, false);
     }
     return GameSettingsState(newDifficulties);
   }

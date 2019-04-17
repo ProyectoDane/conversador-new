@@ -51,10 +51,10 @@ class PieceConfig {
   /// and the difficulties that have to be applied to it.
   static PieceConfig applyDifficulties(
     final PieceConfig pieceConfig,
-    final List<GameDifficulty> difficulties
+    final List<GameModeDifficulty> difficulties
   ) {
     PieceConfig baseConfig = pieceConfig;
-    for (final GameDifficulty difficulty in difficulties) {
+    for (final GameModeDifficulty difficulty in difficulties) {
       baseConfig = difficulty.apply(baseConfig);
     }
     return baseConfig;

@@ -7,14 +7,14 @@ class GameSettingsEvent {
   GameSettingsEvent._internal({this.type, this.difficulty});
 
   /// Creates a GameSettingEvent for deactivating the specified difficulty.
-  factory GameSettingsEvent.deactivate(GameDifficulty difficulty) =>
+  factory GameSettingsEvent.deactivate(GameModeDifficulty difficulty) =>
       GameSettingsEvent._internal(
           type: GameSettingsEventType.difficultyDeactivated,
           difficulty: difficulty
       );
 
   /// Creates a GameSettingEvent for activating the specified difficulty.
-  factory GameSettingsEvent.activate(GameDifficulty difficulty) =>
+  factory GameSettingsEvent.activate(GameModeDifficulty difficulty) =>
     GameSettingsEvent._internal(
         type: GameSettingsEventType.difficultyActivated,
         difficulty: difficulty
@@ -22,8 +22,8 @@ class GameSettingsEvent {
 
   /// Event type
   GameSettingsEventType type;
-  /// Related GameDifficulty
-  GameDifficulty difficulty;
+  /// Related GameModeDifficulty
+  GameModeDifficulty difficulty;
 
 }
 

@@ -8,7 +8,6 @@ import 'package:flutter_syntactic_sorter/util/list_extensions.dart';
 /// there are even some ones that are larger than others
 /// and even contain other concepts.
 abstract class Concept {
-
   /// Creates a concept with certain children and concept type
   /// (its value and depth will be taken from the children).
   Concept.intermediate({@required this.children, @required this.type})
@@ -17,20 +16,29 @@ abstract class Concept {
 
   /// Creates a concept with a certain value and concept type
   /// (no children and depth == 0).
-  Concept.terminal({@required this.value, @required this.type})
-      : children = <Concept>[],
+  Concept.terminal({
+    @required this.value,
+    @required this.type,
+    this.id,
+  })  : children = <Concept>[],
         depth = 0;
 
+  /// Concept id
+  int id;
+
   /// Concepts it contains
-  final List<Concept> children;
+  List<Concept> children;
+
   /// The value this particular concept represents.
-  final String value;
+  String value;
+
   /// Depth is the quantity of descendants levels there are.
   /// If it has no children, it's 0; if it has many terminal children's 1;
   /// if it has at least one grandchildren, 2; etc...
-  final int depth;
+  int depth;
+
   /// Concept type id.
-  final int type;
+  int type;
 
   @override
   bool operator ==(dynamic other) =>

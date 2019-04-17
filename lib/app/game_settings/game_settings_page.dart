@@ -15,10 +15,9 @@ import 'package:flutter_syntactic_sorter/util/dimen.dart';
 import 'package:tuple/tuple.dart';
 
 /// Page for GameSettings
-/// Takes care of the GameDifficulty selection (activation and deactivation).
+/// GameModeDifficulty selection (activation and deactivation).
 /// Also, it moves on to next screen.
 class GameSettingsPage extends StatelessWidget {
-
   /// Creates the Page based on the GameSettingsBloc
   const GameSettingsPage(this._bloc);
 
@@ -32,7 +31,6 @@ class GameSettingsPage extends StatelessWidget {
 }
 
 class _GameSettingsBody extends StatelessWidget {
-
   const _GameSettingsBody(this.bloc);
 
   final GameSettingsBloc bloc;
@@ -40,14 +38,16 @@ class _GameSettingsBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       BlocBuilder<GameSettingsEvent, GameSettingsState>(
-    bloc: bloc,
-    builder: _render,
-  );
+        bloc: bloc,
+        builder: _render,
+      );
 
   Widget _render(BuildContext context, GameSettingsState state) => Container(
         constraints: const BoxConstraints.expand(),
-        decoration: WidgetUtils.getBackgroundImage('assets/images/all/background.png'),
-        child: SafeArea(child: Column(
+        decoration:
+            WidgetUtils.getBackgroundImage('assets/images/all/background.png'),
+        child: SafeArea(
+            child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Expanded(flex: 1, child: _getTitleAndButton(context)),
@@ -83,33 +83,33 @@ class _GameSettingsBody extends StatelessWidget {
         text: LangLocalizations.of(context).trans('game_settings_start'),
       );
 
-  Widget _getImages(List<Tuple2<GameDifficulty, bool>> difficulties) => Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: difficulties.map((Tuple2<GameDifficulty, bool> tuple) => Expanded(
-      flex: 1,
-      child: GestureDetector(
-        onTap: () => bloc.tappedOnDifficulty(tuple.item1),
-        child: Container(
-          margin: const EdgeInsets.only(
-            left: Dimen.SPACING_BIG,
-            right: Dimen.SPACING_SMALL,
-            bottom: Dimen.SPACING_BIG,
-          ),
-          // The image represents the hint, the difficulty
-          // is the lack of what the image shows:
-          child: CustomImage(
-            imageUri: tuple.item1.imageUri,
-            isActive: !tuple.item2,
-          ),
-        ),
-      ),
-    )).toList()
-  );
+  Widget _getImages(List<Tuple2<GameModeDifficulty, bool>> difficulties) => Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: difficulties
+          .map((Tuple2<GameModeDifficulty, bool> tuple) => Expanded(
+                flex: 1,
+                child: GestureDetector(
+                  onTap: () => bloc.tappedOnDifficulty(tuple.item1),
+                  child: Container(
+                    margin: const EdgeInsets.only(
+                      left: Dimen.SPACING_BIG,
+                      right: Dimen.SPACING_SMALL,
+                      bottom: Dimen.SPACING_BIG,
+                    ),
+                    // The image represents the hint, the difficulty
+                    // is the lack of what the image shows:
+                    child: CustomImage(
+                      imageUri: tuple.item1.imageUri,
+                      isActive: !tuple.item2,
+                    ),
+                  ),
+                ),
+              ))
+          .toList());
 
   void _submitWithDifficulties(BuildContext context) {
-    bloc.saveDifficulties().whenComplete(() =>
-        Navigator.pushNamed(context, Router.GAME_PAGE)
-    );
+    bloc
+        .saveDifficulties()
+        .whenComplete(() => Navigator.pushNamed(context, Router.GAME_PAGE));
   }
-
 }

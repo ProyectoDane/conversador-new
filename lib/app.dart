@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_syntactic_sorter/router.dart';
+import 'package:flutter_syntactic_sorter/src/fixtures.dart' show printDB;
 import 'package:flutter_syntactic_sorter/ui/settings/lang/lang_localizations_delegate.dart';
 import 'package:flutter_syntactic_sorter/util/dimen.dart';
 
@@ -8,6 +9,9 @@ import 'package:flutter_syntactic_sorter/util/dimen.dart';
 class GameApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // *Just for testing* Print the database
+    printDB();
+    // Set orientation to landscape
     _setOrientation();
 
     return MaterialApp(
