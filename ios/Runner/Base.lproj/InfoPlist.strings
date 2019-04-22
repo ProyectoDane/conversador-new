@@ -1,0 +1,10 @@
+/* 
+  InfoPlist.strings
+  Runner
+
+  Created by Daniela Riesgo on 4/16/19.
+  Copyright © 2019 The Chromium Authors. All rights reserved.
+*/
+
+CFBundleDisplayName = "Syntactic Sorter";
+APP_ICON = "AppIcon-en";

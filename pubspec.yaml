@@ -33,5 +33,6 @@ flutter:
   - assets/images/all/
   - assets/images/game_settings/
   - assets/images/game/
+  - assets/images/splash/
   - assets/lang/
   - assets/syntactic-sorter.db

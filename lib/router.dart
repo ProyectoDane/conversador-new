@@ -10,18 +10,19 @@ import 'package:flutter_syntactic_sorter/app/main/main_page.dart';
 /// and create the necessary page.
 class Router {
   /// Main / Home page
-  static const String MAIN_PAGE = '/';
+  static const String MAIN_PAGE = '/home';
+
   /// Page for game settings
   static const String GAME_SETTINGS_PAGE = '/game_settings';
+
   /// Page for playing the actual game
   static const String GAME_PAGE = '/game';
 
   /// Returns the whole app routes
-  static Map<String, WidgetBuilder> getRoutes() =>
-    <String, WidgetBuilder>{
-      MAIN_PAGE: (BuildContext context) => const MainPage(),
-      GAME_SETTINGS_PAGE: (BuildContext context) =>
-          GameSettingsPage(GameSettingsBloc()),
-      GAME_PAGE: (BuildContext context) => GamePage(GameBloc(context)),
-    };
+  static Map<String, WidgetBuilder> getRoutes() => <String, WidgetBuilder>{
+        MAIN_PAGE: (BuildContext context) => const MainPage(),
+        GAME_SETTINGS_PAGE: (BuildContext context) =>
+            GameSettingsPage(GameSettingsBloc()),
+        GAME_PAGE: (BuildContext context) => GamePage(GameBloc(context)),
+      };
 }

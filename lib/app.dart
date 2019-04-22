@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_syntactic_sorter/app/splash/animated_splash_screen.dart';
 import 'package:flutter_syntactic_sorter/router.dart';
 import 'package:flutter_syntactic_sorter/src/fixtures.dart' show printDB;
 import 'package:flutter_syntactic_sorter/ui/settings/lang/lang_localizations_delegate.dart';
@@ -22,6 +23,11 @@ class GameApp extends StatelessWidget {
       localeResolutionCallback:
           LangLocalizationsDelegate.localeResolutionCallback,
       routes: Router.getRoutes(),
+      home: const AnimatedSplashScreen(
+        homePageRouteName: Router.MAIN_PAGE,
+        logoUri: 'assets/images/splash/Dane_Logo.png',
+        poweredByLogoUri: 'assets/images/splash/Otros_Logos.png',
+      ),
     );
   }
 
