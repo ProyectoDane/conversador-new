@@ -34,8 +34,7 @@ class LangLocalizationsDelegate
     for (final Locale supportedLocale in supportedLocales) {
       // The "?" is necessary because sometimes this method
       // is called twice with locale in null
-      if (supportedLocale.languageCode == locale?.languageCode ||
-          supportedLocale.countryCode == locale?.countryCode) {
+      if (supportedLocale.languageCode == locale?.languageCode) {
         return supportedLocale;
       }
     }
