@@ -70,7 +70,7 @@ class LevelRepository {
     if (stages.isEmpty) {
       return null;
     }
-    return Level(stages: stages, number: number);
+    return Level(stages: stages, id: number);
   }
 
   // MARK: - Level's parameters

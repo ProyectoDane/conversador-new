@@ -81,7 +81,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
   Future<GameState> _getNextLevel(GameState oldState) async {
     _currentLevel =
-        await _levelRepository.getLevel(_currentLevel.number + 1, _context);
+        await _levelRepository.getLevel(_currentLevel.id + 1, _context);
     _currentLevel ??= await _levelRepository.getFirstLevel(_context);
     _currentStageIndex = -1;
     return _getNewStage(oldState);
@@ -89,7 +89,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
   Future<GameState> _getNewStage(GameState oldState) async {
     if (_currentStageIndex == _currentLevel.stages.length - 1) {
-      return oldState.completeLevel(_currentLevel.number);
+      return oldState.completeLevel(_currentLevel.id);
     }
     _currentStageIndex++;
     _currentLiveStage = _currentStage.getInitialLiveStage();
