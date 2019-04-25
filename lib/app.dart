@@ -10,10 +10,10 @@ import 'package:flutter_syntactic_sorter/util/dimen.dart';
 class GameApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // *Just for testing* Print the database
-    printDB();
     // Set orientation to landscape
     _setOrientation();
+    // *Just for testing* Print the database
+    printDB();
 
     return MaterialApp(
       title: 'Flutter Syntactic Sorter',

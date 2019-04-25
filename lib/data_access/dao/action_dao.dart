@@ -9,8 +9,14 @@ class ActionDao implements Dao<Action> {
   /// The name of the table
   final String tableName = 'action';
 
+  /// The name of the translation table
+  final String tableNameTr = 'action_tr';
+
   /// id column name
   final String columnId = 'id';
+
+  /// untranslated table id column name
+  final String columnIdSource = 'action_id';
 
   /// value column name
   final String columnValue = 'value';

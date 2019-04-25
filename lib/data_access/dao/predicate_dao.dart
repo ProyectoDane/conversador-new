@@ -9,8 +9,14 @@ class PredicateDao implements Dao<Predicate> {
   /// The name of the table
   final String tableName = 'predicate';
 
+  /// The name of the translation table
+  final String tableNameTr = 'predicate_tr';
+
   /// id column name
   final String columnId = 'id';
+
+  /// untranslated table id column name
+  final String columnIdSource = 'predicate_id';
 
   /// value column name
   final String columnValue = 'value';

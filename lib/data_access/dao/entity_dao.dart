@@ -9,8 +9,14 @@ class EntityDao implements Dao<Entity> {
   /// The name of the table
   final String tableName = 'entity';
 
+  /// The name of the translation table
+  final String tableNameTr = 'entity_tr';
+
   /// id column name
   final String columnId = 'id';
+
+  /// untranslated table id column name
+  final String columnIdSource = 'entity_id';
 
   /// value column name
   final String columnValue = 'value';

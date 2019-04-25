@@ -9,8 +9,14 @@ class ModifierDao implements Dao<Modifier> {
   /// The name of the table
   final String tableName = 'modifier';
 
+  /// The name of the translation table
+  final String tableNameTr = 'modifier_tr';
+
   /// id column name
   final String columnId = 'id';
+
+  /// untranslated table id column name
+  final String columnIdSource = 'modifier_id';
 
   /// value column name
   final String columnValue = 'value';

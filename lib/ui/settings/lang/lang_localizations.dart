@@ -31,4 +31,6 @@ class LangLocalizations {
 
   /// Translates (Localizes) a string.
   String trans(final String key) => _strings[key];
+
+  
 }

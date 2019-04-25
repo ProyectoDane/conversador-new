@@ -9,8 +9,14 @@ class SubjectDao implements Dao<Subject> {
   /// The name of the table
   final String tableName = 'subject';
 
+  /// The name of the translation table
+  final String tableNameTr = 'predicate_tr';
+
   /// id column name
   final String columnId = 'id';
+
+  /// untranslated table id column name
+  final String columnIdSource = 'predicate_id';
 
   /// value column name
   final String columnValue = 'value';
