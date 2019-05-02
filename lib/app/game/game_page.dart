@@ -10,6 +10,7 @@ import 'package:flutter_syntactic_sorter/ui/widgets/buttons/custom_button.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/platform/platform_scaffold.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/util/widget_utils.dart';
 import 'package:flutter_syntactic_sorter/util/dimen.dart';
+import 'package:flutter_syntactic_sorter/model/difficulty/mental_complexity.dart';
 import 'package:sprintf/sprintf.dart';
 
 /// Page for the Game part.
@@ -54,7 +55,7 @@ class _GameBodyState extends State<_GameBody> {
         return _render(state);
       });
 
-  void _showDialog(int levelNumber, BuildContext context) {
+  void _showDialog(int complexityNumber, BuildContext context) {
     showDialog<void>(
         barrierDismissible: false,
         context: context,
@@ -68,7 +69,7 @@ class _GameBodyState extends State<_GameBody> {
                   Text(sprintf(
                       LangLocalizations.of(context)
                           .trans('game.level_ended_pop_up.body'),
-                      <int>[levelNumber])),
+                      <String>[textMap[complexityNumber]])),
                   const SizedBox(height: Dimen.SPACING_NORMAL),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

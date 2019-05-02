@@ -4,7 +4,7 @@
   "game_settings_title": "Choose how to play",
   "game_settings_start": "Start",
   "game.level_ended_pop_up.title": "Congratulations!",
-  "game.level_ended_pop_up.body": "You have just finished level %i. Do you want to continue practicing?",
+  "game.level_ended_pop_up.body": "You have just finished the %s level. Do you want to continue practicing?",
   "game.level_ended_pop_up.no": "No, thank you",
   "game.level_ended_pop_up.yes": "Yes!",
   "stage_100_subject": "Kevin",

@@ -32,7 +32,8 @@ class StageFactory {
   List<Stage> _stages(BuildContext context) => <Stage>[
         Stage(
           id: 1,
-          mentalComplexity: 1,
+          mentalComplexity: mentalComplexityEasy,
+          subLevel: 1,
           backgroundUri: 'assets/images/game/gaston_corre.jpg',
           sentence: Sentence(
             Subject(
@@ -45,7 +46,8 @@ class StageFactory {
         ),
         Stage(
           id: 2,
-          mentalComplexity: 2,
+          mentalComplexity: mentalComplexityEasy,
+          subLevel: 2,
           backgroundUri: 'assets/images/game/la_abuela_pinta.jpg',
           sentence: Sentence(
             Subject.containing(<Concept>[
@@ -63,7 +65,8 @@ class StageFactory {
         ),
         Stage(
           id: 3,
-          mentalComplexity: 3,
+          mentalComplexity: mentalComplexityEasy,
+          subLevel: 3,
           backgroundUri: 'assets/images/game/el_perro_come.jpg',
           sentence: Sentence(
             Subject.containing(<Concept>[
@@ -81,7 +84,8 @@ class StageFactory {
         ),
         Stage(
           id: 4,
-          mentalComplexity: 4,
+          mentalComplexity: mentalComplexityEasy,
+          subLevel: 4,
           backgroundUri: 'assets/images/game/pelusa_ronronea.jpg',
           sentence: Sentence(
             Subject(
@@ -94,7 +98,8 @@ class StageFactory {
         ),
         Stage(
           id: 5,
-          mentalComplexity: 5,
+          mentalComplexity: mentalComplexityNormal,
+          subLevel: 1,
           backgroundUri: 'assets/images/game/kim_come_fideos.jpg',
           sentence: Sentence(
               Subject(
@@ -111,7 +116,8 @@ class StageFactory {
         ),
         Stage(
           id: 6,
-          mentalComplexity: 6,
+          mentalComplexity: mentalComplexityNormal,
+          subLevel: 2,
           backgroundUri: 'assets/images/game/maria_y_alan_rien.jpg',
           sentence: Sentence(
             Subject.containing(<Concept>[
@@ -132,7 +138,8 @@ class StageFactory {
         ),
         Stage(
           id: 7,
-          mentalComplexity: 7,
+          mentalComplexity: mentalComplexityNormal,
+          subLevel: 3,
           backgroundUri: 'assets/images/game/el_ninio_salta_la_soga.jpg',
           sentence: Sentence(
               Subject.containing(<Concept>[
@@ -154,7 +161,8 @@ class StageFactory {
         ),
         Stage(
             id: 8,
-            mentalComplexity: 8,
+            mentalComplexity: mentalComplexityNormal,
+            subLevel: 4,
             backgroundUri:
                 'assets/images/game/mariana_y_carla_juegan_contentas.jpg',
             sentence: Sentence(
@@ -180,7 +188,8 @@ class StageFactory {
             )),
         Stage(
           id: 9,
-          mentalComplexity: 9,
+          mentalComplexity: mentalComplexityHard,
+          subLevel: 1,
           backgroundUri: 'assets/images/game/las_chicas_juegan_al_futbol.jpg',
           sentence: Sentence(
               Subject.containing(<Concept>[
@@ -202,7 +211,8 @@ class StageFactory {
         ),
         Stage(
           id: 10,
-          mentalComplexity: 10,
+          mentalComplexity: mentalComplexityExpert,
+          subLevel: 1,
           backgroundUri: 'assets/images/game/juan_suenia_con_su_perro.jpg',
           sentence: Sentence(
             Subject(

@@ -14,11 +14,16 @@ class Stage {
       {@required this.id,
       @required this.backgroundUri,
       @required this.sentence,
-      @required this.mentalComplexity})
+      @required this.mentalComplexity,
+      @required this.subLevel})
       : maximumDepth = ConceptHelper.getSentenceDepth(sentence);
 
   /// Creates a stage to be stored or retrieved from the database
-  Stage.data({this.id, this.backgroundUri, this.mentalComplexity});
+  Stage.data(
+    {this.id, 
+    this.backgroundUri, 
+    this.mentalComplexity, 
+    this.subLevel});
 
   /// Stage's id
   int id;
@@ -32,6 +37,11 @@ class Stage {
   /// Mental complexity of the stage
   /// (related to the mental difficulty associated with the phrase)
   final int mentalComplexity;
+
+  /// Sublevel of mental complexity
+  /// Multiple Stages may be grouped in the same relative
+  /// complexity, but are ordered in sub levels
+  final int subLevel;
 
   /// Maximum depth of the stage
   /// (Related to the phrase and its subdivisions)

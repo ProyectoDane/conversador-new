@@ -1,3 +1,19 @@
+/// Easy
+const int mentalComplexityEasy = 1;
+/// Normal
+const int mentalComplexityNormal = 2;
+/// Hard
+const int mentalComplexityHard = 3;
+/// Expert
+const int mentalComplexityExpert = 4;
+/// Map for complexity strings
+const Map<int,String> textMap = <int,String>{
+  mentalComplexityEasy: 'Easy',
+  mentalComplexityNormal: 'Normal',
+  mentalComplexityHard: 'Hard',
+  mentalComplexityExpert: 'Expert'
+  };
+
 /// Mental complexity of the stage the user
 /// will try to resolve
 class MentalComplexity {
