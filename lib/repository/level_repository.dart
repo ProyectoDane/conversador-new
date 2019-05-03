@@ -35,6 +35,11 @@ class LevelRepository {
 
     final List<Stage> stages = await _stageRepository
         .getStagesForDifficulty(complexityLevel, context);
+    // Incoming levels could be mixed with custom levels 
+    // They are sorted by sublevel
+    stages.sort((Stage stage1,Stage stage2)
+      => stage1.subLevel.compareTo(stage2.subLevel)
+    );
 
     // Save used difficulties
     await _setLevelUsedStages(stages, complexityLevel);
