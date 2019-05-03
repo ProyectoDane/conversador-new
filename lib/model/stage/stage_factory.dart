@@ -32,7 +32,7 @@ class StageFactory {
   List<Stage> _stages(BuildContext context) => <Stage>[
         Stage(
           id: 1,
-          mentalComplexity: mentalComplexityEasy,
+          mentalComplexity: MentalComplexity.mentalComplexityEasy,
           subLevel: 1,
           backgroundUri: 'assets/images/game/gaston_corre.jpg',
           sentence: Sentence(
@@ -46,7 +46,7 @@ class StageFactory {
         ),
         Stage(
           id: 2,
-          mentalComplexity: mentalComplexityEasy,
+          mentalComplexity: MentalComplexity.mentalComplexityEasy,
           subLevel: 2,
           backgroundUri: 'assets/images/game/la_abuela_pinta.jpg',
           sentence: Sentence(
@@ -65,7 +65,7 @@ class StageFactory {
         ),
         Stage(
           id: 3,
-          mentalComplexity: mentalComplexityEasy,
+          mentalComplexity: MentalComplexity.mentalComplexityEasy,
           subLevel: 3,
           backgroundUri: 'assets/images/game/el_perro_come.jpg',
           sentence: Sentence(
@@ -84,7 +84,7 @@ class StageFactory {
         ),
         Stage(
           id: 4,
-          mentalComplexity: mentalComplexityEasy,
+          mentalComplexity: MentalComplexity.mentalComplexityEasy,
           subLevel: 4,
           backgroundUri: 'assets/images/game/pelusa_ronronea.jpg',
           sentence: Sentence(
@@ -98,7 +98,7 @@ class StageFactory {
         ),
         Stage(
           id: 5,
-          mentalComplexity: mentalComplexityNormal,
+          mentalComplexity: MentalComplexity.mentalComplexityNormal,
           subLevel: 1,
           backgroundUri: 'assets/images/game/kim_come_fideos.jpg',
           sentence: Sentence(
@@ -116,7 +116,7 @@ class StageFactory {
         ),
         Stage(
           id: 6,
-          mentalComplexity: mentalComplexityNormal,
+          mentalComplexity: MentalComplexity.mentalComplexityNormal,
           subLevel: 2,
           backgroundUri: 'assets/images/game/maria_y_alan_rien.jpg',
           sentence: Sentence(
@@ -138,7 +138,7 @@ class StageFactory {
         ),
         Stage(
           id: 7,
-          mentalComplexity: mentalComplexityNormal,
+          mentalComplexity: MentalComplexity.mentalComplexityNormal,
           subLevel: 3,
           backgroundUri: 'assets/images/game/el_ninio_salta_la_soga.jpg',
           sentence: Sentence(
@@ -161,7 +161,7 @@ class StageFactory {
         ),
         Stage(
             id: 8,
-            mentalComplexity: mentalComplexityNormal,
+            mentalComplexity: MentalComplexity.mentalComplexityNormal,
             subLevel: 4,
             backgroundUri:
                 'assets/images/game/mariana_y_carla_juegan_contentas.jpg',
@@ -188,7 +188,7 @@ class StageFactory {
             )),
         Stage(
           id: 9,
-          mentalComplexity: mentalComplexityHard,
+          mentalComplexity: MentalComplexity.mentalComplexityHard,
           subLevel: 1,
           backgroundUri: 'assets/images/game/las_chicas_juegan_al_futbol.jpg',
           sentence: Sentence(
@@ -211,7 +211,7 @@ class StageFactory {
         ),
         Stage(
           id: 10,
-          mentalComplexity: mentalComplexityExpert,
+          mentalComplexity: MentalComplexity.mentalComplexityExpert,
           subLevel: 1,
           backgroundUri: 'assets/images/game/juan_suenia_con_su_perro.jpg',
           sentence: Sentence(

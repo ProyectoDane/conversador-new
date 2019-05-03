@@ -68,8 +68,9 @@ class _GameBodyState extends State<_GameBody> {
                 children: <Widget>[
                   Text(sprintf(
                       LangLocalizations.of(context)
-                          .trans('game.level_ended_pop_up.body'),
-                      <String>[textMap[complexityNumber]])),
+                        .trans('game.level_ended_pop_up.body'),
+                      <String>[MentalComplexity.getComplexityText(
+                        complexityNumber, context)])),
                   const SizedBox(height: Dimen.SPACING_NORMAL),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
