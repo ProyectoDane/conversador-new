@@ -13,10 +13,6 @@ class StageAppRepository {
   static final StageAppRepository _instance = StageAppRepository._internal();
 
   // MARK: - Stages
-  /// Get a random stage from the ones available for the specified difficulty.
-  Future<Stage> getRandomStageForComplexity(
-          Complexity difficulty, BuildContext context) async =>
-      StageFactory().getRandomStageOfComplexity(difficulty, context);
 
   /// Get all available stages for the specified difficulty.
   Future<List<Stage>> getStagesForComplexity(
@@ -28,15 +24,9 @@ class StageAppRepository {
     int count, int indexOffset, BuildContext context) async =>
     StageFactory().getStagesByCount(count, indexOffset, context);
 
-  /// Get a random stage for each of the specified difficulties.
-  Future<List<Stage>> getRandomStagesForComplexity(
-      List<Complexity> difficulties, BuildContext context) async {
-    final List<Stage> stages = <Stage>[];
-    for (final Complexity difficulty in difficulties) {
-      stages.add(await getRandomStageForComplexity(difficulty, context));
-    }
-    return stages;
-  }
+  Future<List<Stage>> getRandomStagesByCount(
+    int count, List<int>exceptionList, BuildContext context) async =>
+    StageFactory().getRandomStagesByCount(count, exceptionList, context);
 
   /// Get a certain stage based on its ID
   Future<Stage> getStageFromId(int id, BuildContext context) async =>

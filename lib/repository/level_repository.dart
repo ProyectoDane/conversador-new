@@ -24,44 +24,41 @@ class LevelRepository {
   final int _maxStageCount = 5;
 
   // ignore: non_constant_identifier_names, prefer_function_declarations_over_variables
-  static final String Function(int) _STAGES_IN_LEVEL_KEY =
-      (int number) => 'STAGES_IN_LEVEL.$number';
+  final String _STAGES_IN_LEVEL_KEY = 'STAGES_IN_LEVEL';
 
   /// Returns first level of the game
-  Future<Level> getFirstLevel(BuildContext context) async =>
-      getLevel(1, context);
+  Future<Level> getFirstLevel(BuildContext context) async {
+    await _clearUsedStages();
+    return getLevel(1, context);
+  }  
 
   /// Returns the level associated with the given number.
   Future<Level> getLevel(
     int levelId, BuildContext context) async {
     
     final Tuple2<int, bool> levelData = _LEVELS[levelId];
+    if (levelData == null) {
+      return null;
+    }
+
     final int indexOffset = levelData.item1;
     final bool isRandom = levelData.item2;
 
+    List<Stage> stageList;
     if (isRandom) {
-      
+      final List<int> previouslyUsedStages = await _getLevelUsedStageIDs();
+      stageList = await _stageRepository.getRandomStagesByCount(
+        _maxStageCount, previouslyUsedStages, context);
+      await _setLevelUsedStageIDs(stageList);
     } else {
-      final List<Stage> stageList = await _stageRepository.getStagesByCount(
+      stageList = await _stageRepository.getStagesByCount(
         _maxStageCount, indexOffset, context);
-      return Level(stages: stageList, id: levelId);
     }
 
-    final List<Stage> stages = await _stageRepository
-        .getStagesForComplexity(levelId as Complexity, context);
-    // Incoming levels could be mixed with custom levels 
-    // They are sorted by sublevel
-    stages.sort((Stage stage1,Stage stage2)
-      => stage1.complexityOrder.compareTo(stage2.complexityOrder)
-    );
-
-    // Save used difficulties
-    await _setLevelUsedStages(stages, levelId);
-
-    if (stages.isEmpty) {
+    if (stageList.isEmpty) {
       return null;
     }
-    return Level(stages: stages, id: levelId);
+    return Level(stages: stageList, id: levelId);
   }
 
   // MARK: - Level's parameters
@@ -78,25 +75,30 @@ class LevelRepository {
   
   // MARK: - Shared Preferences data
 
-  Future<bool> _setLevelUsedStages(
-    List<Stage> stages, int levelNumber) async {
+  Future<bool> _setLevelUsedStageIDs(
+    List<Stage> stages) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.setStringList(
-        _STAGES_IN_LEVEL_KEY(levelNumber),
+        _STAGES_IN_LEVEL_KEY,
         stages
-            .map((Stage stage) => stage.mentalComplexity.toString())
+            .map((Stage stage) => stage.id.toString())
             .toList());
   }
 
-  Future<List<int>> _getLevelUsedStages(int levelNumber) async {
+  Future<List<int>> _getLevelUsedStageIDs() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       final List<String> difficulties =
-          prefs.getStringList(_STAGES_IN_LEVEL_KEY(levelNumber));
+          prefs.getStringList(_STAGES_IN_LEVEL_KEY);
       return difficulties.map(int.parse).toList();
       // ignore: avoid_catches_without_on_clauses
     } catch (e) {
       return <int>[];
     }
+  }
+
+  Future<void> _clearUsedStages() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_STAGES_IN_LEVEL_KEY);
   }
 }

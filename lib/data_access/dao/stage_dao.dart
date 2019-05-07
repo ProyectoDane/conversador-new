@@ -14,7 +14,7 @@ class StageDao implements Dao<Stage> {
   final String columnId = 'id';
 
   /// mental complexity id column name
-  final String columnMentalComplexityId = 'mental_complexity_id';
+  final String columnComplexityId = 'mental_complexity_id';
 
   /// background uri column name
   final String columnBackgroundUri = 'background_uri';
@@ -24,21 +24,21 @@ class StageDao implements Dao<Stage> {
   CREATE TABLE IF NOT EXISTS $tableName ( 
     $columnId integer primary key, 
     $columnBackgroundUri text not null,
-    $columnMentalComplexityId integer not null,
-    FOREIGN KEY ($columnMentalComplexityId) REFERENCES mental_complexity (id))
+    $columnComplexityId integer not null,
+    FOREIGN KEY ($columnComplexityId) REFERENCES mental_complexity (id))
     ''';
 
   @override
   Stage fromMap(Map<String, dynamic> query) => Stage.data(
       id: query[columnId] as int,
       backgroundUri: query[columnBackgroundUri] as String,
-      mentalComplexity: query[columnMentalComplexityId] as Complexity);
+      mentalComplexity: Complexity.values[query[columnComplexityId] as int]);
 
   @override
   Map<String, dynamic> toMap(Stage object) => <String, dynamic>{
         columnId: object.id,
         columnBackgroundUri: object.backgroundUri,
-        columnMentalComplexityId: object.mentalComplexity
+        columnComplexityId: object.mentalComplexity
       };
 
   @override

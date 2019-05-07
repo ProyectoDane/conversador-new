@@ -39,7 +39,7 @@ class StageDatabaseRepository implements Repository<Stage> {
       dao.tableName,
       columns: <String>[
         dao.columnId,
-        dao.columnMentalComplexityId,
+        dao.columnComplexityId,
         dao.columnBackgroundUri,
       ],
       where: '${dao.columnId} = ?',

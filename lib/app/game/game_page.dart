@@ -55,7 +55,7 @@ class _GameBodyState extends State<_GameBody> {
         return _render(state);
       });
 
-  void _showDialog(int complexityNumber, BuildContext context) {
+  void _showDialog(int level, BuildContext context) {
     showDialog<void>(
         barrierDismissible: false,
         context: context,
@@ -69,8 +69,7 @@ class _GameBodyState extends State<_GameBody> {
                   Text(sprintf(
                       LangLocalizations.of(context)
                         .trans('game.level_ended_pop_up.body'),
-                      <String>[MentalComplexity.getComplexityText(
-                        complexityNumber, context)])),
+                      <int>[level])),
                   const SizedBox(height: Dimen.SPACING_NORMAL),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

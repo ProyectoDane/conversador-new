@@ -9,13 +9,13 @@ import 'package:flutter_syntactic_sorter/model/difficulty/mental_complexity.dart
 class StageFactory {
   /// Get all stages sorted by mentalComplexity (from easiest to most difficult)
   List<Stage> getAllOrderedStages(BuildContext context) =>
-      List<Stage>.from(_stages(context));
+      List<Stage>.from(_defaultStages(context));
 
   /// Get all the stages that have a certain mentalComplexity
   List<Stage> getStagesOfComplexity(
           Complexity mentalComplexity, BuildContext context){
     
-    final List<Stage> stages =  _stages(context)
+    final List<Stage> stages =  _defaultStages(context)
     .where((Stage stage) => stage.mentalComplexity == mentalComplexity)
     .toList()
     ..sort((Stage stage1,Stage stage2)
@@ -28,10 +28,56 @@ class StageFactory {
   /// Get a number of Stages from the list with difficulty in ascending order.
   /// count: number of stages
   /// indexOffset: index from where the stage count will begin
-  /// TODO: If the default stages and the user generated stages are combined
-  /// before hand, remove the sorting code as use as is.
   List<Stage> getStagesByCount
   (int count, int indexOffset, BuildContext context) {
+    final List<Stage> stages = _completeStageList(context);
+
+    if (indexOffset > stages.length) {
+      return <Stage>[];
+    }
+
+    final List<Stage> selectedItems = <Stage>[];
+    for (int i = indexOffset; i < indexOffset+count;i++) {
+      if (i < stages.length) {
+        selectedItems.add(stages[i]);
+      } else {
+        break;
+      }
+    }
+
+    return selectedItems;
+  }
+
+  /// Get random list of stages by count
+  /// count: number of stages
+  /// exceptionList: exception list of stages IDs
+  List<Stage>getRandomStagesByCount(
+    int count, List<int>exceptionList, BuildContext context) {
+    final List<Stage> stages = _completeStageList(context)
+    // Removes previously used stages by ID
+    ..removeWhere((Stage stage)=>exceptionList.contains(stage.id))
+    // Randomly scramble the remaining list
+    ..shuffle();
+    // Get the ammount of elements wanted
+    final List<Stage> shuffledList = stages.sublist(0,count);
+    return shuffledList;
+  }
+
+  /// Get one random stage that has the required mentalComplexity.
+  // Stage getRandomStageOfComplexity(
+  //   Complexity mentalComplexity, BuildContext context) {
+  //   final List<Stage> possibleStages =
+  //       getStagesOfComplexity(mentalComplexity, context);
+  //   final int randomStageIndex = Random().nextInt(possibleStages.length);
+  //   return possibleStages[randomStageIndex];
+  // }
+
+  /// Return the Stage identified by the given id.
+  Stage getStageFromId(int id, BuildContext context) =>
+      _defaultStages(context).firstWhere((Stage stage) => stage.id == id);
+
+  /// TODO: Combine default stages with user generated stages
+  List<Stage> _completeStageList(BuildContext context) {
     final List<Stage> easyStages = getStagesOfComplexity(
       Complexity.easy, context);
     final List<Stage> normalStages = getStagesOfComplexity(
@@ -46,36 +92,10 @@ class StageFactory {
     ..addAll(hardStages)
     ..addAll(expertStages);
 
-    if (indexOffset > stages.length) {
-      return null;
-    }
-
-    final List<Stage> selectedItems = <Stage>[];
-    for (int i = indexOffset; i > indexOffset+count;i++) {
-      if (i < stages.length) {
-        selectedItems.add(stages[i]);
-      } else {
-        break;
-      }
-    }
-
-    return selectedItems;
+    return stages;
   }
 
-  /// Get one random stage that has the required mentalComplexity.
-  Stage getRandomStageOfComplexity(
-    Complexity mentalComplexity, BuildContext context) {
-    final List<Stage> possibleStages =
-        getStagesOfComplexity(mentalComplexity, context);
-    final int randomStageIndex = Random().nextInt(possibleStages.length);
-    return possibleStages[randomStageIndex];
-  }
-
-  /// Return the Stage identified by the given id.
-  Stage getStageFromId(int id, BuildContext context) =>
-      _stages(context).firstWhere((Stage stage) => stage.id == id);
-
-  List<Stage> _stages(BuildContext context) => <Stage>[
+  List<Stage> _defaultStages(BuildContext context) => <Stage>[
         Stage(
           id: 1,
           mentalComplexity: Complexity.easy,

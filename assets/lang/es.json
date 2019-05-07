@@ -4,7 +4,7 @@
   "game_settings_title": "Elegí como querés jugar",
   "game_settings_start": "Comenzar",
   "game.level_ended_pop_up.title": "¡Felicitaciones!",
-  "game.level_ended_pop_up.body": "Acabas de terminar el nivel %s. ¿Quieres seguir practicando?",
+  "game.level_ended_pop_up.body": "Acabas de terminar el nivel %i. ¿Quieres seguir practicando?",
   "game.level_ended_pop_up.no": "No, gracias",
   "game.level_ended_pop_up.yes": "¡Sí!",
   "game_difficulty_easy":"Fácil",
