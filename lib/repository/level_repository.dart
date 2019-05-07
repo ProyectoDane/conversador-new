@@ -2,9 +2,9 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_syntactic_sorter/model/stage/level.dart';
 import 'package:flutter_syntactic_sorter/model/stage/stage.dart';
 import 'package:flutter_syntactic_sorter/repository/stage_app_repository.dart';
-//import 'package:flutter_syntactic_sorter/util/list_extensions.dart';
+import 'package:flutter_syntactic_sorter/model/difficulty/mental_complexity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-//import 'package:tuple/tuple.dart';
+import 'package:tuple/tuple.dart';
 
 /// Repository for the game Levels.
 class LevelRepository {
@@ -21,6 +21,7 @@ class LevelRepository {
 
   static LevelRepository _instance;
   final StageAppRepository _stageRepository;
+  final int _maxStageCount = 5;
 
   // ignore: non_constant_identifier_names, prefer_function_declarations_over_variables
   static final String Function(int) _STAGES_IN_LEVEL_KEY =
@@ -31,40 +32,54 @@ class LevelRepository {
       getLevel(1, context);
 
   /// Returns the level associated with the given number.
-  Future<Level> getLevel(int complexityLevel, BuildContext context) async {
+  Future<Level> getLevel(
+    int levelId, BuildContext context) async {
+    
+    final Tuple2<int, bool> levelData = _LEVELS[levelId];
+    final int indexOffset = levelData.item1;
+    final bool isRandom = levelData.item2;
+
+    if (isRandom) {
+      
+    } else {
+      final List<Stage> stageList = await _stageRepository.getStagesByCount(
+        _maxStageCount, indexOffset, context);
+      return Level(stages: stageList, id: levelId);
+    }
 
     final List<Stage> stages = await _stageRepository
-        .getStagesForDifficulty(complexityLevel, context);
+        .getStagesForComplexity(levelId as Complexity, context);
     // Incoming levels could be mixed with custom levels 
     // They are sorted by sublevel
     stages.sort((Stage stage1,Stage stage2)
-      => stage1.subLevel.compareTo(stage2.subLevel)
+      => stage1.complexityOrder.compareTo(stage2.complexityOrder)
     );
 
     // Save used difficulties
-    await _setLevelUsedStages(stages, complexityLevel);
+    await _setLevelUsedStages(stages, levelId);
 
     if (stages.isEmpty) {
       return null;
     }
-    return Level(stages: stages, id: complexityLevel);
+    return Level(stages: stages, id: levelId);
   }
 
-   // MARK: - Level's parameters
+  // MARK: - Level's parameters
   /// For each level number, you get:
-  /// - The dificulty rating,
+  /// - The stage list offset,
   /// - Whether or not they are randomized,
-  // final Map<int, Tuple2<int, bool>> _LEVELS =
-  //     <int, Tuple2<int, bool>>{
-  //   1: const Tuple2<int, bool>(1, false),
-  //   2: const Tuple2<int, bool>(2, false),
-  //   3: const Tuple2<int, bool>(3, false),
-  //   4: const Tuple2<int, bool>(4, false),
-  // };
-
+  final Map<int, Tuple2<int, bool>> _LEVELS =
+      <int, Tuple2<int, bool>>{
+    1: const Tuple2<int, bool>(0, false),
+    2: const Tuple2<int, bool>(5, false),
+    3: const Tuple2<int, bool>(0, true),
+    4: const Tuple2<int, bool>(0, true),
+  };
+  
   // MARK: - Shared Preferences data
 
-  Future<bool> _setLevelUsedStages(List<Stage> stages, int levelNumber) async {
+  Future<bool> _setLevelUsedStages(
+    List<Stage> stages, int levelNumber) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.setStringList(
         _STAGES_IN_LEVEL_KEY(levelNumber),
@@ -73,15 +88,15 @@ class LevelRepository {
             .toList());
   }
 
-  // Future<List<int>> _getLevelUsedStagesDifficulties(int levelNumber) async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   try {
-  //     final List<String> difficulties =
-  //         prefs.getStringList(_STAGES_IN_LEVEL_KEY(levelNumber));
-  //     return difficulties.map(int.parse).toList();
-  //     // ignore: avoid_catches_without_on_clauses
-  //   } catch (e) {
-  //     return <int>[];
-  //   }
-  // }
+  Future<List<int>> _getLevelUsedStages(int levelNumber) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    try {
+      final List<String> difficulties =
+          prefs.getStringList(_STAGES_IN_LEVEL_KEY(levelNumber));
+      return difficulties.map(int.parse).toList();
+      // ignore: avoid_catches_without_on_clauses
+    } catch (e) {
+      return <int>[];
+    }
+  }
 }

@@ -1,26 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_syntactic_sorter/ui/settings/lang/lang_localizations.dart';
 
+/// Complexity values
+enum Complexity {
+  /// Invalid value
+  invalid,
+  /// Easy
+  easy,
+  /// Normal
+  normal,
+  /// Hard
+  hard,
+  /// Expert
+  expert
+}
+
 /// Mental complexity of the stage the user
 /// will try to resolve
 class MentalComplexity {
   /// Creates a MentalComplexity with a name.
   MentalComplexity({this.id, this.description});
 
-  /// Easy
-  static int mentalComplexityEasy = 1;
-  /// Normal
-  static int mentalComplexityNormal = 2;
-  /// Hard
-  static int mentalComplexityHard = 3;
-  /// Expert
-  static int mentalComplexityExpert = 4;
-
-  static final Map<int,String> _textMap = <int,String>{
-    mentalComplexityEasy: 'game_difficulty_easy',
-    mentalComplexityNormal: 'game_difficulty_normal',
-    mentalComplexityHard: 'game_difficulty_hard',
-    mentalComplexityExpert: 'game_difficulty_expert'
+  static final Map<Complexity,String> _textMap = <Complexity,String>{
+    Complexity.easy: 'game_difficulty_easy',
+    Complexity.normal: 'game_difficulty_normal',
+    Complexity.hard: 'game_difficulty_hard',
+    Complexity.expert: 'game_difficulty_expert'
   };
 
   /// Returns complexity in text form

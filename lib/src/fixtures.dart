@@ -39,52 +39,52 @@ Future<void> preloadData() async {
   await _stageRepository.bulkInsert(<Stage>[
     Stage.data(
       id: 1,
-      mentalComplexity: 1,
+      mentalComplexity: Complexity.easy,
       backgroundUri: 'assets/images/game/gaston_corre.jpg',
     ),
     Stage.data(
       id: 2,
-      mentalComplexity: 1,
+      mentalComplexity: Complexity.easy,
       backgroundUri: 'assets/images/game/la_abuela_pinta.jpg',
     ),
     Stage.data(
       id: 3,
-      mentalComplexity: 1,
+      mentalComplexity: Complexity.easy,
       backgroundUri: 'assets/images/game/el_perro_come.jpg',
     ),
     Stage.data(
       id: 4,
-      mentalComplexity: 1,
+      mentalComplexity: Complexity.easy,
       backgroundUri: 'assets/images/game/pelusa_ronronea.jpg',
     ),
     Stage.data(
       id: 5,
-      mentalComplexity: 2,
+      mentalComplexity: Complexity.normal,
       backgroundUri: 'assets/images/game/kim_come_fideos.jpg',
     ),
     Stage.data(
       id: 6,
-      mentalComplexity: 2,
+      mentalComplexity: Complexity.normal,
       backgroundUri: 'assets/images/game/maria_y_alan_rien.jpg',
     ),
     Stage.data(
       id: 7,
-      mentalComplexity: 2,
+      mentalComplexity: Complexity.normal,
       backgroundUri: 'assets/images/game/el_ninio_salta_la_soga.jpg',
     ),
     Stage.data(
       id: 8,
-      mentalComplexity: 2,
+      mentalComplexity: Complexity.normal,
       backgroundUri: 'assets/images/game/mariana_y_carla_juegan_contentas.jpg',
     ),
     Stage.data(
       id: 9,
-      mentalComplexity: 3,
+      mentalComplexity: Complexity.hard,
       backgroundUri: 'assets/images/game/las_chicas_juegan_al_futbol.jpg',
     ),
     Stage.data(
       id: 10,
-      mentalComplexity: 4,
+      mentalComplexity: Complexity.expert,
       backgroundUri: 'assets/images/game/juan_suenia_con_su_perro.jpg',
     ),
   ]);

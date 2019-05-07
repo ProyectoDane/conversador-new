@@ -1,5 +1,6 @@
 import 'package:flutter_syntactic_sorter/data_access/dao/dao.dart';
 import 'package:flutter_syntactic_sorter/model/stage/stage.dart';
+import 'package:flutter_syntactic_sorter/model/difficulty/mental_complexity.dart';
 
 /// Database table for the Stage class
 class StageDao implements Dao<Stage> {
@@ -31,7 +32,7 @@ class StageDao implements Dao<Stage> {
   Stage fromMap(Map<String, dynamic> query) => Stage.data(
       id: query[columnId] as int,
       backgroundUri: query[columnBackgroundUri] as String,
-      mentalComplexity: query[columnMentalComplexityId] as int);
+      mentalComplexity: query[columnMentalComplexityId] as Complexity);
 
   @override
   Map<String, dynamic> toMap(Stage object) => <String, dynamic>{

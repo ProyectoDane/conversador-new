@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_syntactic_sorter/model/concept/concept.dart';
 import 'package:flutter_syntactic_sorter/ui/settings/lang/lang_localizations.dart';
 import 'package:flutter_syntactic_sorter/src/model_exports.dart';
+import 'package:flutter_syntactic_sorter/model/difficulty/mental_complexity.dart';
 
 /// Factory for getting the needed stages.
 class StageFactory {
@@ -11,16 +12,61 @@ class StageFactory {
       List<Stage>.from(_stages(context));
 
   /// Get all the stages that have a certain mentalComplexity
-  List<Stage> getStagesOfDifficulty(
-          int mentalComplexity, BuildContext context) =>
-      _stages(context)
-          .where((Stage stage) => stage.mentalComplexity == mentalComplexity)
-          .toList();
+  List<Stage> getStagesOfComplexity(
+          Complexity mentalComplexity, BuildContext context){
+    
+    final List<Stage> stages =  _stages(context)
+    .where((Stage stage) => stage.mentalComplexity == mentalComplexity)
+    .toList()
+    ..sort((Stage stage1,Stage stage2)
+      => stage1.complexityOrder.compareTo(stage2.complexityOrder)
+    );
+
+    return stages;
+  }
+
+  /// Get a number of Stages from the list with difficulty in ascending order.
+  /// count: number of stages
+  /// indexOffset: index from where the stage count will begin
+  /// TODO: If the default stages and the user generated stages are combined
+  /// before hand, remove the sorting code as use as is.
+  List<Stage> getStagesByCount
+  (int count, int indexOffset, BuildContext context) {
+    final List<Stage> easyStages = getStagesOfComplexity(
+      Complexity.easy, context);
+    final List<Stage> normalStages = getStagesOfComplexity(
+      Complexity.normal, context);
+    final List<Stage> hardStages = getStagesOfComplexity(
+      Complexity.hard, context);
+    final List<Stage> expertStages = getStagesOfComplexity(
+      Complexity.expert, context);
+
+    final List<Stage> stages = easyStages
+    ..addAll(normalStages)
+    ..addAll(hardStages)
+    ..addAll(expertStages);
+
+    if (indexOffset > stages.length) {
+      return null;
+    }
+
+    final List<Stage> selectedItems = <Stage>[];
+    for (int i = indexOffset; i > indexOffset+count;i++) {
+      if (i < stages.length) {
+        selectedItems.add(stages[i]);
+      } else {
+        break;
+      }
+    }
+
+    return selectedItems;
+  }
 
   /// Get one random stage that has the required mentalComplexity.
-  Stage getRandomStageOfDifficulty(int mentalComplexity, BuildContext context) {
+  Stage getRandomStageOfComplexity(
+    Complexity mentalComplexity, BuildContext context) {
     final List<Stage> possibleStages =
-        getStagesOfDifficulty(mentalComplexity, context);
+        getStagesOfComplexity(mentalComplexity, context);
     final int randomStageIndex = Random().nextInt(possibleStages.length);
     return possibleStages[randomStageIndex];
   }
@@ -32,8 +78,8 @@ class StageFactory {
   List<Stage> _stages(BuildContext context) => <Stage>[
         Stage(
           id: 1,
-          mentalComplexity: MentalComplexity.mentalComplexityEasy,
-          subLevel: 1,
+          mentalComplexity: Complexity.easy,
+          complexityOrder: 1,
           backgroundUri: 'assets/images/game/gaston_corre.jpg',
           sentence: Sentence(
             Subject(
@@ -46,8 +92,8 @@ class StageFactory {
         ),
         Stage(
           id: 2,
-          mentalComplexity: MentalComplexity.mentalComplexityEasy,
-          subLevel: 2,
+          mentalComplexity: Complexity.easy,
+          complexityOrder: 2,
           backgroundUri: 'assets/images/game/la_abuela_pinta.jpg',
           sentence: Sentence(
             Subject.containing(<Concept>[
@@ -65,8 +111,8 @@ class StageFactory {
         ),
         Stage(
           id: 3,
-          mentalComplexity: MentalComplexity.mentalComplexityEasy,
-          subLevel: 3,
+          mentalComplexity: Complexity.easy,
+          complexityOrder: 3,
           backgroundUri: 'assets/images/game/el_perro_come.jpg',
           sentence: Sentence(
             Subject.containing(<Concept>[
@@ -84,8 +130,8 @@ class StageFactory {
         ),
         Stage(
           id: 4,
-          mentalComplexity: MentalComplexity.mentalComplexityEasy,
-          subLevel: 4,
+          mentalComplexity: Complexity.easy,
+          complexityOrder: 4,
           backgroundUri: 'assets/images/game/pelusa_ronronea.jpg',
           sentence: Sentence(
             Subject(
@@ -98,8 +144,8 @@ class StageFactory {
         ),
         Stage(
           id: 5,
-          mentalComplexity: MentalComplexity.mentalComplexityNormal,
-          subLevel: 1,
+          mentalComplexity: Complexity.normal,
+          complexityOrder: 1,
           backgroundUri: 'assets/images/game/kim_come_fideos.jpg',
           sentence: Sentence(
               Subject(
@@ -116,8 +162,8 @@ class StageFactory {
         ),
         Stage(
           id: 6,
-          mentalComplexity: MentalComplexity.mentalComplexityNormal,
-          subLevel: 2,
+          mentalComplexity: Complexity.normal,
+          complexityOrder: 2,
           backgroundUri: 'assets/images/game/maria_y_alan_rien.jpg',
           sentence: Sentence(
             Subject.containing(<Concept>[
@@ -138,8 +184,8 @@ class StageFactory {
         ),
         Stage(
           id: 7,
-          mentalComplexity: MentalComplexity.mentalComplexityNormal,
-          subLevel: 3,
+          mentalComplexity: Complexity.normal,
+          complexityOrder: 3,
           backgroundUri: 'assets/images/game/el_ninio_salta_la_soga.jpg',
           sentence: Sentence(
               Subject.containing(<Concept>[
@@ -161,8 +207,8 @@ class StageFactory {
         ),
         Stage(
             id: 8,
-            mentalComplexity: MentalComplexity.mentalComplexityNormal,
-            subLevel: 4,
+            mentalComplexity: Complexity.normal,
+            complexityOrder: 4,
             backgroundUri:
                 'assets/images/game/mariana_y_carla_juegan_contentas.jpg',
             sentence: Sentence(
@@ -188,8 +234,8 @@ class StageFactory {
             )),
         Stage(
           id: 9,
-          mentalComplexity: MentalComplexity.mentalComplexityHard,
-          subLevel: 1,
+          mentalComplexity: Complexity.hard,
+          complexityOrder: 1,
           backgroundUri: 'assets/images/game/las_chicas_juegan_al_futbol.jpg',
           sentence: Sentence(
               Subject.containing(<Concept>[
@@ -211,8 +257,8 @@ class StageFactory {
         ),
         Stage(
           id: 10,
-          mentalComplexity: MentalComplexity.mentalComplexityExpert,
-          subLevel: 1,
+          mentalComplexity: Complexity.expert,
+          complexityOrder: 1,
           backgroundUri: 'assets/images/game/juan_suenia_con_su_perro.jpg',
           sentence: Sentence(
             Subject(
