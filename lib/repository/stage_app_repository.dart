@@ -24,6 +24,7 @@ class StageAppRepository {
     int count, int indexOffset, BuildContext context) async =>
     StageFactory().getStagesByCount(count, indexOffset, context);
 
+  /// Get random list of stages by count
   Future<List<Stage>> getRandomStagesByCount(
     int count, List<int>exceptionList, BuildContext context) async =>
     StageFactory().getRandomStagesByCount(count, exceptionList, context);

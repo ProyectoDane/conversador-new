@@ -3,7 +3,8 @@ import 'package:flutter_syntactic_sorter/ui/settings/lang/lang_localizations.dar
 
 /// Complexity values
 enum Complexity {
-  /// Invalid value
+  /// Invalid value. This is used because the complexity data in the Data Base
+  /// starts at 1, not 0. Without this extra value, the db parser would fail.
   invalid,
   /// Easy
   easy,

@@ -36,15 +36,8 @@ class StageFactory {
       return <Stage>[];
     }
 
-    final List<Stage> selectedItems = <Stage>[];
-    for (int i = indexOffset; i < indexOffset+count;i++) {
-      if (i < stages.length) {
-        selectedItems.add(stages[i]);
-      } else {
-        break;
-      }
-    }
-
+    final List<Stage> selectedItems = stages.sublist(
+      indexOffset, indexOffset+count);
     return selectedItems;
   }
 
