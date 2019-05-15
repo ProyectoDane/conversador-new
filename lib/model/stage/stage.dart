@@ -5,10 +5,11 @@ import 'package:flutter_syntactic_sorter/model/difficulty/mental_complexity.dart
 import 'package:meta/meta.dart';
 
 /// Represents a Stage in the game:
-/// - a sentence,
-/// - the maximum complexity it can reach
-/// - the related image's uri
 /// - its id
+/// - the related image's uri
+/// - a sentence
+/// - the mental complexity 
+/// - the order relative to others of the same complexity
 class Stage {
   /// Creates a Stage with the given information.
   Stage(

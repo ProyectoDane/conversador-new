@@ -1,8 +1,6 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter_syntactic_sorter/model/stage/level.dart';
 import 'package:flutter_syntactic_sorter/model/stage/stage.dart';
-import 'package:flutter_syntactic_sorter/repository/stage_app_repository.dart';
-import 'package:flutter_syntactic_sorter/model/difficulty/mental_complexity.dart';
+import 'package:flutter_syntactic_sorter/repository/stage_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tuple/tuple.dart';
 
@@ -13,28 +11,28 @@ class LevelRepository {
   /// - The minimum difficulty should be 1
   /// - Every difficulty between the minimum and the maximum
   /// should always have at least one Stage to represent it.
-  factory LevelRepository(StageAppRepository stageRepository) =>
+  factory LevelRepository(StageRepository stageRepository) =>
       _instance ??= LevelRepository._internal(stageRepository);
 
-  LevelRepository._internal(StageAppRepository stageRepository)
+  LevelRepository._internal(StageRepository stageRepository)
       : _stageRepository = stageRepository;
 
   static LevelRepository _instance;
-  final StageAppRepository _stageRepository;
+  final StageRepository _stageRepository;
   final int _maxStageCount = 5;
 
   // ignore: non_constant_identifier_names, prefer_function_declarations_over_variables
   final String _STAGES_IN_LEVEL_KEY = 'STAGES_IN_LEVEL';
 
   /// Returns first level of the game
-  Future<Level> getFirstLevel(BuildContext context) async {
+  Future<Level> getFirstLevel() async {
     await _clearUsedStages();
-    return getLevel(1, context);
+    return getLevel(1);
   }  
 
   /// Returns the level associated with the given number.
   Future<Level> getLevel(
-    int levelId, BuildContext context) async {
+    int levelId) async {
     
     final Tuple2<int, bool> levelData = _LEVELS[levelId];
     if (levelData == null) {
@@ -48,11 +46,11 @@ class LevelRepository {
     if (isRandom) {
       final List<int> previouslyUsedStages = await _getLevelUsedStageIDs();
       stageList = await _stageRepository.getRandomStagesByCount(
-        _maxStageCount, previouslyUsedStages, context);
+        _maxStageCount, previouslyUsedStages);
       await _setLevelUsedStageIDs(stageList);
     } else {
       stageList = await _stageRepository.getStagesByCount(
-        _maxStageCount, indexOffset, context);
+        _maxStageCount, indexOffset);
     }
 
     if (stageList.isEmpty) {
@@ -65,6 +63,7 @@ class LevelRepository {
   /// For each level number, you get:
   /// - The stage list offset,
   /// - Whether or not they are randomized,
+  // ignore: prefer_function_declarations_over_variables, non_constant_identifier_names
   final Map<int, Tuple2<int, bool>> _LEVELS =
       <int, Tuple2<int, bool>>{
     1: const Tuple2<int, bool>(0, false),

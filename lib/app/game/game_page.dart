@@ -10,7 +10,6 @@ import 'package:flutter_syntactic_sorter/ui/widgets/buttons/custom_button.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/platform/platform_scaffold.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/util/widget_utils.dart';
 import 'package:flutter_syntactic_sorter/util/dimen.dart';
-import 'package:flutter_syntactic_sorter/model/difficulty/mental_complexity.dart';
 import 'package:sprintf/sprintf.dart';
 
 /// Page for the Game part.

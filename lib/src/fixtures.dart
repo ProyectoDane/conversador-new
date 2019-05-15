@@ -40,51 +40,61 @@ Future<void> preloadData() async {
     Stage.data(
       id: 1,
       mentalComplexity: Complexity.easy,
+      complexityOrder: 0,
       backgroundUri: 'assets/images/game/gaston_corre.jpg',
     ),
     Stage.data(
       id: 2,
       mentalComplexity: Complexity.easy,
+      complexityOrder: 1,
       backgroundUri: 'assets/images/game/la_abuela_pinta.jpg',
     ),
     Stage.data(
       id: 3,
       mentalComplexity: Complexity.easy,
+      complexityOrder: 2,
       backgroundUri: 'assets/images/game/el_perro_come.jpg',
     ),
     Stage.data(
       id: 4,
       mentalComplexity: Complexity.easy,
+      complexityOrder: 3,
       backgroundUri: 'assets/images/game/pelusa_ronronea.jpg',
     ),
     Stage.data(
       id: 5,
       mentalComplexity: Complexity.normal,
+      complexityOrder: 0,
       backgroundUri: 'assets/images/game/kim_come_fideos.jpg',
     ),
     Stage.data(
       id: 6,
       mentalComplexity: Complexity.normal,
+      complexityOrder: 1,
       backgroundUri: 'assets/images/game/maria_y_alan_rien.jpg',
     ),
     Stage.data(
       id: 7,
       mentalComplexity: Complexity.normal,
+      complexityOrder: 2,
       backgroundUri: 'assets/images/game/el_ninio_salta_la_soga.jpg',
     ),
     Stage.data(
       id: 8,
       mentalComplexity: Complexity.normal,
+      complexityOrder: 3,
       backgroundUri: 'assets/images/game/mariana_y_carla_juegan_contentas.jpg',
     ),
     Stage.data(
       id: 9,
       mentalComplexity: Complexity.hard,
+      complexityOrder: 0,
       backgroundUri: 'assets/images/game/las_chicas_juegan_al_futbol.jpg',
     ),
     Stage.data(
       id: 10,
       mentalComplexity: Complexity.expert,
+      complexityOrder: 0,
       backgroundUri: 'assets/images/game/juan_suenia_con_su_perro.jpg',
     ),
   ]);

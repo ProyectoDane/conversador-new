@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_syntactic_sorter/app/game/game_event.dart';
 import 'package:flutter_syntactic_sorter/app/game/game_state.dart';
 import 'package:flutter_syntactic_sorter/app/game/live_stage/live_stage_bloc.dart';
@@ -10,7 +9,7 @@ import 'package:flutter_syntactic_sorter/model/stage/live_stage.dart';
 import 'package:flutter_syntactic_sorter/model/stage/stage.dart';
 import 'package:flutter_syntactic_sorter/repository/level_repository.dart';
 import 'package:flutter_syntactic_sorter/repository/piece_config_repository.dart';
-import 'package:flutter_syntactic_sorter/repository/stage_app_repository.dart';
+import 'package:flutter_syntactic_sorter/repository/stage_repository.dart';
 
 /// Bloc for Game part of the app.
 /// It takes care of selecting a stage and moving through its
@@ -19,15 +18,13 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   /// Creates a GameBloc that uses the repositories
   /// to get the stages and the configured piece configuration.
   /// There are default values for both repositories.
-  GameBloc(BuildContext context,
+  GameBloc(
       {PieceConfigRepository pieceConfigRepository,
       LevelRepository levelRepository}) {
-    _context = context;
     _pieceConfigRepository = pieceConfigRepository ?? PieceConfigRepository();
-    _levelRepository = levelRepository ?? LevelRepository(StageAppRepository());
+    _levelRepository = levelRepository ?? LevelRepository(StageRepository());
   }
 
-  BuildContext _context;
   PieceConfigRepository _pieceConfigRepository;
   LevelRepository _levelRepository;
 
@@ -73,7 +70,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   }
 
   Future<GameState> _getFirstStage() async {
-    final Level level = await _levelRepository.getFirstLevel(_context);
+    final Level level = await _levelRepository.getFirstLevel();
     _currentLevel = level;
     _currentStageIndex = -1;
     return _getNewStage(null);
@@ -81,8 +78,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
   Future<GameState> _getNextLevel(GameState oldState) async {
     _currentLevel =
-        await _levelRepository.getLevel(_currentLevel.id + 1, _context);
-    _currentLevel ??= await _levelRepository.getFirstLevel(_context);
+        await _levelRepository.getLevel(_currentLevel.id + 1);
+    _currentLevel ??= await _levelRepository.getFirstLevel();
     _currentStageIndex = -1;
     return _getNewStage(oldState);
   }
