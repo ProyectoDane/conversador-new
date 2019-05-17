@@ -41,6 +41,12 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Access is needed to obtain photos from your gallery</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Access is needed to obtain photos from you camera</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Needed for recordings</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 </dict>
