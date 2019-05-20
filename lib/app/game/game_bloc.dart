@@ -10,6 +10,7 @@ import 'package:flutter_syntactic_sorter/model/stage/stage.dart';
 import 'package:flutter_syntactic_sorter/repository/level_repository.dart';
 import 'package:flutter_syntactic_sorter/repository/piece_config_repository.dart';
 import 'package:flutter_syntactic_sorter/repository/stage_repository.dart';
+import 'package:flutter_syntactic_sorter/app/game/util/tts_manager.dart';
 
 /// Bloc for Game part of the app.
 /// It takes care of selecting a stage and moving through its
@@ -101,6 +102,12 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     final LiveStage nextLiveStage =
         _currentStage.getFollowingLiveStage(_currentLiveStage.depth);
     if (nextLiveStage == null) {
+      // Reproduces sentence audio
+      final Duration duration = await TtsManager().playSentence(
+        _currentStage.sentence);
+      // Delays the stage change according to sentence audio
+      await Future.delayed(duration, (){});
+      // Enters new stage
       return _getNewStage(state);
     } else {
       _currentLiveStage = nextLiveStage;

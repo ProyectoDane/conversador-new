@@ -12,6 +12,10 @@ class LangLocalizations {
   static LangLocalizations of(final BuildContext context) =>
     Localizations.of<LangLocalizations>(context, LangLocalizations);
 
+  /// Returns a String with the language and region of the device
+  /// example: 'en-US'
+  static String localeString = '';
+
   final Map<String, String> _strings;
 
   /// Loads the translations for the specified Locale
@@ -26,11 +30,12 @@ class LangLocalizations {
         .map( (String key, dynamic value) =>
           MapEntry<String, String>(key, value.toString())
     );
+
+    localeString = locale.toLanguageTag();
     return LangLocalizations._internal(strings);
   }
 
   /// Translates (Localizes) a string.
   String trans(final String key) => _strings[key];
-
   
 }
