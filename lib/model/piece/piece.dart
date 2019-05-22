@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_syntactic_sorter/model/concept/concept.dart';
 import 'package:flutter_syntactic_sorter/model/figure/figure.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece_config.dart';
+import 'package:flutter_syntactic_sorter/util/device_type_helper.dart';
 
 /// Represents a piece to show in the game (target or move around)
 class Piece {
@@ -12,7 +13,8 @@ class Piece {
   Piece({@required this.concept, @required this.index});
 
   /// Piece size
-  static const double BASE_SIZE = 90;
+  // ignore: prefer_function_declarations_over_variables, non_constant_identifier_names
+  static double BASE_SIZE = isDeviceTablet ? 160:90;
 
   /// State of a target piece when available for match
   static const int TARGET_INITIAL = 1;
@@ -37,13 +39,14 @@ class Piece {
   Widget buildWidget({
     @required int pieceType,
     @required PieceConfig pieceConfig,
-    double size = BASE_SIZE
+    double size = 0
   }) {
+    final double givenSize = size == 0 ? BASE_SIZE:size;
     final Figure figure = pieceConfig.createFigure(concept.type, pieceType);
     return figure.buildWidget(
         pieceType: pieceType,
         content: concept.value,
-        size: size
+        size: givenSize
     );
   }
 
@@ -51,8 +54,7 @@ class Piece {
   /// based on the given piece configuration and size.
   CustomPainter buildPainter({
     @required int pieceType,
-    @required PieceConfig pieceConfig,
-    double size = BASE_SIZE
+    @required PieceConfig pieceConfig
   }) => pieceConfig.createPainter(concept.type, pieceType);
 
 }

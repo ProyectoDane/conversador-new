@@ -106,7 +106,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       final Duration duration = await TtsManager().playSentence(
         _currentStage.sentence);
       // Delays the stage change according to sentence audio
-      await Future.delayed(duration, (){});
+      await Future<GameState>.delayed(duration, (){});
       // Enters new stage
       return _getNewStage(state);
     } else {

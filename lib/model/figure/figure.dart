@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_syntactic_sorter/util/dimen.dart';
+import 'package:flutter_syntactic_sorter/util/device_type_helper.dart';
 
 /// Class that can build the necessary widget for a certain piece.
 class Figure {
@@ -22,7 +23,7 @@ class Figure {
         child: Container(
           width: size,
           height: size,
-          padding: const EdgeInsets.all(5),
+          padding: EdgeInsets.all(isDeviceTablet ? 15:5),
           child: Center(
             child: Text(
               content,
@@ -30,7 +31,7 @@ class Figure {
               style: TextStyle(
                   color: Colors.white,
                   decoration: TextDecoration.none,
-                  fontSize: Dimen.FONT_SMALL),
+                  fontSize: isDeviceTablet ? Dimen.FONT_LARGE:Dimen.FONT_SMALL),
             ),
           ),
         ),

@@ -154,6 +154,8 @@ class LiveStageBloc extends Bloc<LiveStageEvent, LiveStageState> {
       );
       final int remainingAttemptes = newDragPiece.attemptsRemaining;
       if (remainingAttemptes == 0) {
+        TtsManager().playConcept(draggedPiece.concept);
+
         final TargetPieceState target =
           newState.targetPieces.firstWhere((TargetPieceState piece) =>
             piece.piece.concept.value == dragPiece.piece.concept.value
