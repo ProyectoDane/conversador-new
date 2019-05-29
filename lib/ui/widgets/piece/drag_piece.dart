@@ -136,7 +136,7 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
 
   void _renderOperator(final Operator operator) {
     setState(operator.newState);
-    widget._audioCache.play(operator.sound);
+    widget._audioCache.play(operator.sound, volume: operator.volume);
     _playAnimation();
   }
 
