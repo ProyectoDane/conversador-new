@@ -49,10 +49,12 @@ class TtsManager {
     const int estimatedWordDuration = 600;//miliseconds
 
     if (concept.children.isEmpty) {
-      return Tuple2<String, int>(concept.value, estimatedWordDuration);
+      return Tuple2<String, int>(
+        concept.value, estimatedWordDuration);
     } else {
       final int total = estimatedWordDuration * concept.children.length;
-      return Tuple2<String, int>(concept.value, total);
+      return Tuple2<String, int>(
+        concept.value, total);
     }
   }
 

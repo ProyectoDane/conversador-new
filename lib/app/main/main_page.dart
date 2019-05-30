@@ -43,7 +43,7 @@ class _MainBody extends StatelessWidget {
   Widget _getTitle(BuildContext context) => Container(
         margin: const EdgeInsets.only(bottom: Dimen.SPACING_NORMAL),
         child: CustomText(
-          text: LangLocalizations.of(context).trans('main_title'),
+          text: LangLocalizations.of(context).trans('main_title').toUpperCase(),
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: isDeviceTablet ? Dimen.FONT_IPAD_TITLE:Dimen.FONT_HUGE,
@@ -54,7 +54,8 @@ class _MainBody extends StatelessWidget {
   Widget _getButton(BuildContext context) => CustomButton(
         onPressed: () =>
             Navigator.pushNamed(context, Router.GAME_SETTINGS_PAGE),
-        text: LangLocalizations.of(context).trans('main_btn_start'),
+        text: LangLocalizations.of(context).trans('main_btn_start')
+              .toUpperCase(),
       );
 
 }

@@ -23,14 +23,15 @@ class Figure {
         child: Container(
           width: size,
           height: size,
-          padding: EdgeInsets.all(isDeviceTablet ? 15:5),
+          padding: EdgeInsets.all(isDeviceTablet ? 10:5),
           child: Center(
             child: Text(
-              content,
+              content.toUpperCase(),
               textAlign: TextAlign.center,
               style: TextStyle(
                   color: Colors.white,
                   decoration: TextDecoration.none,
+                  fontWeight: FontWeight.normal,
                   fontSize: isDeviceTablet ? Dimen.FONT_LARGE:Dimen.FONT_SMALL),
             ),
           ),
