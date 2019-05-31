@@ -21,8 +21,18 @@ class TtsManager {
     if (!_isLanguageSet) {
       await _setLanguage();
     }
+
+    // This is a work around for spanish, for single letter words 
+    // like "a","e","o","y"
+    String text;
+    final bool isSpanish = LangLocalizations.localeString.contains('es');
+    if (concept.value.length == 1 && isSpanish) {
+      text = 'h${concept.value}';
+    } else {
+      text = concept.value;
+    }
     
-    await _flutterTts.speak(concept.value);
+    await _flutterTts.speak(text);
   }
 
   /// Reproduces the entire sentence and returns duration in miliseconds
