@@ -56,9 +56,15 @@ class LevelRepository {
     if (stageList.isEmpty) {
       return null;
     }
-    return Level(stages: stageList, id: levelId);
+
+    return Level(
+      stages: stageList, id: levelId);
   }
 
+  /// Check if level is final level
+  bool isFinalLevel(int levelId) 
+    => levelId == _LEVELS.values.length;
+  
   // MARK: - Level's parameters
   /// For each level number, you get:
   /// - The stage list offset,

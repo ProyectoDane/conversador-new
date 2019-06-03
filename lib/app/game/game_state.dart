@@ -12,7 +12,8 @@ class GameState {
   /// and the live stage bloc.
   GameState.stage({@required this.backgroundUri, @required this.liveStageBloc})
       : loading = false,
-        levelCompleted = null;
+        levelCompleted = null,
+        isFinalLevel = false;
 
   /// Creates a GameState in the loading state which does not
   /// have a background image or a corresponding live stage bloc.
@@ -23,15 +24,17 @@ class GameState {
   GameState._internal({this.loading,
     this.backgroundUri,
     this.liveStageBloc,
-    this.levelCompleted});
+    this.levelCompleted,
+    this.isFinalLevel});
 
   /// Turns this state into one with the same information
   /// but flagging the specified level was completed.
-  GameState completeLevel(int levelNumber) =>
+  GameState completeLevel(int levelNumber, bool isLast) =>
       GameState._internal(loading: loading,
           backgroundUri: backgroundUri,
           liveStageBloc: liveStageBloc,
-          levelCompleted: levelNumber);
+          levelCompleted: levelNumber,
+          isFinalLevel: isLast);
 
   /// Whether we are loading a stage or not
   final bool loading;
@@ -39,6 +42,9 @@ class GameState {
   /// The number of level that was just completed
   /// or null if it hasn't been completed yet.
   final int levelCompleted;
+
+  /// Is the, just completed, level the last
+  final bool isFinalLevel;
 
   /// The background image uri
   final String backgroundUri;

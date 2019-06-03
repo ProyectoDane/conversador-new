@@ -49,12 +49,19 @@ class _GameBodyState extends State<_GameBody> {
       builder: (BuildContext context, GameState state) {
         if (state.levelCompleted != null) {
           WidgetsBinding.instance.addPostFrameCallback(
-              (_) => _showDialog(state.levelCompleted, context));
+              (_) => _showDialog(
+                state.levelCompleted, state.isFinalLevel, context));
         }
         return _render(state);
       });
 
-  void _showDialog(int level, BuildContext context) {
+  void _showDialog(int level, bool isFinalLevel, BuildContext context) {
+    final String regularBody = sprintf(
+      LangLocalizations.of(context).trans(
+        'game.level_ended_pop_up.body'),<int>[level]).toUpperCase();
+    final String finalBody = LangLocalizations.of(context).trans(
+        'game.level_ended_pop_up.last_body').toUpperCase();
+        
     showDialog<void>(
         barrierDismissible: false,
         context: context,
@@ -65,10 +72,7 @@ class _GameBodyState extends State<_GameBody> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Text(sprintf(
-                      LangLocalizations.of(context)
-                        .trans('game.level_ended_pop_up.body'),
-                      <int>[level]).toUpperCase()),
+                  Text(isFinalLevel ? finalBody:regularBody),
                   const SizedBox(height: Dimen.SPACING_NORMAL),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

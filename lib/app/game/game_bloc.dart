@@ -87,7 +87,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
   Future<GameState> _getNewStage(GameState oldState) async {
     if (_currentStageIndex == _currentLevel.stages.length - 1) {
-      return oldState.completeLevel(_currentLevel.id);
+      return oldState.completeLevel(
+        _currentLevel.id, _levelRepository.isFinalLevel(_currentLevel.id));
     }
     _currentStageIndex++;
     _currentLiveStage = _currentStage.getInitialLiveStage();

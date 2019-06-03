@@ -9,6 +9,7 @@
   "cancel_option": "Cancelar",
   "game.level_ended_pop_up.title": "¡Felicitaciones!",
   "game.level_ended_pop_up.body": "Acabas de terminar el nivel %i. ¿Quieres seguir practicando?",
+  "game.level_ended_pop_up.last_body": "Acabas de terminar el último nivel. ¿Quieres comenzar de nuevo?",
   "game.level_ended_pop_up.no": "No, gracias",
   "game.level_ended_pop_up.yes": "¡Sí!",
   "game_difficulty_easy":"Fácil",

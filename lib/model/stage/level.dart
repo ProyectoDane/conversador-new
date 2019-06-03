@@ -5,7 +5,8 @@ import 'package:meta/meta.dart';
 /// Contains its corresponding stages.
 class Level {
   /// Creates a level with the specified information
-  Level({@required this.stages, @required this.id});
+  Level({@required this.stages, 
+        @required this.id});
 
   /// The level's stages in the order they should be played.
   final List<Stage> stages;
