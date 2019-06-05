@@ -15,7 +15,7 @@ class CustomImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double imagePadding = isDeviceTablet ? 90:0;
+    final double imagePadding = isDeviceTablet ? 50:0;
     return Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -25,12 +25,15 @@ class CustomImage extends StatelessWidget {
           ),
           borderRadius: const BorderRadius.all(Radius.circular(30)),
         ),
-        padding: EdgeInsets.only(left:imagePadding, right: imagePadding),
-        child: Image(
-          image: AssetImage(imageUri),
-          width: 300,
+        child: Container(
           height: isDeviceTablet ? 300:200,
-          fit: isDeviceTablet ? BoxFit.contain:BoxFit.none,
+          padding: EdgeInsets.only(top: imagePadding, bottom: imagePadding),
+          child: Image(
+            image: AssetImage(imageUri),
+            width: 300,
+            height: isDeviceTablet ? 300:200,
+            fit: isDeviceTablet ? BoxFit.contain:BoxFit.none,
+          ),
         ),
       );
     }
