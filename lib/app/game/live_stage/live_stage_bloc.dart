@@ -7,6 +7,7 @@ import 'package:flutter_syntactic_sorter/model/concept/concept.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece_config.dart';
 import 'package:flutter_syntactic_sorter/util/list_extensions.dart';
+import 'package:flutter_syntactic_sorter/app/game/util/tts_manager.dart';
 import 'package:meta/meta.dart';
 import 'package:tuple/tuple.dart';
 
@@ -133,6 +134,7 @@ class LiveStageBloc extends Bloc<LiveStageEvent, LiveStageState> {
         newState = _warningAnimationEnded(currentState, event.targetPiece);
         break;
     }
+
     if (newState != null) {
       yield newState;
       if (newState.isCompleted) {
@@ -152,6 +154,8 @@ class LiveStageBloc extends Bloc<LiveStageEvent, LiveStageState> {
       );
       final int remainingAttemptes = newDragPiece.attemptsRemaining;
       if (remainingAttemptes == 0) {
+        TtsManager().playConcept(draggedPiece.concept);
+
         final TargetPieceState target =
           newState.targetPieces.firstWhere((TargetPieceState piece) =>
             piece.piece.concept.value == dragPiece.piece.concept.value
@@ -186,6 +190,9 @@ class LiveStageBloc extends Bloc<LiveStageEvent, LiveStageState> {
     Piece draggedPiece,
     Piece targetedPiece
   ) {
+    // Reproduces word audio
+    TtsManager().playConcept(draggedPiece.concept);
+
     final DragPieceState dragPiece =
       currentState.dragPieces[draggedPiece.index];
     final TargetPieceState targetPiece =

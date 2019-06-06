@@ -1,5 +1,6 @@
 import 'package:flutter_syntactic_sorter/data_access/dao/dao.dart';
 import 'package:flutter_syntactic_sorter/model/stage/stage.dart';
+import 'package:flutter_syntactic_sorter/model/difficulty/mental_complexity.dart';
 
 /// Database table for the Stage class
 class StageDao implements Dao<Stage> {
@@ -13,7 +14,10 @@ class StageDao implements Dao<Stage> {
   final String columnId = 'id';
 
   /// mental complexity id column name
-  final String columnMentalComplexityId = 'mental_complexity_id';
+  final String columnComplexityId = 'mental_complexity_id';
+
+  /// complexity order column name
+  final String columnComplexityOrder = 'complexity_order_id';
 
   /// background uri column name
   final String columnBackgroundUri = 'background_uri';
@@ -23,21 +27,24 @@ class StageDao implements Dao<Stage> {
   CREATE TABLE IF NOT EXISTS $tableName ( 
     $columnId integer primary key, 
     $columnBackgroundUri text not null,
-    $columnMentalComplexityId integer not null,
-    FOREIGN KEY ($columnMentalComplexityId) REFERENCES mental_complexity (id))
+    $columnComplexityOrder integer not null,
+    $columnComplexityId integer not null,
+    FOREIGN KEY ($columnComplexityId) REFERENCES mental_complexity (id))
     ''';
 
   @override
   Stage fromMap(Map<String, dynamic> query) => Stage.data(
       id: query[columnId] as int,
       backgroundUri: query[columnBackgroundUri] as String,
-      mentalComplexity: query[columnMentalComplexityId] as int);
+      complexityOrder: query[columnComplexityOrder] as int,
+      mentalComplexity: Complexity.values[query[columnComplexityId] as int]);
 
   @override
   Map<String, dynamic> toMap(Stage object) => <String, dynamic>{
         columnId: object.id,
         columnBackgroundUri: object.backgroundUri,
-        columnMentalComplexityId: object.mentalComplexity
+        columnComplexityId: object.mentalComplexity.index,
+        columnComplexityOrder: object.complexityOrder
       };
 
   @override

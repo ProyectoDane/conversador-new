@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/platform/platform_base.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/util/widget_utils.dart';
+import 'package:flutter_syntactic_sorter/util/device_type_helper.dart';
 
 /// Back button that only appears in iOS, since
 /// Android has the native back button.
@@ -16,7 +17,7 @@ class PlatformBackButton extends PlatformBase<Widget, Widget> {
 
   @override
   Widget buildIOSWidget(final BuildContext context) {
-    const double size = 35;
+    final double size = isDeviceTablet ? 50:35;
     final ModalRoute<dynamic> route = ModalRoute.of(context);
     final Color iconColor = Theme.of(context).iconTheme.color;
     final String imageUri = route is PageRoute && route.fullscreenDialog
@@ -28,6 +29,7 @@ class PlatformBackButton extends PlatformBase<Widget, Widget> {
       child: Container(
           height: size,
           width: size,
+          margin: EdgeInsets.all(isDeviceTablet ? 10:0),
           decoration: BoxDecoration(
             border: Border.all(color: Colors.transparent, width: 0),
             borderRadius: BorderRadius.circular(size),

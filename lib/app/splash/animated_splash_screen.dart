@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_syntactic_sorter/util/device_type_helper.dart';
 
 /// A Splash Screen that animates the logo enlarging it
 class AnimatedSplashScreen extends StatefulWidget {
@@ -104,7 +105,10 @@ class SplashScreenState extends State<AnimatedSplashScreen>
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) {
+    setDeviceData(context);
+
+    return Scaffold(
           body: Container(
         color: _backgroundColor,
         child: Column(
@@ -114,6 +118,7 @@ class SplashScreenState extends State<AnimatedSplashScreen>
               : <Widget>[_getLogoWidget(true)],
         ),
       ));
+      }
 
   Widget _getPoweredByWidget() => Expanded(
         flex: 1,

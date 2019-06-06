@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_syntactic_sorter/app/splash/animated_splash_screen.dart';
 import 'package:flutter_syntactic_sorter/router.dart';
-import 'package:flutter_syntactic_sorter/src/fixtures.dart' show printDB;
 import 'package:flutter_syntactic_sorter/ui/settings/lang/lang_localizations_delegate.dart';
 import 'package:flutter_syntactic_sorter/util/dimen.dart';
 
@@ -12,8 +11,6 @@ class GameApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // Set orientation to landscape
     _setOrientation();
-    // *Just for testing* Print the database
-    printDB();
 
     return MaterialApp(
       title: 'Flutter Syntactic Sorter',

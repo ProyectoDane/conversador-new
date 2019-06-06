@@ -70,7 +70,8 @@ class _GameSettingsBody extends StatelessWidget {
   Widget _getTitle(BuildContext context) => Container(
         margin: const EdgeInsets.only(right: Dimen.SPACING_NORMAL),
         child: CustomText(
-          text: LangLocalizations.of(context).trans('game_settings_title'),
+          text: LangLocalizations.of(context).trans('game_settings_title')
+                .toUpperCase(),
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: Dimen.FONT_HUGE,
@@ -80,7 +81,8 @@ class _GameSettingsBody extends StatelessWidget {
 
   Widget _getButton(BuildContext context) => CustomButton(
         onPressed: () => _submitWithDifficulties(context),
-        text: LangLocalizations.of(context).trans('game_settings_start'),
+        text: LangLocalizations.of(context).trans('game_settings_start')
+              .toUpperCase(),
       );
 
   Widget _getImages(List<Tuple2<GameModeDifficulty, bool>> difficulties) => Row(

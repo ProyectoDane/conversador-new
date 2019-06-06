@@ -10,11 +10,13 @@ class Dimen {
   // ignore: prefer_int_literals, public_member_api_docs
   static const double FONT_NORMAL = 20.0;
   // ignore: prefer_int_literals, public_member_api_docs
-  static const double FONT_LARGE = 24.0;
+  static const double FONT_LARGE = 23.0;
   // ignore: prefer_int_literals, public_member_api_docs
   static const double FONT_BIG = 28.0;
   // ignore: prefer_int_literals, public_member_api_docs
   static const double FONT_HUGE = 32.0;
+  // ignore: prefer_int_literals, public_member_api_docs
+  static const double FONT_IPAD_TITLE = 40.0;
 
   // ignore: prefer_int_literals, public_member_api_docs
   static const double SPACING_TINY = 8.0;

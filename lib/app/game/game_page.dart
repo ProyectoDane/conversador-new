@@ -49,33 +49,38 @@ class _GameBodyState extends State<_GameBody> {
       builder: (BuildContext context, GameState state) {
         if (state.levelCompleted != null) {
           WidgetsBinding.instance.addPostFrameCallback(
-              (_) => _showDialog(state.levelCompleted, context));
+              (_) => _showDialog(
+                state.levelCompleted, state.isFinalLevel, context));
         }
         return _render(state);
       });
 
-  void _showDialog(int levelNumber, BuildContext context) {
+  void _showDialog(int level, bool isFinalLevel, BuildContext context) {
+    final String regularBody = sprintf(
+      LangLocalizations.of(context).trans(
+        'game.level_ended_pop_up.body'),<int>[level]).toUpperCase();
+    final String finalBody = LangLocalizations.of(context).trans(
+        'game.level_ended_pop_up.last_body').toUpperCase();
+        
     showDialog<void>(
         barrierDismissible: false,
         context: context,
         builder: (BuildContext context) => AlertDialog(
             title: Text(LangLocalizations.of(context)
-                .trans('game.level_ended_pop_up.title')),
+                .trans('game.level_ended_pop_up.title').toUpperCase()),
             content: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Text(sprintf(
-                      LangLocalizations.of(context)
-                          .trans('game.level_ended_pop_up.body'),
-                      <int>[levelNumber])),
+                  Text(isFinalLevel ? finalBody:regularBody),
                   const SizedBox(height: Dimen.SPACING_NORMAL),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         CustomButton(
                           text: LangLocalizations.of(context)
-                              .trans('game.level_ended_pop_up.no'),
+                              .trans('game.level_ended_pop_up.no')
+                              .toUpperCase(),
                           fontSize: Dimen.FONT_NORMAL,
                           coloredBackground: false,
                           onPressed: () {
@@ -86,7 +91,8 @@ class _GameBodyState extends State<_GameBody> {
                         ),
                         CustomButton(
                           text: LangLocalizations.of(context)
-                              .trans('game.level_ended_pop_up.yes'),
+                              .trans('game.level_ended_pop_up.yes')
+                              .toUpperCase(),
                           fontSize: Dimen.FONT_NORMAL,
                           coloredBackground: true,
                           onPressed: () {

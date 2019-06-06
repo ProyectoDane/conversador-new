@@ -6,6 +6,7 @@ import 'package:flutter_syntactic_sorter/ui/widgets/platform/platform_scaffold.d
 import 'package:flutter_syntactic_sorter/ui/widgets/text/custom_text.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/util/widget_utils.dart';
 import 'package:flutter_syntactic_sorter/util/dimen.dart';
+import 'package:flutter_syntactic_sorter/util/device_type_helper.dart';
 
 /// HomePage of the app.
 /// First screen, waits for user confirmation to continue.
@@ -42,10 +43,10 @@ class _MainBody extends StatelessWidget {
   Widget _getTitle(BuildContext context) => Container(
         margin: const EdgeInsets.only(bottom: Dimen.SPACING_NORMAL),
         child: CustomText(
-          text: LangLocalizations.of(context).trans('main_title'),
+          text: LangLocalizations.of(context).trans('main_title').toUpperCase(),
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: Dimen.FONT_HUGE,
+            fontSize: isDeviceTablet ? Dimen.FONT_IPAD_TITLE:Dimen.FONT_HUGE,
           ),
         ),
       );
@@ -53,7 +54,8 @@ class _MainBody extends StatelessWidget {
   Widget _getButton(BuildContext context) => CustomButton(
         onPressed: () =>
             Navigator.pushNamed(context, Router.GAME_SETTINGS_PAGE),
-        text: LangLocalizations.of(context).trans('main_btn_start'),
+        text: LangLocalizations.of(context).trans('main_btn_start')
+              .toUpperCase(),
       );
 
 }

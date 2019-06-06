@@ -1,24 +1,31 @@
 import 'package:flutter_syntactic_sorter/model/concept/concept_helper.dart';
 import 'package:flutter_syntactic_sorter/model/concept/sentence.dart';
 import 'package:flutter_syntactic_sorter/model/stage/live_stage.dart';
+import 'package:flutter_syntactic_sorter/model/difficulty/mental_complexity.dart';
 import 'package:meta/meta.dart';
 
 /// Represents a Stage in the game:
-/// - a sentence,
-/// - the maximum complexity it can reach
-/// - the related image's uri
 /// - its id
+/// - the related image's uri
+/// - a sentence
+/// - the mental complexity 
+/// - the order relative to others of the same complexity
 class Stage {
   /// Creates a Stage with the given information.
   Stage(
       {@required this.id,
       @required this.backgroundUri,
       @required this.sentence,
-      @required this.mentalComplexity})
+      @required this.mentalComplexity,
+      @required this.complexityOrder})
       : maximumDepth = ConceptHelper.getSentenceDepth(sentence);
 
   /// Creates a stage to be stored or retrieved from the database
-  Stage.data({this.id, this.backgroundUri, this.mentalComplexity});
+  Stage.data(
+    {this.id, 
+    this.backgroundUri, 
+    this.mentalComplexity, 
+    this.complexityOrder});
 
   /// Stage's id
   int id;
@@ -31,7 +38,12 @@ class Stage {
 
   /// Mental complexity of the stage
   /// (related to the mental difficulty associated with the phrase)
-  final int mentalComplexity;
+  final Complexity mentalComplexity;
+
+  /// Order of mental complexity
+  /// Multiple Stages may be grouped in the same relative
+  /// complexity, but have a relative order.
+  final int complexityOrder;
 
   /// Maximum depth of the stage
   /// (Related to the phrase and its subdivisions)

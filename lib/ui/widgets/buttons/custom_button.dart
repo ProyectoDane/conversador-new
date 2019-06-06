@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_syntactic_sorter/util/dimen.dart';
+import 'package:flutter_syntactic_sorter/util/device_type_helper.dart';
 
 /// Button with white background and green text and border
 class CustomButton extends StatelessWidget {
@@ -10,7 +11,7 @@ class CustomButton extends StatelessWidget {
       this.mainColor = Colors.lightGreen,
       this.secondaryColor = Colors.white,
       this.coloredBackground = false,
-      this.fontSize = Dimen.FONT_LARGE});
+      this.fontSize = 0});
 
   /// Callback for when the button is pressed
   final void Function() onPressed;
@@ -32,7 +33,11 @@ class CustomButton extends StatelessWidget {
   final Color secondaryColor;
 
   @override
-  Widget build(BuildContext context) => ButtonTheme(
+  Widget build(BuildContext context) {
+    final double defautSize = isDeviceTablet ? Dimen.FONT_HUGE:Dimen.FONT_LARGE;
+    final double chosenFontSize = fontSize == 0 ? defautSize:fontSize;
+
+    return ButtonTheme(
         minWidth: 150,
         height: 50,
         child: RaisedButton(
@@ -49,10 +54,10 @@ class CustomButton extends StatelessWidget {
               text,
               style: TextStyle(
                 color: coloredBackground ? secondaryColor : Colors.lightGreen,
-                fontSize: fontSize,
+                fontSize: chosenFontSize,
               ),
             ),
           ),
         ),
-      );
+      );}
 }
