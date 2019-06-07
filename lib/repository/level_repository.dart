@@ -19,14 +19,16 @@ class LevelRepository {
 
   static LevelRepository _instance;
   final StageRepository _stageRepository;
-  final int _maxStageCount = 5;
 
   // ignore: non_constant_identifier_names, prefer_function_declarations_over_variables
   final String _STAGES_IN_LEVEL_KEY = 'STAGES_IN_LEVEL';
+  // ignore: non_constant_identifier_names, prefer_function_declarations_over_variables
+  final String _STAGE_TRACKING_KEY = 'STAGE_TRACKING';
 
   /// Returns first level of the game
   Future<Level> getFirstLevel() async {
     await _clearUsedStages();
+    await _clearStageTrackingIndexes();
     return getLevel(1);
   }  
 
@@ -39,18 +41,22 @@ class LevelRepository {
       return null;
     }
 
-    final int indexOffset = levelData.item1;
+    final int stageCount = levelData.item1;
     final bool isRandom = levelData.item2;
 
     List<Stage> stageList;
     if (isRandom) {
       final List<int> previouslyUsedStages = await _getLevelUsedStageIDs();
       stageList = await _stageRepository.getRandomStagesByCount(
-        _maxStageCount, previouslyUsedStages);
+        stageCount, previouslyUsedStages);
       await _setLevelUsedStageIDs(stageList);
     } else {
-      stageList = await _stageRepository.getStagesByCount(
-        _maxStageCount, indexOffset);
+      final Tuple2<int, int> trackingIndexes = await _getStageTrackingIndexes();
+      final int currentStageComplexity = trackingIndexes.item1;
+      final int nextStageInComplexityIndex = trackingIndexes.item2;
+      stageList = await _stageRepository.getStageList(
+        stageCount, currentStageComplexity, nextStageInComplexityIndex);
+      await _setStageTrackingIndexes(stageList.last);
     }
 
     if (stageList.isEmpty) {
@@ -67,15 +73,15 @@ class LevelRepository {
   
   // MARK: - Level's parameters
   /// For each level number, you get:
-  /// - The stage list offset,
+  /// - The stage count,
   /// - Whether or not they are randomized,
   // ignore: prefer_function_declarations_over_variables, non_constant_identifier_names
   final Map<int, Tuple2<int, bool>> _LEVELS =
       <int, Tuple2<int, bool>>{
-    1: const Tuple2<int, bool>(0, false),
+    1: const Tuple2<int, bool>(5, false),
     2: const Tuple2<int, bool>(5, false),
-    3: const Tuple2<int, bool>(0, true),
-    4: const Tuple2<int, bool>(0, true),
+    3: const Tuple2<int, bool>(5, true),
+    4: const Tuple2<int, bool>(5, true),
   };
   
   // MARK: - Shared Preferences data
@@ -105,5 +111,34 @@ class LevelRepository {
   Future<void> _clearUsedStages() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove(_STAGES_IN_LEVEL_KEY);
+  }
+
+  Future<void> _setStageTrackingIndexes(Stage lastStage) async {
+    final int currentStageComplexity = lastStage.mentalComplexity.index;
+    final int nextStageInComplexityIndex = lastStage.complexityOrder + 1;
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final List<String> indexStrings = 
+      <String>[currentStageComplexity.toString(), 
+               nextStageInComplexityIndex.toString()];
+    await prefs.setStringList(
+        _STAGE_TRACKING_KEY, indexStrings);
+  }
+
+  Future<Tuple2<int, int>> _getStageTrackingIndexes() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    try {
+      final List<String> indexesStrings = 
+        prefs.getStringList(_STAGE_TRACKING_KEY);
+      final List<int> indexes = indexesStrings.map(int.parse).toList();
+      return Tuple2<int, int>(indexes[0], indexes[1]);
+      // ignore: avoid_catches_without_on_clauses
+    } catch (e) {
+      return const Tuple2<int, int>(0, 0);
+    }
+  }
+
+  Future<void> _clearStageTrackingIndexes() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_STAGE_TRACKING_KEY);
   }
 }

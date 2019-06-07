@@ -44,8 +44,8 @@ class ActionDatabaseRepository implements Repository<Action> {
   Future<Action> getById(int id) async {
     _locale = _locale ?? await fetchLocale();
     final Database db = await databaseProvider.db();
-    final List<Map<String, dynamic>> maps =
-        await db.rawQuery(_getByIdQuery(id));
+    final String query = getByIdQuery(id, dao, _langDao, _locale);
+    final List<Map<String, dynamic>> maps = await db.rawQuery(query);
     return maps.isNotEmpty ? dao.fromMap(maps.first) : null;
   }
 
@@ -53,24 +53,17 @@ class ActionDatabaseRepository implements Repository<Action> {
   Future<List<Action>> getAll() async {
     _locale = _locale ?? await fetchLocale();
     final Database db = await databaseProvider.db();
-    final List<Map<String, dynamic>> maps = await db.rawQuery(_getAllQuery);
+    final String query = getAllQuery(dao, _langDao, _locale);
+    final List<Map<String, dynamic>> maps = await db.rawQuery(query);
     return dao.fromList(maps);
   }
 
-  String get _getAllQuery => '''
-  SELECT t.${dao.columnId}, t.${dao.columnPredicateId}, tr.${dao.columnValue}
-  FROM ${dao.tableName} t, ${dao.tableNameTr} tr, ${_langDao.tableNameLanguage} l
-	WHERE t.${dao.columnId} = tr.${dao.columnIdSource}
-	AND tr.${_langDao.foreignColumnId} = l.${_langDao.columnNameId}
-  AND l.name = '${_locale.languageCode}';
-  ''';
-
-  String _getByIdQuery(int id) => '''
-  SELECT t.${dao.columnId}, t.${dao.columnPredicateId}, tr.${dao.columnValue}
-  FROM ${dao.tableName} t, ${dao.tableNameTr} tr, ${_langDao.tableNameLanguage} l
-	WHERE t.${dao.columnId} = tr.${dao.columnIdSource}
-	AND tr.${_langDao.foreignColumnId} = l.${_langDao.columnNameId}
-  AND l.name = '${_locale.languageCode}'
-  AND t.id = $id;
-  ''';
+  /// Get actions by predicate id list
+  Future<List<Action>> getByPredicateIds(List<int> predicateIds) async {
+    _locale = _locale ?? await fetchLocale();
+    final Database db = await databaseProvider.db();
+    final String query = getByIdListQuery(predicateIds, dao, _langDao, _locale);
+    final List<Map<String, dynamic>> maps = await db.rawQuery(query);
+    return dao.fromList(maps);
+  }
 }

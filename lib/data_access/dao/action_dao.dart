@@ -2,49 +2,49 @@ import 'package:flutter_syntactic_sorter/data_access/dao/dao.dart';
 import 'package:flutter_syntactic_sorter/model/concept/action.dart';
 
 /// Database table for the Action class
-class ActionDao implements Dao<Action> {
+class ActionDao implements Dao<Action>, ConceptDao {
   /// Creates an Action database table object
   ActionDao();
 
-  /// The name of the table
-  final String tableName = 'action';
+  @override
+  String get tableName => 'action';
 
-  /// The name of the translation table
-  final String tableNameTr = 'action_tr';
+  @override
+  String get tableNameTr => 'action_tr';
 
-  /// id column name
-  final String columnId = 'id';
+  @override
+  String get columnId => 'id';
 
-  /// untranslated table id column name
-  final String columnIdSource = 'action_id';
+  @override
+  String get columnIdSource => 'action_id';
 
-  /// value column name
-  final String columnValue = 'value';
+  @override
+  String get columnValue => 'value';
 
-  /// predicate id column name
-  final String columnPredicateId = 'predicate_id';
+  @override
+  String get columnParentId => 'predicate_id';
 
   @override
   String get createTableQuery => '''
     CREATE TABLE IF NOT EXISTS $tableName ( 
       $columnId integer primary key, 
       $columnValue text not null,
-      $columnPredicateId integer not null,
-      FOREIGN KEY ($columnPredicateId) REFERENCES predicate (id))
+      $columnParentId integer not null,
+      FOREIGN KEY ($columnParentId) REFERENCES predicate (id))
     ''';
 
   @override
   Action fromMap(Map<String, dynamic> query) => Action.data(
         id: query[columnId] as int,
         value: query[columnValue] as String,
-        predicateId: query[columnPredicateId] as int,
+        predicateId: query[columnParentId] as int,
       );
 
   @override
   Map<String, dynamic> toMap(Action object) => <String, dynamic>{
         columnId: object.id,
         columnValue: object.value,
-        columnPredicateId: object.predicateId,
+        columnParentId: object.predicateId,
       };
 
   @override

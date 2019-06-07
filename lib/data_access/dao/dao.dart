@@ -12,3 +12,24 @@ abstract class Dao<T> {
   /// Creates a map from the class properties
   Map<String, dynamic> toMap(T object);
 }
+
+/// Absctact Concept DAO class
+abstract class ConceptDao {
+  /// The name of the table
+  String get tableName;
+
+  /// The name of the translation table
+  String get tableNameTr;
+
+  /// id column name
+  String get columnId;
+
+  /// untranslated table id column name
+  String get columnIdSource;
+
+  /// value column name
+  String get columnValue;
+
+  /// parent column parent relation id
+  String get columnParentId;
+}

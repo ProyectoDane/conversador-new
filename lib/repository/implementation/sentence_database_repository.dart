@@ -47,6 +47,20 @@ class SentenceDatabaseRepository implements Repository<Sentence> {
     return maps.isNotEmpty ? dao.fromMap(maps.first) : null;
   }
 
+  /// Get sentences according to stage id list
+  Future<List<Sentence>> getByStageIds(List<int> stageIds) async {
+    // generates a WHERE search condition for each stage id
+    final String whereString = 
+      stageIds.map((int _)=>'${dao.columnStageId} = ?').toList().join(' OR ');
+
+    final Database db = await databaseProvider.db();
+    final List<Map<String, dynamic>> maps = await db.query(
+      dao.tableName, 
+      where: whereString,
+      whereArgs: stageIds,);
+    return dao.fromList(maps);
+  }
+
   @override
   Future<List<Sentence>> getAll() async {
     final Database db = await databaseProvider.db();

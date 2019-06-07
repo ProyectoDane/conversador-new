@@ -2,49 +2,49 @@ import 'package:flutter_syntactic_sorter/data_access/dao/dao.dart';
 import 'package:flutter_syntactic_sorter/model/concept/subject.dart';
 
 /// Database table for the Subject class
-class SubjectDao implements Dao<Subject> {
+class SubjectDao implements Dao<Subject>, ConceptDao {
   /// Database table class constructor
   SubjectDao();
 
-  /// The name of the table
-  final String tableName = 'subject';
+  @override
+  String get tableName => 'subject';
 
-  /// The name of the translation table
-  final String tableNameTr = 'subject_tr';
+  @override
+  String get tableNameTr => 'subject_tr';
 
-  /// id column name
-  final String columnId = 'id';
+  @override
+  String get columnId => 'id';
 
-  /// untranslated table id column name
-  final String columnIdSource = 'subject_id';
+  @override
+  String get columnIdSource => 'subject_id';
 
-  /// value column name
-  final String columnValue = 'value';
+  @override
+  String get columnValue => 'value';
 
-  /// sentence id column name
-  final String columnSentenceId = 'sentence_id';
+  @override
+  String get columnParentId => 'sentence_id';
 
   @override
   String get createTableQuery => '''
     CREATE TABLE IF NOT EXISTS $tableName ( 
       $columnId integer primary key, 
       $columnValue text,
-      $columnSentenceId integer not null,
-      FOREIGN KEY ($columnSentenceId) REFERENCES sentence (id))
+      $columnParentId integer not null,
+      FOREIGN KEY ($columnParentId) REFERENCES sentence (id))
     ''';
 
   @override
   Subject fromMap(Map<String, dynamic> query) => Subject.data(
         id: query[columnId] as int,
         value: query[columnValue] as String,
-        sentenceId: query[columnSentenceId] as int,
+        sentenceId: query[columnParentId] as int,
       );
 
   @override
   Map<String, dynamic> toMap(Subject object) => <String, dynamic>{
         columnId: object.id,
         columnValue: object.value,
-        columnSentenceId: object.sentenceId,
+        columnParentId: object.sentenceId,
       };
 
   @override

@@ -13,95 +13,106 @@ class StageRepository {
   StageRepository._internal();
   static final StageRepository _instance = StageRepository._internal();
 
-  List<Stage> _dbStages;
-
   // MARK: - Stages
-
-  /// Get a number of Stages from the list with difficulty in ascending order.
-  /// count: number of stages
-  /// indexOffset: index from where the stage count will begin
-  Future<List<Stage>> getStagesByCount(int count, int indexOffset) async {
-    final List<Stage> stages = await _completeStageList();
-
-    if (indexOffset > stages.length) {
-      return <Stage>[];
-    }
-
-    final List<Stage> selectedItems =
-        stages.sublist(indexOffset, indexOffset + count);
-    return selectedItems;
-  }
 
   /// Get random list of stages by count
   /// count: number of stages
   /// exceptionList: exception list of stages IDs
   Future<List<Stage>> getRandomStagesByCount(
       int count, List<int> exceptionList) async {
-    final List<Stage> stages = await _completeStageList()
-      // Removes previously used stages by ID
-      ..removeWhere((Stage stage) => exceptionList.contains(stage.id))
-      // Randomly scramble the remaining list
-      ..shuffle();
-    // Get the ammount of elements wanted
-    final List<Stage> shuffledList = stages.sublist(0, count);
-    return shuffledList;
+
+      final DatabaseProvider databaseProvider = DatabaseProvider();
+      final List<Stage> stages = await StageDatabaseRepository(
+      databaseProvider).getRandomStages(count, exceptionList);
+      
+      return _fillInStageData(stages, databaseProvider);
   }
 
-  /// TODO: Combine default stages with user generated stages
-  Future<List<Stage>> _completeStageList() async {
-    final List<Stage> easyStages =
-        await _getStagesOfComplexity(Complexity.easy);
-    final List<Stage> normalStages =
-        await _getStagesOfComplexity(Complexity.normal);
-    final List<Stage> hardStages =
-        await _getStagesOfComplexity(Complexity.hard);
-    final List<Stage> expertStages =
-        await _getStagesOfComplexity(Complexity.expert);
+  /// Get stage list by count
+  /// Each time it gets called, it returns a new bach of stages
+  Future<List<Stage>> getStageList(
+    int count, int currentComplexity, int nextStageInCompIndex) async {
+    final DatabaseProvider databaseProvider = DatabaseProvider();
+    Complexity currentStageComplexity = Complexity.values[currentComplexity];
+    int nextStageInComplexityIndex = nextStageInCompIndex;
 
-    final List<Stage> stages = easyStages
-      ..addAll(normalStages)
-      ..addAll(hardStages)
-      ..addAll(expertStages);
+    // Get stage list according to current complexity
+    // The stages are sorted in complexity order, the lastStageInComplexityIndex
+    // is used to determine where to continue taking stages from the same 
+    // complexity level
+    final List<Stage> stages = await StageDatabaseRepository(
+      databaseProvider).getStages(
+      currentStageComplexity.index, count, nextStageInComplexityIndex);
+    
+    // This line fixes lint warning
+    final bool isQuotaMet = stages.length < count;
+    if (isQuotaMet) {
+      // If there not enought stages to meet the quota, stages from the next
+      // complexity levels are obtained
+      while (stages.length < count) {
+        nextStageInComplexityIndex = 0;
 
-    return stages;
-  }
+        if (currentStageComplexity.index+1 == Complexity.values.length) {
+          // If there are no more complexity levels, just send remaining stages
+          break;
+        }
 
-  /// Get all the stages that have a certain mentalComplexity
-  Future<List<Stage>> _getStagesOfComplexity(
-      Complexity mentalComplexity) async {
-    final List<Stage> defaultStages = await _defaultStageList();
-    final List<Stage> stages = defaultStages
-        .where((Stage stage) => stage.mentalComplexity == mentalComplexity)
-        .toList()
-          ..sort((Stage stage1, Stage stage2) =>
-              stage1.complexityOrder.compareTo(stage2.complexityOrder));
-
-    return stages;
-  }
-
-  Future<List<Stage>> _defaultStageList() async {
-    if (_dbStages != null) {
-      return _dbStages;
+        currentStageComplexity = Complexity.values[
+        currentStageComplexity.index+1];
+        final int remaining = count - stages.length;
+      
+        final List<Stage> addlStages = await StageDatabaseRepository(
+        databaseProvider).getStages(
+        currentStageComplexity.index, remaining, nextStageInComplexityIndex);
+        stages.addAll(addlStages);
+        nextStageInComplexityIndex = addlStages.length;
+      }
     }
 
-    final DatabaseProvider _databaseProvider = DatabaseProvider();
+    return _fillInStageData(stages, databaseProvider);
+  }
 
-    final List<Action> actions =
-        await ActionDatabaseRepository(_databaseProvider).getAll();
-    final List<Complement> complements =
-        await ComplementDatabaseRepository(_databaseProvider).getAll();
-    final List<Entity> entities =
-        await EntityDatabaseRepository(_databaseProvider).getAll();
-    final List<Modifier> modifiers =
-        await ModifierDatabaseRepository(_databaseProvider).getAll();
-    List<Predicate> predicates =
-        await PredicateDatabaseRepository(_databaseProvider).getAll();
-    List<Sentence> sentences =
-        await SentenceDatabaseRepository(_databaseProvider).getAll();
-    List<Subject> subjects =
-        await SubjectDatabaseRepository(_databaseProvider).getAll();
+  Future<List<Stage>> _fillInStageData(List<Stage> stages, 
+    DatabaseProvider databaseProvider) async {
+    // Get sentence list according to stage ids
+    final List<int> stageIds = stages.map((Stage stage) => stage.id).toList();
+    List<Sentence> sentences = await SentenceDatabaseRepository(
+      databaseProvider).getByStageIds(stageIds);
 
-    _dbStages = await StageDatabaseRepository(_databaseProvider).getAll();
+    // Get subject list according to sentence ids
+    final List<int> sentenceIds = 
+      sentences.map((Sentence sentence) => sentence.id).toList();
+    List<Subject> subjects = await SubjectDatabaseRepository(databaseProvider).
+      getBySentenceIds(sentenceIds);
+
+    // Get predicate list according to sentence ids
+    List<Predicate> predicates = 
+      await PredicateDatabaseRepository(databaseProvider).
+        getBySentenceIds(sentenceIds);
+
+    // Get entity list according to subject ids
+    final List<int> subjectIds = 
+      subjects.map((Subject subject) => subject.id).toList();
+    final List<Entity> entities = 
+      await EntityDatabaseRepository(databaseProvider).
+      getBySubjectIds(subjectIds);
+
+    // Get modifier list according to subject ids
+    final List<Modifier> modifiers = 
+      await ModifierDatabaseRepository(databaseProvider).
+      getBySubjectIds(subjectIds);
+
+    // Get actions list according to predicate ids
+    final List<int> predicateIds = 
+      predicates.map((Predicate predicate) => predicate.id).toList();
+    final List<Action> actions = 
+      await ActionDatabaseRepository(databaseProvider).
+      getByPredicateIds(predicateIds);
+
+    // Get complement list according to predicate ids
+    final List<Complement> complements = 
+      await ComplementDatabaseRepository(databaseProvider).
+      getByPredicateIds(predicateIds);
 
     // Fill in subjects
     subjects = subjects.map((Subject subject) {
@@ -174,7 +185,7 @@ class StageRepository {
     }).toList();
 
     // Fill in stages
-    return _dbStages = _dbStages.map((Stage stage) {
+    return stages.map((Stage stage) {
       stage
         ..sentence = sentences
             .where((Sentence s) => s.stageId == stage.id)
@@ -183,5 +194,5 @@ class StageRepository {
         ..maximumDepth = ConceptHelper.getSentenceDepth(stage.sentence);
       return stage;
     }).toList();
-  }
+  }  
 }

@@ -54,4 +54,45 @@ class StageDatabaseRepository implements Repository<Stage> {
     final List<Map<String, dynamic>> maps = await db.query(dao.tableName);
     return dao.fromList(maps);
   }
+
+  /// Get limited stage list according to complexity
+  /// The list is ordered by ID, the offset can be used
+  /// to avoid getting previously obtainted items.
+  Future<List<Stage>> getStages(int complexity, int count, int offset) async {
+    final Database db = await databaseProvider.db();
+    final List<Map<String, dynamic>> maps = await db.query(
+      dao.tableName, 
+      where: '${dao.columnComplexityId} = ?',
+      whereArgs: <int>[complexity],
+      orderBy: '${dao.columnComplexityOrder} ASC',
+      limit: count,
+      offset:  offset);
+    return dao.fromList(maps);
+  }
+
+  /// Get a random list of stages
+  Future<List<Stage>> getRandomStages(int count, List<int>exceptions) async {
+    final Database db = await databaseProvider.db();
+    List<Map<String, dynamic>> maps;
+
+    if (exceptions.isNotEmpty) {
+      final String exceptionWhere = 
+        exceptions.map((int _) => '${dao.columnId} != ?')
+        .toList().join(' AND ');
+
+      maps = await db.query(
+        dao.tableName, 
+        where: exceptionWhere,
+        whereArgs: exceptions,
+        orderBy: 'RANDOM()',
+        limit: count,);
+    } else {
+      maps = await db.query(
+        dao.tableName, 
+        orderBy: 'RANDOM()',
+        limit: count,);
+    }
+
+    return dao.fromList(maps);
+  }
 }
