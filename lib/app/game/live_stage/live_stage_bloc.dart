@@ -53,8 +53,6 @@ class LiveStageBloc extends Bloc<LiveStageEvent, LiveStageState> {
   final Function() onCompleted;
 
   /// Should be called when a drag piece is incorrectly placed
-  /// (whether it was placed in a target piece with which it didn't match
-  /// or dragged to any page place which is not a target)
   void pieceFailure(Piece dragPiece) {
     dispatch(LiveStageEvent.failed(dragPiece));
   }

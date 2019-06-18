@@ -1,6 +1,4 @@
-import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_syntactic_sorter/app/game/live_stage/live_stage_bloc.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece_config.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/util/operators.dart';
@@ -19,13 +17,11 @@ class DragPiece extends StatefulWidget {
     @required this.piece,
     @required this.pieceConfig,
     @required this.initPosition,
-    @required this.bloc,
     @required this.disabled
   });
   
   static const int _ANIMATION_TIME_MS = 1500;
   static const Duration _DURATION = Duration(milliseconds: _ANIMATION_TIME_MS);
-  final AudioCache _audioCache = AudioCache();
 
   /// Piece which this represents
   final Piece piece;
@@ -33,8 +29,6 @@ class DragPiece extends StatefulWidget {
   final PieceConfig pieceConfig;
   /// Origin of the piece (top left corner)
   final Offset initPosition;
-  /// Bloc to which to notify events
-  final LiveStageBloc bloc;
   /// Whether the piece is disabled or not
   final bool disabled;
 
@@ -44,12 +38,12 @@ class DragPiece extends StatefulWidget {
 }
 
 class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
-  LiveStageBloc _bloc;
   Offset _origin;
   Offset _position;
   bool _isDisabled;
   AnimationController _controller;
   Animation<Offset> _movementAnimation;
+  bool _shouldMovePieceBack = false;
 
   @override
   void initState() {
@@ -62,7 +56,6 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
     _origin = widget.initPosition;
     _position = widget.initPosition;
     _isDisabled = widget.disabled;
-    _bloc = widget.bloc;
   }
 
   void _setUpAnimation() {
@@ -111,7 +104,15 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
         )
     );
 
-  Widget _buildDraggable() => Draggable<Piece>(
+  Widget _buildDraggable() { 
+    // This gets called from the drag target listener to let it know it has
+    // to return to it's place even though it passed over a target
+    // It is executed before the onDragEnd is called.
+    widget.piece.flagPieceReturn = () {
+      _shouldMovePieceBack = true;
+    };
+
+    return Draggable<Piece>(
       data: widget.piece,
       child: widget.piece.buildWidget(
         pieceType: Piece.DRAG_INITIAL,
@@ -121,22 +122,27 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
         _renderOperator(Operator.failure(
           newState: () {
             _position = offset;
-            _bloc.pieceFailure(widget.piece);
           },
         ));
       },
-      onDragCompleted: () {
-        _renderOperator(Operator.success(newState: (){ }));
+      onDragEnd: (DraggableDetails details) {
+        if (_shouldMovePieceBack) {
+          _shouldMovePieceBack = false;
+          _renderOperator(Operator.failure(
+          newState: () {
+            _position = details.offset;
+          }));
+        }
       },
       feedback: widget.piece.buildWidget(
         pieceType: Piece.DRAG_FEEDBACK,
         pieceConfig: widget.pieceConfig,
       ),
     );
+  }
 
   void _renderOperator(final Operator operator) {
     setState(operator.newState);
-    widget._audioCache.play(operator.sound, volume: operator.volume);
     _playAnimation();
   }
 

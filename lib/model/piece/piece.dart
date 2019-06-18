@@ -34,6 +34,9 @@ class Piece {
   /// Index of the piece in relation to others of the same type
   final int index;
 
+  /// function
+  void Function() flagPieceReturn;
+
   /// Function that builds the widget for the piece,
   /// based on the given piece configuration and size.
   Widget buildWidget({

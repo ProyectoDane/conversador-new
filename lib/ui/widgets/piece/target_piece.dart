@@ -5,6 +5,7 @@ import 'package:flutter_syntactic_sorter/app/game/live_stage/live_stage_bloc.dar
 import 'package:flutter_syntactic_sorter/app/game/live_stage/live_stage_state.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/animations/opacity_animation.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/animations/radius_animation.dart';
+import 'package:audioplayers/audio_cache.dart';
 
 /// Static piece that serves as a target for the drag pieces.
 /// It contains a string and can be configured by a PieceConfig.
@@ -63,6 +64,10 @@ class _TargetPieceState
   TargetPieceVisualState _visualState;
   TargetPieceVisualState _oldVisualState;
 
+  final AudioCache _audioCache = AudioCache();
+
+  static const String _SUCCESSFUL_SOUND = 'sounds/successful.mp3';
+  static const String _FAILURE_SOUND = 'sounds/failure.mp3';
 
   @override
   void initState() {
@@ -153,9 +158,16 @@ class _TargetPieceState
         left: _initPosition.dx,
         top: _initPosition.dy,
         child: DragTarget<Piece>(
-            onWillAccept: (Piece piece) => piece.concept == _piece.concept,
+            onWillAccept: (_) => true,
             onAccept: (Piece piece) {
-              _bloc.pieceSuccess(dragPiece: piece, targetPiece: _piece);
+              if (piece.concept == _piece.concept) {
+                _bloc.pieceSuccess(dragPiece: piece, targetPiece: _piece);
+                _audioCache.play(_SUCCESSFUL_SOUND, volume: 0.15);
+              } else {
+                _audioCache.play(_FAILURE_SOUND, volume: 1);
+                _bloc.pieceFailure(piece);
+                piece.flagPieceReturn();
+              }
             },
             builder: (BuildContext context,
                 List<Piece> accepted,

@@ -74,7 +74,6 @@ class _LiveStageState extends State<LiveStageWidget> {
         DragPiece(piece: drag.piece,
           pieceConfig: pieceConfig,
           initPosition: offset,
-          bloc: widget.bloc,
           disabled: drag.disabled,
         ),
     );
