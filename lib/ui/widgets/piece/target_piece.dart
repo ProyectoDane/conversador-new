@@ -67,7 +67,7 @@ class _TargetPieceState
   final AudioCache _audioCache = AudioCache();
 
   static const String _SUCCESSFUL_SOUND = 'sounds/successful.mp3';
-  static const String _FAILURE_SOUND = 'sounds/failure.mp3';
+  static const String _FAILURE_SOUND = 'sounds/error-sound2.wav';
 
   @override
   void initState() {
