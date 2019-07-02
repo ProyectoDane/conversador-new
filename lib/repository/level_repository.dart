@@ -1,6 +1,8 @@
 import 'package:flutter_syntactic_sorter/model/stage/level.dart';
 import 'package:flutter_syntactic_sorter/model/stage/stage.dart';
+import 'package:flutter_syntactic_sorter/repository/implementation/level_database_repository.dart';
 import 'package:flutter_syntactic_sorter/repository/stage_repository.dart';
+import 'package:flutter_syntactic_sorter/data_access/database_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tuple/tuple.dart';
 
@@ -29,61 +31,50 @@ class LevelRepository {
   Future<Level> getFirstLevel() async {
     await _clearUsedStages();
     await _clearStageTrackingIndexes();
-    return getLevel(1);
+    return getLevel(0);
   }  
 
   /// Returns the level associated with the given number.
   Future<Level> getLevel(
     int levelId) async {
+
+    final DatabaseProvider databaseProvider = DatabaseProvider();
+    final Level level = await LevelDatabaseRepository(
+      databaseProvider).getById(levelId);
     
-    final Tuple2<int, bool> levelData = _LEVELS[levelId];
-    if (levelData == null) {
+    if (level == null) {
       return null;
     }
 
-    final int stageCount = levelData.item1;
-    final bool isRandom = levelData.item2;
-
-    List<Stage> stageList;
-    if (isRandom) {
+    if (level.isRandom) {
       final List<int> previouslyUsedStages = await _getLevelUsedStageIDs();
-      stageList = await _stageRepository.getRandomStagesByCount(
-        stageCount, previouslyUsedStages);
-      await _setLevelUsedStageIDs(stageList);
+      level.stages = await _stageRepository.getRandomStagesByCount(
+        level.stageCount, previouslyUsedStages);
+      await _setLevelUsedStageIDs(level.stages);
     } else {
       final Tuple2<int, int> trackingIndexes = await _getStageTrackingIndexes();
       final int currentStageComplexity = trackingIndexes.item1;
       final int nextStageInComplexityIndex = trackingIndexes.item2;
-      stageList = await _stageRepository.getStageList(
-        stageCount, currentStageComplexity, nextStageInComplexityIndex);
-      await _setStageTrackingIndexes(stageList.last);
+      level.stages = await _stageRepository.getStageList(
+        level.stageCount, currentStageComplexity, nextStageInComplexityIndex);
+      await _setStageTrackingIndexes(level.stages.last);
     }
 
-    if (stageList.isEmpty) {
+    if (level.stages.isEmpty) {
       return null;
     }
 
-    return Level(
-      stages: stageList, id: levelId);
+    return level;
   }
 
   /// Check if level is final level
-  bool isFinalLevel(int levelId) 
-    => levelId == _LEVELS.values.length;
-  
-  // MARK: - Level's parameters
-  /// For each level number, you get:
-  /// - The stage count,
-  /// - Whether or not they are randomized,
-  // ignore: prefer_function_declarations_over_variables, non_constant_identifier_names
-  final Map<int, Tuple2<int, bool>> _LEVELS =
-      <int, Tuple2<int, bool>>{
-    1: const Tuple2<int, bool>(5, false),
-    2: const Tuple2<int, bool>(5, false),
-    3: const Tuple2<int, bool>(5, true),
-    4: const Tuple2<int, bool>(5, true),
-  };
-  
+  Future<bool> isFinalLevel(int levelId) async{
+    final DatabaseProvider databaseProvider = DatabaseProvider();
+    final int levelCount = await LevelDatabaseRepository(
+      databaseProvider).getLevelCount();
+    return levelCount-1 == levelId;
+  }
+    
   // MARK: - Shared Preferences data
 
   Future<bool> _setLevelUsedStageIDs(

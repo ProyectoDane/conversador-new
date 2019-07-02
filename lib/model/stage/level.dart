@@ -5,12 +5,22 @@ import 'package:meta/meta.dart';
 /// Contains its corresponding stages.
 class Level {
   /// Creates a level with the specified information
-  Level({@required this.stages, 
-        @required this.id});
-
-  /// The level's stages in the order they should be played.
-  final List<Stage> stages;
+  Level({@required this.id, 
+        @required this.stageCount,
+        @required this.isRandom});
 
   /// The level id
-  final int id;
+  int id;
+
+  /// How many stages are in this level
+  final int stageCount;
+
+  /// This determines whether the stages are ordered by complexity or if they
+  /// were chosen at random
+  final bool isRandom;
+
+  /// The level's stages list, which was ordered according to 
+  /// the previous condition
+  List<Stage> stages;
+
 }

@@ -56,9 +56,10 @@ class _GameBodyState extends State<_GameBody> {
       });
 
   void _showDialog(int level, bool isFinalLevel, BuildContext context) {
+    // The levels start from 0, so 1 is added to the regular message.
     final String regularBody = sprintf(
       LangLocalizations.of(context).trans(
-        'game.level_ended_pop_up.body'),<int>[level]).toUpperCase();
+        'game.level_ended_pop_up.body'),<int>[level+1]).toUpperCase();
     final String finalBody = LangLocalizations.of(context).trans(
         'game.level_ended_pop_up.last_body').toUpperCase();
         
