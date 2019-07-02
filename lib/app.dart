@@ -25,6 +25,7 @@ class GameApp extends StatelessWidget {
         logoUri: 'assets/images/splash/Dane_Logo.png',
         poweredByLogoUri: 'assets/images/splash/Otros_Logos.png',
       ),
+      debugShowCheckedModeBanner: false,
     );
   }
 
