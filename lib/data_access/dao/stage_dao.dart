@@ -10,8 +10,17 @@ class StageDao implements Dao<Stage> {
   /// The name of the table
   final String tableName = 'stage';
 
+  /// The name of the translation table
+  final String tableNameTr = 'stage_tr';
+
   /// id column name
   final String columnId = 'id';
+
+  /// untranslated table id column name
+  final String columnIdSource = 'stage_id';
+
+  /// value column name
+  final String columnValue = 'value';
 
   /// mental complexity id column name
   final String columnComplexityId = 'mental_complexity_id';
@@ -37,7 +46,8 @@ class StageDao implements Dao<Stage> {
       id: query[columnId] as int,
       backgroundUri: query[columnBackgroundUri] as String,
       complexityOrder: query[columnComplexityOrder] as int,
-      mentalComplexity: Complexity.values[query[columnComplexityId] as int]);
+      mentalComplexity: Complexity.values[query[columnComplexityId] as int],
+      stageSentenceString: query[columnValue] as String);
 
   @override
   Map<String, dynamic> toMap(Stage object) => <String, dynamic>{

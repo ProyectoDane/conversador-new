@@ -2,7 +2,7 @@ import 'package:flutter_syntactic_sorter/data_access/dao/dao.dart';
 import 'package:flutter_syntactic_sorter/model/concept/action.dart';
 
 /// Database table for the Action class
-class ActionDao implements Dao<Action>, ConceptDao {
+class ActionDao implements Dao<ActionVerb>, ConceptDao {
   /// Creates an Action database table object
   ActionDao();
 
@@ -34,22 +34,22 @@ class ActionDao implements Dao<Action>, ConceptDao {
     ''';
 
   @override
-  Action fromMap(Map<String, dynamic> query) => Action.data(
+  ActionVerb fromMap(Map<String, dynamic> query) => ActionVerb.data(
         id: query[columnId] as int,
         value: query[columnValue] as String,
         predicateId: query[columnParentId] as int,
       );
 
   @override
-  Map<String, dynamic> toMap(Action object) => <String, dynamic>{
+  Map<String, dynamic> toMap(ActionVerb object) => <String, dynamic>{
         columnId: object.id,
         columnValue: object.value,
         columnParentId: object.predicateId,
       };
 
   @override
-  List<Action> fromList(List<Map<String, dynamic>> query) {
-    final List<Action> actions = <Action>[];
+  List<ActionVerb> fromList(List<Map<String, dynamic>> query) {
+    final List<ActionVerb> actions = <ActionVerb>[];
     for (final Map<String, dynamic> map in query) {
       actions.add(fromMap(map));
     }

@@ -1,3 +1,6 @@
+import 'dart:ui';
+import 'package:flutter_syntactic_sorter/data_access/dao/language_dao.dart';
+import 'package:flutter_syntactic_sorter/util/lang_helper.dart';
 import 'package:flutter_syntactic_sorter/data_access/dao/stage_dao.dart';
 import 'package:flutter_syntactic_sorter/data_access/database_provider.dart';
 import 'package:flutter_syntactic_sorter/model/stage/stage.dart';
@@ -11,6 +14,10 @@ class StageDatabaseRepository implements Repository<Stage> {
 
   /// Dao instance for the repository
   final StageDao dao = StageDao();
+
+  final LanguageDao _langDao = LanguageDao();
+
+  static Locale _locale;
 
   @override
   DatabaseProvider databaseProvider;
@@ -55,6 +62,25 @@ class StageDatabaseRepository implements Repository<Stage> {
     return dao.fromList(maps);
   }
 
+  /// Get full ordered list of stages
+  Future<List<Stage>> getAllOrdered() async {
+    final Database db = await databaseProvider.db();
+    _locale = _locale ?? await fetchLocale();
+
+    final String query = '''
+    SELECT t.${dao.columnId}, t.${dao.columnComplexityId}, t.${dao.columnComplexityOrder}, t.${dao.columnBackgroundUri}, tr.${dao.columnValue}
+    FROM ${dao.tableName} t, ${dao.tableNameTr} tr, ${_langDao.tableNameLanguage} l
+	  WHERE t.${dao.columnId} = tr.${dao.columnIdSource}
+	  AND tr.${_langDao.foreignColumnId} = l.${_langDao.columnNameId}
+    AND l.name = '${_locale.languageCode}'
+    ORDER BY ${dao.columnComplexityId}, ${dao.columnComplexityOrder} ASC;
+    ''';
+
+    final List<Map<String, dynamic>> maps = await db.rawQuery(query);
+    
+    return dao.fromList(maps);
+  }
+
   /// Get limited stage list according to complexity
   /// The list is ordered by ID, the offset can be used
   /// to avoid getting previously obtainted items.
@@ -70,7 +96,7 @@ class StageDatabaseRepository implements Repository<Stage> {
     return dao.fromList(maps);
   }
 
-  /// Get a random list of stages
+    /// Get a random list of stages
   Future<List<Stage>> getRandomStages(int count, List<int>exceptions) async {
     final Database db = await databaseProvider.db();
     List<Map<String, dynamic>> maps;

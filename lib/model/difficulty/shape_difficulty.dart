@@ -27,7 +27,7 @@ class ShapeDifficulty extends GameModeDifficulty {
         Subject.TYPE: RectanglePainter(color),
         Entity.TYPE: RectanglePainter(color),
         Predicate.TYPE: RectanglePainter(color),
-        Action.TYPE: RectanglePainter(color),
+        ActionVerb.TYPE: RectanglePainter(color),
         Modifier.TYPE: RectanglePainter(color),
         Complement.TYPE: RectanglePainter(color),
       };

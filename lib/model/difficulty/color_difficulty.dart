@@ -24,7 +24,7 @@ class ColorDifficulty extends GameModeDifficulty {
         Subject.TYPE: Colors.grey,
         Entity.TYPE: Colors.grey,
         Predicate.TYPE: Colors.grey,
-        Action.TYPE: Colors.grey,
+        ActionVerb.TYPE: Colors.grey,
         Modifier.TYPE: Colors.grey,
         Complement.TYPE: Colors.grey,
       };

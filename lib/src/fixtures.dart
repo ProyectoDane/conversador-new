@@ -164,12 +164,12 @@ Future<void> preloadData() async {
   ]);
 
   // Insert actions
-  await _actionRepository.bulkInsert(<Action>[
-    Action.data(id: 1, value: 'come', predicateId: 5),
-    Action.data(id: 2, value: 'salta', predicateId: 7),
-    Action.data(id: 3, value: 'juegan', predicateId: 8),
-    Action.data(id: 4, value: 'juegan', predicateId: 9),
-    Action.data(id: 5, value: 'sueña', predicateId: 10),
+  await _actionRepository.bulkInsert(<ActionVerb>[
+    ActionVerb.data(id: 1, value: 'come', predicateId: 5),
+    ActionVerb.data(id: 2, value: 'salta', predicateId: 7),
+    ActionVerb.data(id: 3, value: 'juegan', predicateId: 8),
+    ActionVerb.data(id: 4, value: 'juegan', predicateId: 9),
+    ActionVerb.data(id: 5, value: 'sueña', predicateId: 10),
   ]);
   // Insert complements
   await _complementRepository.bulkInsert(<Complement>[
@@ -183,8 +183,8 @@ Future<void> preloadData() async {
 
 /// Print the database on the debug console
 Future<void> printDB() async {
-  await _actionRepository.getAll().then((List<Action> result) {
-    for (final Action action in result) {
+  await _actionRepository.getAll().then((List<ActionVerb> result) {
+    for (final ActionVerb action in result) {
       print('''
             Table: Action 
             - id: ${action.id} 

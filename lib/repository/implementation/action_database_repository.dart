@@ -9,7 +9,7 @@ import 'package:flutter_syntactic_sorter/util/lang_helper.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 /// Repository implementation class
-class ActionDatabaseRepository implements Repository<Action> {
+class ActionDatabaseRepository implements Repository<ActionVerb> {
   /// Repository implementation constructor
   ActionDatabaseRepository(this.databaseProvider);
 
@@ -24,24 +24,24 @@ class ActionDatabaseRepository implements Repository<Action> {
   DatabaseProvider databaseProvider;
 
   @override
-  Future<Action> insert(Action action) async {
+  Future<ActionVerb> insert(ActionVerb action) async {
     final Database db = await databaseProvider.db();
     action.id = await db.insert(dao.tableName, dao.toMap(action));
     return action;
   }
 
   @override
-  Future<void> bulkInsert(List<Action> actions) async {
+  Future<void> bulkInsert(List<ActionVerb> actions) async {
     final Database db = await databaseProvider.db();
     final Batch batch = db.batch();
-    for (final Action action in actions) {
+    for (final ActionVerb action in actions) {
       batch.insert(dao.tableName, dao.toMap(action));
     }
     await batch.commit(noResult: true);
   }
 
   @override
-  Future<Action> getById(int id) async {
+  Future<ActionVerb> getById(int id) async {
     _locale = _locale ?? await fetchLocale();
     final Database db = await databaseProvider.db();
     final String query = getByIdQuery(id, dao, _langDao, _locale);
@@ -50,7 +50,7 @@ class ActionDatabaseRepository implements Repository<Action> {
   }
 
   @override
-  Future<List<Action>> getAll() async {
+  Future<List<ActionVerb>> getAll() async {
     _locale = _locale ?? await fetchLocale();
     final Database db = await databaseProvider.db();
     final String query = getAllQuery(dao, _langDao, _locale);
@@ -59,7 +59,7 @@ class ActionDatabaseRepository implements Repository<Action> {
   }
 
   /// Get actions by predicate id list
-  Future<List<Action>> getByPredicateIds(List<int> predicateIds) async {
+  Future<List<ActionVerb>> getByPredicateIds(List<int> predicateIds) async {
     _locale = _locale ?? await fetchLocale();
     final Database db = await databaseProvider.db();
     final String query = getByIdListQuery(predicateIds, dao, _langDao, _locale);

@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_syntactic_sorter/app/game/game_event.dart';
 import 'package:flutter_syntactic_sorter/app/game/game_state.dart';
 import 'package:flutter_syntactic_sorter/app/game/live_stage/live_stage_bloc.dart';
+import 'package:flutter_syntactic_sorter/app/game_settings/game_settings_stage_selection_helper.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece_config.dart';
 import 'package:flutter_syntactic_sorter/model/stage/level.dart';
 import 'package:flutter_syntactic_sorter/model/stage/live_stage.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_syntactic_sorter/repository/level_repository.dart';
 import 'package:flutter_syntactic_sorter/repository/piece_config_repository.dart';
 import 'package:flutter_syntactic_sorter/repository/stage_repository.dart';
 import 'package:flutter_syntactic_sorter/app/game/util/tts_manager.dart';
+import 'package:tuple/tuple.dart';
 
 /// Bloc for Game part of the app.
 /// It takes care of selecting a stage and moving through its
@@ -71,9 +73,19 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   }
 
   Future<GameState> _getFirstStage() async {
-    final Level level = await _levelRepository.getFirstLevel();
-    _currentLevel = level;
-    _currentStageIndex = -1;
+    final int preselectedStage = StageSelection().stageSelection;
+
+    if (preselectedStage != null) {
+      final int id = preselectedStage;
+      final Tuple2<Level, int> levelData = 
+        await _levelRepository.getLevelWithStageId(id);
+      _currentLevel = levelData.item1;
+      _currentStageIndex = levelData.item2 - 1;
+    } else {
+      _currentLevel = await _levelRepository.getFirstLevel();
+      _currentStageIndex = -1;
+    }
+
     return _getNewStage(null);
   }
 
@@ -109,7 +121,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       final Duration duration = await TtsManager().playSentence(
         _currentStage.sentence);
       // Delays the stage change according to sentence audio
-      await Future<GameState>.delayed(duration, (){});
+      await Future<void>.delayed(duration, (){});
       // Enters new stage
       return _getNewStage(state);
     } else {

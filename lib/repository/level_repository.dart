@@ -6,6 +6,27 @@ import 'package:flutter_syntactic_sorter/data_access/database_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tuple/tuple.dart';
 
+/// How level generation works:
+/// The Level objects don't actually know which stages they'll contain, they 
+/// only know how many stages they have and whether or not they are random.
+/// The stages, when requested to the DB (_stageRepository.getPlainStageList), 
+/// are obtained in ascending order order. The first time I request the list:
+/// 
+/// _stageRepository.getPlainStageList(
+///   levelCount: 5,
+///   complexity: 0,
+///   order: 0
+/// 
+/// this would be the result:
+///
+/// [Stage complx:1 - Order 0
+///  Stage complx:1 - Order 2
+///  ...
+///  Stage complx:2 - Order 0]
+///
+/// By looking at the last stage, I know that the next time I ask for another 
+/// 5 stages, I'll start from complexity 2, order 1.
+/// When the user ends the game, the registry is reset.
 /// Repository for the game Levels.
 class LevelRepository {
   /// Creates a LevelRepository based on a stage repository.
@@ -33,6 +54,59 @@ class LevelRepository {
     await _clearStageTrackingIndexes();
     return getLevel(0);
   }  
+
+  /// Returns level that contains stage and the index where said stage
+  /// is placed, if not found returns null
+  /// Item 1 : Level
+  /// Item 2 : Stage index within list inside Level
+  Future<Tuple2<Level, int>> getLevelWithStageId(int stageId) async {
+    await _clearUsedStages();
+    await _clearStageTrackingIndexes();
+
+    const int levelId = 0;
+    // Starts iterating over levels
+    return _searchThroughLevelsFor(levelId, stageId);
+  }
+
+  Future<Tuple2<Level, int>>_searchThroughLevelsFor(
+    int levelId, int stageId) async {
+    final DatabaseProvider databaseProvider = DatabaseProvider();
+    final Level level = await LevelDatabaseRepository(
+      databaseProvider).getById(levelId);
+    
+    if (level == null) {
+      return null;
+    }
+
+    // We are looking in non-random levels
+    if (!level.isRandom) {
+      final Tuple2<int, int> trackingIndexes = await _getStageTrackingIndexes();
+      final int currentStageComplexity = trackingIndexes.item1;
+      final int nextStageInComplexityIndex = trackingIndexes.item2;
+      // This line just gets the plain stage list without the sentence data, 
+      // it's faster than the other one because it doesn't do additional querys
+      level.stages = await _stageRepository.getPlainStageList(
+        level.stageCount, currentStageComplexity, nextStageInComplexityIndex);
+      await _setStageTrackingIndexes(level.stages.last);
+
+      // Check if stage is found in this level
+      final Stage foundStage = level.stages.singleWhere(
+        (Stage stage) => stage.id == stageId, orElse:() => null);
+      if (foundStage != null) {
+        final int stageIndex = level.stages.indexOf(foundStage);
+        // If this is the level, then we can fill in the rest 
+        // of the sentence data
+        level.stages = await _stageRepository.fillInStageData(level.stages);
+        return Tuple2<Level, int>(level, stageIndex);
+      } else {
+        // If not move on to the next level
+        return _searchThroughLevelsFor(levelId + 1, stageId);
+      }
+    } else {
+      // Once we reach the random levels, there no more stages to sort through
+      return null;
+    }
+  }
 
   /// Returns the level associated with the given number.
   Future<Level> getLevel(

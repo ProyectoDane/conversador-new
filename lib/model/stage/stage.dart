@@ -17,7 +17,8 @@ class Stage {
       @required this.backgroundUri,
       @required this.sentence,
       @required this.mentalComplexity,
-      @required this.complexityOrder})
+      @required this.complexityOrder,
+      @required this.stageSentenceString})
       : maximumDepth = ConceptHelper.getSentenceDepth(sentence);
 
   /// Creates a stage to be stored or retrieved from the database
@@ -25,7 +26,8 @@ class Stage {
     {this.id, 
     this.backgroundUri, 
     this.mentalComplexity, 
-    this.complexityOrder});
+    this.complexityOrder,
+    this.stageSentenceString});
 
   /// Stage's id
   int id;
@@ -44,6 +46,9 @@ class Stage {
   /// Multiple Stages may be grouped in the same relative
   /// complexity, but have a relative order.
   final int complexityOrder;
+
+  /// A plain string represeting the phrase in the stage
+  final String stageSentenceString;
 
   /// Maximum depth of the stage
   /// (Related to the phrase and its subdivisions)

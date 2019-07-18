@@ -30,4 +30,8 @@ class Dimen {
   static const double SPACING_BIG = 40.0;
   // ignore: prefer_int_literals, public_member_api_docs
   static const double SPACING_HUGE = 48.0;
+  // ignore: prefer_int_literals, public_member_api_docs
+  static const double ICON_DEFAULT_SIZE = 50;
+  // ignore: prefer_int_literals, public_member_api_docs
+  static const double ICON_SMALL_SIZE = 20;
 }

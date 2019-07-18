@@ -101,7 +101,7 @@ class PieceConfigRepository {
     final String predicateColor = prefs
         .getString(_COLOR_BY_CONCEPT_KEY(Predicate.TYPE));
     final String actionColor = prefs
-        .getString(_COLOR_BY_CONCEPT_KEY(Action.TYPE));
+        .getString(_COLOR_BY_CONCEPT_KEY(ActionVerb.TYPE));
     final String modifierColor = prefs
         .getString(_COLOR_BY_CONCEPT_KEY(Modifier.TYPE));
     final String complementColor = prefs
@@ -116,7 +116,7 @@ class PieceConfigRepository {
       Predicate.TYPE: predicateColor != null
           ? hexToColor(predicateColor)
           : Colors.red,
-      Action.TYPE: actionColor != null
+      ActionVerb.TYPE: actionColor != null
           ? hexToColor(actionColor)
           : Colors.red,
       Modifier.TYPE: modifierColor != null
@@ -206,7 +206,7 @@ class PieceConfigRepository {
     final int subjectId = prefs.getInt(_SHAPE_BY_CONCEPT_KEY(Subject.TYPE));
     final int entityId = prefs.getInt(_SHAPE_BY_CONCEPT_KEY(Entity.TYPE));
     final int predicateId = prefs.getInt(_SHAPE_BY_CONCEPT_KEY(Predicate.TYPE));
-    final int actionId = prefs.getInt(_SHAPE_BY_CONCEPT_KEY(Action.TYPE));
+    final int actionId = prefs.getInt(_SHAPE_BY_CONCEPT_KEY(ActionVerb.TYPE));
     final int modifierId = prefs.getInt(_SHAPE_BY_CONCEPT_KEY(Modifier.TYPE));
     final int complementId = prefs
         .getInt(_SHAPE_BY_CONCEPT_KEY(Complement.TYPE));
@@ -217,7 +217,7 @@ class PieceConfigRepository {
         entityId ?? RectanglePainter.ID, color),
       Predicate.TYPE: ShapePainter.fromID(
         predicateId ?? CirclePainter.ID, color),
-      Action.TYPE: ShapePainter.fromID(
+      ActionVerb.TYPE: ShapePainter.fromID(
         actionId ?? CirclePainter.ID, color),
       Modifier.TYPE: ShapePainter.fromID(
         modifierId ?? RectanglePainter.ID, color),

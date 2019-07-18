@@ -29,10 +29,52 @@ class StageRepository {
   }
 
   /// Get stage list by count
-  /// Each time it gets called, it returns a new bach of stages
+  /// The stages sentence data comes filled in
   Future<List<Stage>> getStageList(
     int count, int currentComplexity, int nextStageInCompIndex) async {
+
     final DatabaseProvider databaseProvider = DatabaseProvider();
+    final List<Stage> stages = await _getPlainStageList(
+      count, currentComplexity, nextStageInCompIndex, databaseProvider);
+
+    return _fillInStageData(stages, databaseProvider);
+  }
+
+  /// Get stage list by count
+  /// The stages are return in their basic format, without sentence data
+  Future<List<Stage>> getPlainStageList(
+    int count, int currentComplexity, int nextStageInCompIndex) async {
+
+    final DatabaseProvider databaseProvider = DatabaseProvider();
+    return _getPlainStageList(
+      count, currentComplexity, nextStageInCompIndex, databaseProvider);
+  }
+
+  /// Returns an ordered list of stages with their plain information.
+  /// This does not include the sentence data
+  Future<List<Stage>> getAllPlainStageList() async {
+    final DatabaseProvider databaseProvider = DatabaseProvider();
+    final List<Stage> stages = await StageDatabaseRepository(
+      databaseProvider).getAllOrdered();
+    return stages;
+  }
+
+  /// Fills stages with their respective sentence data
+  Future<List<Stage>> fillInStageData(List<Stage> stages) async {
+    final DatabaseProvider databaseProvider = DatabaseProvider();
+    return _fillInStageData(stages, databaseProvider);
+  }
+
+  //---------------------------------------------------------------
+  // Private
+  //---------------------------------------------------------------
+
+  Future<List<Stage>> _getPlainStageList(
+    int count, 
+    int currentComplexity, 
+    int nextStageInCompIndex, 
+    DatabaseProvider databaseProvider) async {
+
     Complexity currentStageComplexity = Complexity.values[currentComplexity];
     int nextStageInComplexityIndex = nextStageInCompIndex;
 
@@ -69,7 +111,7 @@ class StageRepository {
       }
     }
 
-    return _fillInStageData(stages, databaseProvider);
+    return stages;
   }
 
   Future<List<Stage>> _fillInStageData(List<Stage> stages, 
@@ -105,7 +147,7 @@ class StageRepository {
     // Get actions list according to predicate ids
     final List<int> predicateIds = 
       predicates.map((Predicate predicate) => predicate.id).toList();
-    final List<Action> actions = 
+    final List<ActionVerb> actions = 
       await ActionDatabaseRepository(databaseProvider).
       getByPredicateIds(predicateIds);
 
@@ -149,7 +191,8 @@ class StageRepository {
       // If the value is not null, the following is skipped
       if (predicate.value == null) {
         final List<Concept> predicateActions =
-            actions.where((Action a) => a.predicateId == predicate.id).toList();
+            actions.where((ActionVerb a) => 
+              a.predicateId == predicate.id).toList();
         final List<Concept> predicateComplements = complements
             .where((Complement c) => c.predicateId == predicate.id)
             .toList();
