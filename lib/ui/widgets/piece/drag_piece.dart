@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_syntactic_sorter/app/game/util/tts_manager.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece_config.dart';
 import 'package:flutter_syntactic_sorter/ui/widgets/piece/util/operators.dart';
@@ -114,9 +115,14 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
 
     return Draggable<Piece>(
       data: widget.piece,
-      child: widget.piece.buildWidget(
-        pieceType: Piece.DRAG_INITIAL,
-        pieceConfig: widget.pieceConfig,
+      child: GestureDetector(
+        onTap: () {
+          TtsManager().playConcept(widget.piece.concept);
+        },
+        child: widget.piece.buildWidget(
+          pieceType: Piece.DRAG_INITIAL,
+          pieceConfig: widget.pieceConfig,
+        ),
       ),
       onDraggableCanceled: (_, Offset offset) {
         _renderOperator(Operator.failure(
