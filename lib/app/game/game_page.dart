@@ -108,8 +108,9 @@ class _GameBodyState extends State<_GameBody> {
   Widget _render(final GameState state) => Center(
       child: (state.loading)
           ? Container(
-              child: const CircularProgressIndicator(),
-              color: Colors.white,
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.white)),
+              color: Colors.transparent,
             )
           : Container(
               decoration: WidgetUtils.getColoredBackgroundWith(
