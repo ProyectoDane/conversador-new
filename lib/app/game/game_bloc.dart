@@ -13,6 +13,7 @@ import 'package:flutter_syntactic_sorter/repository/piece_config_repository.dart
 import 'package:flutter_syntactic_sorter/repository/stage_repository.dart';
 import 'package:flutter_syntactic_sorter/app/game/util/tts_manager.dart';
 import 'package:tuple/tuple.dart';
+import 'package:pedantic/pedantic.dart';
 
 /// Bloc for Game part of the app.
 /// It takes care of selecting a stage and moving through its
@@ -54,12 +55,25 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     }));
   }
 
+  /// Called when the user decides to continue to the next stage 
+  /// with a new phrase
+  void continueToNextStage() {
+    dispatch(LoadNextStage((GameState oldState) async* {
+      yield await _getNewStage(oldState);
+    }));
+  }
+  
   /// Called when the user decides to continue to the next level
   void continueToNextLevel() {
     dispatch(LevelCompleted((GameState oldState) async* {
       yield GameState.loading();
       yield await _getNextLevel(oldState);
     }));
+  }
+
+  /// Replays phrase by text to speech
+  void replayPhraseSound() {
+    TtsManager().playSentence(_currentStage.sentence);
   }
 
   // MARK: - State
@@ -89,6 +103,14 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     return _getNewStage(null);
   }
 
+  Future<GameState> _getStageCompleteState(GameState oldState) async {
+    final LiveStageBloc liveStageBloc =
+        _getLiveStageBlocFrom(_currentLiveStage, true);
+    return GameState.stageComplete(
+      backgroundUri:_currentStage.backgroundUri,
+      liveStageBloc: liveStageBloc);
+  }
+
   Future<GameState> _getNextLevel(GameState oldState) async {
     _currentLevel =
         await _levelRepository.getLevel(_currentLevel.id + 1);
@@ -107,7 +129,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     _currentStageIndex++;
     _currentLiveStage = _currentStage.getInitialLiveStage();
     final LiveStageBloc liveStageBloc =
-        _getLiveStageBlocFrom(_currentLiveStage);
+        _getLiveStageBlocFrom(_currentLiveStage, false);
     return GameState.stage(
         backgroundUri: _currentStage.backgroundUri,
         liveStageBloc: liveStageBloc);
@@ -118,25 +140,26 @@ class GameBloc extends Bloc<GameEvent, GameState> {
         _currentStage.getFollowingLiveStage(_currentLiveStage.depth);
     if (nextLiveStage == null) {
       // Reproduces sentence audio
-      final Duration duration = await TtsManager().playSentence(
-        _currentStage.sentence);
-      // Delays the stage change according to sentence audio
-      await Future<void>.delayed(duration, (){});
-      // Enters new stage
-      return _getNewStage(state);
+      unawaited(TtsManager().playSentence(
+        _currentStage.sentence));
+      // Shows stage complete UI
+      return _getStageCompleteState(state);
     } else {
       _currentLiveStage = nextLiveStage;
-      final LiveStageBloc liveStageBloc = _getLiveStageBlocFrom(nextLiveStage);
+      final LiveStageBloc liveStageBloc = 
+        _getLiveStageBlocFrom(nextLiveStage, false);
       return GameState.stage(
           backgroundUri: _currentStage.backgroundUri,
           liveStageBloc: liveStageBloc);
     }
   }
 
-  LiveStageBloc _getLiveStageBlocFrom(LiveStage liveStage) => LiveStageBloc(
-        subjectConcepts: liveStage.subjectConcepts,
-        predicateConcepts: liveStage.predicateConcepts,
-        pieceConfig: _pieceConfig,
-        onCompleted: liveStageWasFinished,
-      );
+  LiveStageBloc _getLiveStageBlocFrom(
+    LiveStage liveStage, bool isStageCompleted) => LiveStageBloc(
+      subjectConcepts: liveStage.subjectConcepts,
+      predicateConcepts: liveStage.predicateConcepts,
+      pieceConfig: _pieceConfig,
+      onCompleted: liveStageWasFinished,
+      isShuffled: !isStageCompleted
+    );
 }

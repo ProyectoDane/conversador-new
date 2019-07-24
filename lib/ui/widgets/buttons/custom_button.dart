@@ -6,7 +6,7 @@ import 'package:flutter_syntactic_sorter/util/device_type_helper.dart';
 /// white background and green text and border
 class CustomButton extends _AppCustomButton {
   /// Creates a CustomButton with the onPressed callback and the specified text
-  CustomButton(
+  const CustomButton(
       {@required Function() onPressed,
       @required this.text,
       Color mainColor = Colors.lightGreen,
@@ -60,7 +60,8 @@ class CustomIconButton extends _AppCustomButton {
   /// Creates a CustomButton with the onPressed callback and the specified icon
   CustomIconButton({
     @required Function() onPressed,
-    @required this.iconData,
+    String imageUrl,
+    IconData iconData = Icons.close,
     Color mainColor = Colors.lightGreen,
     Color secondaryColor = Colors.white,
     bool coloredBackground = false,
@@ -72,10 +73,23 @@ class CustomIconButton extends _AppCustomButton {
     secondaryColor: secondaryColor,
     coloredBackground: coloredBackground,
     minWidth: minWidth,
-    height: height);
+    height: height) {
+      if (imageUrl != null) {
+        _iconWidget = Image.asset(
+          imageUrl, 
+          color: getInnerItemColor(),
+          height: Dimen.ICON_DEFAULT_SIZE,
+          width:  Dimen.ICON_DEFAULT_SIZE,);
+      } else {
+        _iconWidget = Icon(
+          iconData, 
+          size: Dimen.ICON_DEFAULT_SIZE, 
+          color: getInnerItemColor()
+        );
+      }
+    }
 
-  /// Data for icon creation
-  final IconData iconData;
+  Widget _iconWidget;
 
   @override
   Widget build(BuildContext context) 
@@ -88,10 +102,7 @@ class CustomIconButton extends _AppCustomButton {
           shape: getRectagleBorder(),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-            child: Icon(
-              iconData, 
-              size: Dimen.ICON_DEFAULT_SIZE, 
-              color: getInnerItemColor(),),
+            child: _iconWidget,
           ),
         ),
     );

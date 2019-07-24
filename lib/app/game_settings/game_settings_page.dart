@@ -191,9 +191,7 @@ class _SettingsBodyState extends State<_GameSettingsBody> {
           title: Text(
             LangLocalizations.of(context).trans('select_phrase')),          
           leading: FlatButton.icon(
-            onPressed: () {
-              bloc.toggleStagesVisibility();
-            },
+            onPressed: bloc.toggleStagesVisibility,
             label: const Text(''),
             icon: const Icon(Icons.close, 
                         size: Dimen.ICON_SMALL_SIZE, 

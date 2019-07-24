@@ -23,11 +23,19 @@ class StartStage extends GameEvent {
 }
 
 /// Event dispatched when the user has completed the current
-/// level in a stage and so a new one must be loaded.
+/// stage in a level and so the end buttons must be displayed.
 class LiveStageCompleted extends GameEvent {
   /// Creates the LiveStageCompleted GameEvent with its
   /// corresponding state mutating function
   LiveStageCompleted(Stream<GameState> Function(GameState) mutateState)
+      : super(mutateState);
+}
+
+/// Event to load the following stage within the level
+class LoadNextStage extends GameEvent {
+  /// Creates LoadNextStage Game event with its
+  /// corresponding state mutating function
+  LoadNextStage(Stream<GameState> Function(GameState) mutateState)
       : super(mutateState);
 }
 

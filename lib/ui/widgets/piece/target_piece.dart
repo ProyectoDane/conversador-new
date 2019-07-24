@@ -158,6 +158,7 @@ class _TargetPieceState
         left: _initPosition.dx,
         top: _initPosition.dy,
         child: DragTarget<Piece>(
+            key: UniqueKey(),
             onWillAccept: (_) => true,
             onAccept: (Piece piece) {
               if (piece.concept == _piece.concept) {
@@ -176,6 +177,7 @@ class _TargetPieceState
       );
 
   Widget _renderAnimated() => Positioned(
+    key: UniqueKey(),
     left: _initPosition.dx,
     top: _initPosition.dy,
     child: _completedWidget(),

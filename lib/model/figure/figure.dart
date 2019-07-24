@@ -18,6 +18,7 @@ class Figure {
           @required String content,
           @required double size}) =>
       CustomPaint(
+        key: UniqueKey(),
         size: Size(size, size),
         painter: painter,
         child: Container(

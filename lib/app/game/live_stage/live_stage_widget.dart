@@ -25,10 +25,12 @@ import 'package:tuple/tuple.dart';
 /// - the sounds (success or failure)
 class LiveStageWidget extends StatefulWidget {
   /// Creates a LiveStageWidget from a LiveStageBloc
-  const LiveStageWidget(this.bloc);
+  const LiveStageWidget(this.bloc, this.isStageComplete);
 
   /// The LiveStageBloc associated
   final LiveStageBloc bloc;
+  /// If stage is complete
+  final bool isStageComplete;
 
   @override
   State createState() => _LiveStageState();
@@ -40,12 +42,14 @@ class _LiveStageState extends State<LiveStageWidget> {
   @override
   Widget build(BuildContext context) =>
     BlocBuilder<LiveStageEvent, LiveStageState>(
+      key: UniqueKey(),
       bloc: widget.bloc,
       builder: (BuildContext context, LiveStageState state) => _render(state),
     );
 
   Widget _render(final LiveStageState state) =>
-    Stack(children: _buildDraggableAndTargets(
+    Stack(
+      children: _buildDraggableAndTargets(
         context,
         state.dragPieces,
         state.subjectTargetPieces,
@@ -69,7 +73,7 @@ class _LiveStageState extends State<LiveStageWidget> {
     final List<Widget> dragPieces = _buildPieces(
       context: context,
       elements: draggables,
-      atTheTop: true,
+      atTheTop: !widget.isStageComplete,
       getWidget: (DragPieceState drag, Offset offset) =>
         DragPiece(piece: drag.piece,
           pieceConfig: pieceConfig,

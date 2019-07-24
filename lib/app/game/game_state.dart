@@ -12,6 +12,7 @@ class GameState {
   /// and the live stage bloc.
   GameState.stage({@required this.backgroundUri, @required this.liveStageBloc})
       : loading = false,
+        isStageCompleted = false,
         levelCompleted = null,
         isFinalLevel = false;
 
@@ -21,9 +22,18 @@ class GameState {
       GameState._internal(
           loading: true, backgroundUri: '', liveStageBloc: null);
 
+  /// Creates a GameState that informs that the stage is complete
+  factory GameState.stageComplete(
+    {@required String backgroundUri, @required LiveStageBloc liveStageBloc}) =>
+    GameState._internal(isStageCompleted: true,
+                        loading: false,
+                        backgroundUri: backgroundUri, 
+                        liveStageBloc:liveStageBloc);
+
   GameState._internal({this.loading,
     this.backgroundUri,
     this.liveStageBloc,
+    this.isStageCompleted,
     this.levelCompleted,
     this.isFinalLevel});
 
@@ -34,10 +44,14 @@ class GameState {
           backgroundUri: backgroundUri,
           liveStageBloc: liveStageBloc,
           levelCompleted: levelNumber,
-          isFinalLevel: isLast);
+          isFinalLevel: isLast,
+          isStageCompleted: true);
 
   /// Whether we are loading a stage or not
   final bool loading;
+
+  /// Whether the current stage has been completed
+  final bool isStageCompleted;
 
   /// The number of level that was just completed
   /// or null if it hasn't been completed yet.

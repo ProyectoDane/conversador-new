@@ -106,14 +106,54 @@ class _GameBodyState extends State<_GameBody> {
   }
 
   Widget _render(final GameState state) => Center(
-      child: (state.loading)
-          ? Container(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white)),
-              color: Colors.transparent,
-            )
-          : Container(
-              decoration: WidgetUtils.getColoredBackgroundWith(
+      child: (state.loading) ? _getLoadingWidget() : _getLiveStage(state));
+  
+  Widget _getLoadingWidget() =>
+    Container(
+      child: CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(Colors.white)),
+        color: Colors.transparent,
+      );
+
+  Widget _getLiveStage(GameState state) =>
+    Stack(
+      key: UniqueKey(),
+      children: <Widget>[
+        Container(
+          decoration: WidgetUtils.getColoredBackgroundWith(
                   Colors.white, state.backgroundUri),
-              child: LiveStageWidget(state.liveStageBloc)));
+          child: LiveStageWidget(state.liveStageBloc, state.isStageCompleted)),
+        state.isStageCompleted ? _getEndStageButtons():Container()
+      ],
+    );
+
+  Widget _getEndStageButtons()
+    => Align(
+      alignment: Alignment.topRight,
+      child: Container(
+        margin: EdgeInsets.only(
+          right: Dimen.SPACING_SMALL, bottom: Dimen.SPACING_SMALL),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            const Padding(
+              padding: EdgeInsets.only(top: Dimen.SPACING_NORMAL),
+            ),
+            CustomIconButton(
+              imageUrl: 'assets/images/utils/play_sound_icon.png',
+              onPressed: (){
+                widget.bloc.replayPhraseSound();
+              },),
+            const Padding(
+              padding: EdgeInsets.only(top: Dimen.SPACING_TINY),
+            ),
+            CustomIconButton(
+              iconData: Icons.navigate_next,
+              onPressed: (){
+                widget.bloc.continueToNextStage();
+              },)
+          ],
+        ),
+      ),
+    );
 }

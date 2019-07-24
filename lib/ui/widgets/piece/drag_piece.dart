@@ -14,7 +14,7 @@ class DragPiece extends StatefulWidget {
   /// - the position where it should start (top left corner)
   /// - whether it's disabled or not
   /// - the Bloc to which to notify events.
-  DragPiece({
+  const DragPiece({
     @required this.piece,
     @required this.pieceConfig,
     @required this.initPosition,
@@ -91,9 +91,11 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
 
   Widget _render() =>
     AnimatedBuilder(
+      key: UniqueKey(),
       animation: _movementAnimation,
       builder: (BuildContext context, Widget child) =>
         Positioned(
+          key: UniqueKey(),
           left: _movementAnimation.value.dx,
           top: _movementAnimation.value.dy,
           child: _isDisabled
@@ -114,6 +116,7 @@ class _DragPieceState extends State<DragPiece> with TickerProviderStateMixin {
     };
 
     return Draggable<Piece>(
+      key: UniqueKey(),
       data: widget.piece,
       child: GestureDetector(
         onTap: () {

@@ -32,10 +32,13 @@ class LiveStageBloc extends Bloc<LiveStageEvent, LiveStageState> {
     @required this.predicateConcepts,
     @required this.pieceConfig,
     @required this.onCompleted,
+    @required bool isShuffled,
     this.maxAttempts = 3,
     this.attemptsRemainingForWarning = 1
   }) :
-        mixedConcepts = shuffled(subjectConcepts + predicateConcepts);
+        mixedConcepts = isShuffled ? 
+                          shuffled(subjectConcepts + predicateConcepts):
+                          subjectConcepts + predicateConcepts;
 
   /// Maximum attempts the user has to get each piece rightly placed
   final int maxAttempts;
