@@ -87,7 +87,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   }
 
   Future<GameState> _getFirstStage() async {
-    final int preselectedStage = StageSelection().stageSelection;
+    final int preselectedStage = 
+      StageSelection().stageSelection ?? StageSelection().lastStagePlayed;
 
     if (preselectedStage != null) {
       final int id = preselectedStage;
@@ -128,6 +129,9 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     }
     _currentStageIndex++;
     _currentLiveStage = _currentStage.getInitialLiveStage();
+
+    StageSelection().lastStagePlayed = _currentStage.id;
+
     final LiveStageBloc liveStageBloc =
         _getLiveStageBlocFrom(_currentLiveStage, false);
     return GameState.stage(

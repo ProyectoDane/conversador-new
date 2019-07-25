@@ -33,7 +33,7 @@ class Figure {
                   color: Colors.white,
                   decoration: TextDecoration.none,
                   fontWeight: FontWeight.normal,
-                  fontSize: isDeviceTablet ? Dimen.FONT_LARGE:Dimen.FONT_SMALL),
+                  fontSize: isDeviceTablet ? Dimen.FONT_LARGE:Dimen.FONT_TINY),
             ),
           ),
         ),

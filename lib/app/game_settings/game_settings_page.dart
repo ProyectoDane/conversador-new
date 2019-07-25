@@ -160,6 +160,7 @@ class _SettingsBodyState extends State<_GameSettingsBody> {
           .toList());
 
   void _submitWithDifficulties(BuildContext context) {
+    StageSelection().lastStagePlayed = null;
     bloc
         .saveDifficulties()
         .whenComplete(() => Navigator.pushNamed(context, Router.GAME_PAGE));

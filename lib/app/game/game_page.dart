@@ -23,8 +23,9 @@ class GamePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => PlatformScaffold(
-        body: _GameBody(_bloc),
-      );
+    key: UniqueKey(),
+    body: _GameBody(_bloc),
+  );
 }
 
 class _GameBody extends StatefulWidget {

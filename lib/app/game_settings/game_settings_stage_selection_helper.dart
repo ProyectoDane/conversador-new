@@ -6,6 +6,8 @@ class StageSelection {
   static final StageSelection _singleton = StageSelection._internal();
 
   int _selectedStageId;
+  /// Last stage id played in live stage
+  int lastStagePlayed;
 
   /// Save stage selection data
   set stageSelection(int stageId) {
