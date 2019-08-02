@@ -81,6 +81,8 @@ class _SettingsBodyState extends State<_GameSettingsBody> {
     Column(
       mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          (Platform.isIOS) ? 
+            const Padding(padding: EdgeInsets.only(top: 50),):Container(),
           Expanded(flex: 1, child: _getTitleAndButton(context, state)),
           Expanded(flex: 2, child: _getImages(state.difficulties)),
         ],
