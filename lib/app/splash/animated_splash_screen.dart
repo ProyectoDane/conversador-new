@@ -8,13 +8,13 @@ import 'package:flutter_syntactic_sorter/util/device_type_helper.dart';
 class AnimatedSplashScreen extends StatefulWidget {
   /// Creates an AnimatedSplashScreen with the given information.
   /// - animationDuration is 2 seconds by default,
-  /// - transitionDuration is 3 seconds by default,
+  /// - transitionDuration is 2.5 seconds by default,
   /// - backgroundColor is white by default.
   const AnimatedSplashScreen(
       {@required this.logoUri,
       @required this.homePageRouteName,
-      this.animationDuration = const Duration(milliseconds: 1000),
-      this.transitionDuration = const Duration(milliseconds: 1500),
+      this.animationDuration = const Duration(milliseconds: 2000),
+      this.transitionDuration = const Duration(milliseconds: 2500),
       this.backgroundColor = Colors.white,
       this.poweredByLogoUri});
 
