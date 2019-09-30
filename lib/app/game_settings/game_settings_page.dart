@@ -154,6 +154,10 @@ class _SettingsBodyState extends State<_GameSettingsBody> {
                     // is the lack of what the image shows:
                     child: CustomImage(
                       imageUri: tuple.item1.imageUri,
+                      textDescription: LangLocalizations
+                        .of(context)
+                        .trans(tuple.item1.textDescription)
+                        .toUpperCase() ,
                       isActive: !tuple.item2,
                     ),
                   ),

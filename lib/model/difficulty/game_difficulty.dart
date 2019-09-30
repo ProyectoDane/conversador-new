@@ -16,6 +16,9 @@ abstract class GameModeDifficulty {
   /// Name of the difficulty
   String name;
 
+  /// Text description
+  String get textDescription;
+
   /// Returns the GameModeDifficulty associated with the given name
   /// or null if the name is invalid.
   static GameModeDifficulty fromName(String name) {

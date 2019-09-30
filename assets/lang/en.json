@@ -3,6 +3,8 @@
   "main_btn_start": "Start",
   "game_settings_title": "Choose how to play",
   "game_settings_start": "Start",
+  "shape_aid": "Shape Aid",
+  "color_aid": "Color Aid",
   "select_phrase": "Select phrase",
   "photo_source_prompt": "Select image source",
   "camera_option": "Camera",

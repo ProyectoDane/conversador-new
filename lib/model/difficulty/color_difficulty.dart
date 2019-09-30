@@ -40,6 +40,9 @@ class ColorDifficulty extends GameModeDifficulty {
   String get imageUri => 'assets/images/game_settings/colors.png';
 
   @override
+  String get textDescription => 'color_aid';
+
+  @override
   bool operator==(dynamic other) => other is ColorDifficulty;
 
   @override

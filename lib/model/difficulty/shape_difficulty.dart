@@ -9,6 +9,7 @@ import 'package:flutter_syntactic_sorter/model/difficulty/game_difficulty.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece_config.dart';
 import 'package:flutter_syntactic_sorter/model/figure/painter/rectangle_painter.dart';
 import 'package:flutter_syntactic_sorter/model/figure/painter/shape_painter.dart';
+import 'package:flutter_syntactic_sorter/ui/settings/lang/lang_localizations.dart';
 
 /// GameModeDifficulty based on eliminating any shape segmentation that
 /// may help the user relate concepts easier.
@@ -41,6 +42,9 @@ class ShapeDifficulty extends GameModeDifficulty {
 
   @override
   String get imageUri => 'assets/images/game_settings/shapes.png';
+
+  @override
+  String get textDescription => 'shape_aid';
 
   @override
   bool operator==(dynamic other) => other is ShapeDifficulty;
