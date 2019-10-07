@@ -18,7 +18,7 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       const PlatformScaffold(
-          body: _MainBody()
+          body: _MainBody() 
       );
 }
 
@@ -30,12 +30,30 @@ class _MainBody extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         constraints: const BoxConstraints.expand(),
         decoration: WidgetUtils.getBackgroundImage('assets/images/all/background.png'),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+        child: Stack(
           children: <Widget>[
-            _getTitle(context),
-            _getButton(context),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: FlatButton(
+                color: Colors.transparent,
+                child: Icon(
+                  Icons.info,
+                  size: isDeviceTablet ? 40:24,
+                ),
+                onPressed: ()=> 
+                  Navigator.pushNamed(context, Router.ABOUT_PAGE),
+              ),
+            ),
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  _getTitle(context),
+                  _getButton(context),
+                ],
+              ),
+            )
           ],
         ),
       );

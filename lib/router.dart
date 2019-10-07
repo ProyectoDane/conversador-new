@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_syntactic_sorter/app/about/about.dart';
 import 'package:flutter_syntactic_sorter/app/game/game_bloc.dart';
 import 'package:flutter_syntactic_sorter/app/game_settings/game_settings_bloc.dart';
 import 'package:flutter_syntactic_sorter/app/game/game_page.dart';
@@ -18,11 +19,15 @@ class Router {
   /// Page for playing the actual game
   static const String GAME_PAGE = '/game';
 
+  /// Pager for About
+  static const String ABOUT_PAGE = '/about';
+
   /// Returns the whole app routes
   static Map<String, WidgetBuilder> getRoutes() => <String, WidgetBuilder>{
         MAIN_PAGE: (BuildContext context) => const MainPage(),
         GAME_SETTINGS_PAGE: (BuildContext context) =>
             GameSettingsPage(GameSettingsBloc()),
         GAME_PAGE: (BuildContext context) => GamePage(GameBloc()),
+        ABOUT_PAGE: (BuildContext context) => AboutScreen()
       };
 }
