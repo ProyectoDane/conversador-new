@@ -22,7 +22,7 @@ class GameApp extends StatelessWidget {
       routes: Router.getRoutes(),
       home: const AnimatedSplashScreen(
         homePageRouteName: Router.MAIN_PAGE,
-        logoUri: 'assets/images/splash/Dane_Logo.png',
+        backgroundLogoUri: 'assets/images/splash/Dane_Splash_bk.png',
         poweredByLogoUri: 'assets/images/splash/Otros_Logos.png',
       ),
       debugShowCheckedModeBanner: false,
