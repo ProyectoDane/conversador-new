@@ -45,13 +45,10 @@ class LevelRepository {
 
   // ignore: non_constant_identifier_names, prefer_function_declarations_over_variables
   final String _STAGES_IN_LEVEL_KEY = 'STAGES_IN_LEVEL';
-  // ignore: non_constant_identifier_names, prefer_function_declarations_over_variables
-  final String _STAGE_TRACKING_KEY = 'STAGE_TRACKING';
 
   /// Returns first level of the game
   Future<Level> getFirstLevel() async {
     await _clearUsedStages();
-    await _clearStageTrackingIndexes();
     return getLevel(0);
   }  
 
@@ -61,51 +58,34 @@ class LevelRepository {
   /// Item 2 : Stage index within list inside Level
   Future<Tuple2<Level, int>> getLevelWithStageId(int stageId) async {
     await _clearUsedStages();
-    await _clearStageTrackingIndexes();
 
-    const int levelId = 0;
     // Starts iterating over levels
-    return _searchThroughLevelsFor(levelId, stageId);
+    return _searchLevelBy(stageId);
   }
 
-  Future<Tuple2<Level, int>>_searchThroughLevelsFor(
-    int levelId, int stageId) async {
+  Future<Tuple2<Level, int>>_searchLevelBy(
+    int stageId) async {
     final DatabaseProvider databaseProvider = DatabaseProvider();
     final Level level = await LevelDatabaseRepository(
-      databaseProvider).getById(levelId);
+      databaseProvider).getByStageId(stageId);
     
     if (level == null) {
       return null;
     }
 
-    // We are looking in non-random levels
-    if (!level.isRandom) {
-      final Tuple2<int, int> trackingIndexes = await _getStageTrackingIndexes();
-      final int currentStageComplexity = trackingIndexes.item1;
-      final int nextStageInComplexityIndex = trackingIndexes.item2;
-      // This line just gets the plain stage list without the sentence data, 
-      // it's faster than the other one because it doesn't do additional querys
-      level.stages = await _stageRepository.getPlainStageList(
-        level.stageCount, currentStageComplexity, nextStageInComplexityIndex);
-      await _setStageTrackingIndexes(level.stages.last);
+    // This line just gets the plain stage list without the sentence data, 
+    // it's faster than the other one because it doesn't do additional querys
+    level.stages = await _stageRepository.getPlainStageList(
+      level.stageIdsList);
 
-      // Check if stage is found in this level
-      final Stage foundStage = level.stages.singleWhere(
-        (Stage stage) => stage.id == stageId, orElse:() => null);
-      if (foundStage != null) {
-        final int stageIndex = level.stages.indexOf(foundStage);
-        // If this is the level, then we can fill in the rest 
-        // of the sentence data
-        level.stages = await _stageRepository.fillInStageData(level.stages);
-        return Tuple2<Level, int>(level, stageIndex);
-      } else {
-        // If not move on to the next level
-        return _searchThroughLevelsFor(levelId + 1, stageId);
-      }
-    } else {
-      // Once we reach the random levels, there no more stages to sort through
-      return null;
-    }
+    // We determine the index of the stage
+    final Stage foundStage = level.stages.singleWhere(
+      (Stage stage) => stage.id == stageId, orElse:() => null);
+    final int stageIndex = level.stages.indexOf(foundStage);
+    // If this is the level, then we can fill in the rest 
+    // of the sentence data
+    level.stages = await _stageRepository.fillInStageData(level.stages);
+    return Tuple2<Level, int>(level, stageIndex);
   }
 
   /// Returns the level associated with the given number.
@@ -126,12 +106,7 @@ class LevelRepository {
         level.stageCount, previouslyUsedStages);
       await _setLevelUsedStageIDs(level.stages);
     } else {
-      final Tuple2<int, int> trackingIndexes = await _getStageTrackingIndexes();
-      final int currentStageComplexity = trackingIndexes.item1;
-      final int nextStageInComplexityIndex = trackingIndexes.item2;
-      level.stages = await _stageRepository.getStageList(
-        level.stageCount, currentStageComplexity, nextStageInComplexityIndex);
-      await _setStageTrackingIndexes(level.stages.last);
+      level.stages = await _stageRepository.getStageList(level.stageIdsList);
     }
 
     if (level.stages.isEmpty) {
@@ -176,34 +151,5 @@ class LevelRepository {
   Future<void> _clearUsedStages() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove(_STAGES_IN_LEVEL_KEY);
-  }
-
-  Future<void> _setStageTrackingIndexes(Stage lastStage) async {
-    final int currentStageComplexity = lastStage.mentalComplexity.index;
-    final int nextStageInComplexityIndex = lastStage.complexityOrder + 1;
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final List<String> indexStrings = 
-      <String>[currentStageComplexity.toString(), 
-               nextStageInComplexityIndex.toString()];
-    await prefs.setStringList(
-        _STAGE_TRACKING_KEY, indexStrings);
-  }
-
-  Future<Tuple2<int, int>> _getStageTrackingIndexes() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    try {
-      final List<String> indexesStrings = 
-        prefs.getStringList(_STAGE_TRACKING_KEY);
-      final List<int> indexes = indexesStrings.map(int.parse).toList();
-      return Tuple2<int, int>(indexes[0], indexes[1]);
-      // ignore: avoid_catches_without_on_clauses
-    } catch (e) {
-      return const Tuple2<int, int>(0, 0);
-    }
-  }
-
-  Future<void> _clearStageTrackingIndexes() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove(_STAGE_TRACKING_KEY);
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter_syntactic_sorter/model/stage/stage.dart';
-import 'package:flutter_syntactic_sorter/model/difficulty/mental_complexity.dart';
 import 'package:flutter_syntactic_sorter/src/repository_exports.dart';
 import 'package:flutter_syntactic_sorter/model/concept/concept_helper.dart';
 import 'package:flutter_syntactic_sorter/data_access/database_provider.dart';
@@ -30,24 +29,21 @@ class StageRepository {
 
   /// Get stage list by count
   /// The stages sentence data comes filled in
-  Future<List<Stage>> getStageList(
-    int count, int currentComplexity, int nextStageInCompIndex) async {
+  Future<List<Stage>> getStageList(List<int> stageIdList) async {
 
     final DatabaseProvider databaseProvider = DatabaseProvider();
-    final List<Stage> stages = await _getPlainStageList(
-      count, currentComplexity, nextStageInCompIndex, databaseProvider);
+    final List<Stage> stages = await StageDatabaseRepository(databaseProvider)
+      .getStagesWithIds(stageIdList);
 
     return _fillInStageData(stages, databaseProvider);
   }
 
   /// Get stage list by count
   /// The stages are return in their basic format, without sentence data
-  Future<List<Stage>> getPlainStageList(
-    int count, int currentComplexity, int nextStageInCompIndex) async {
-
+  Future<List<Stage>> getPlainStageList(List<int> stageIdList) async {
     final DatabaseProvider databaseProvider = DatabaseProvider();
-    return _getPlainStageList(
-      count, currentComplexity, nextStageInCompIndex, databaseProvider);
+    return StageDatabaseRepository(databaseProvider)
+      .getStagesWithIds(stageIdList);
   }
 
   /// Returns an ordered list of stages with their plain information.
@@ -68,51 +64,6 @@ class StageRepository {
   //---------------------------------------------------------------
   // Private
   //---------------------------------------------------------------
-
-  Future<List<Stage>> _getPlainStageList(
-    int count, 
-    int currentComplexity, 
-    int nextStageInCompIndex, 
-    DatabaseProvider databaseProvider) async {
-
-    Complexity currentStageComplexity = Complexity.values[currentComplexity];
-    int nextStageInComplexityIndex = nextStageInCompIndex;
-
-    // Get stage list according to current complexity
-    // The stages are sorted in complexity order, the lastStageInComplexityIndex
-    // is used to determine where to continue taking stages from the same 
-    // complexity level
-    final List<Stage> stages = await StageDatabaseRepository(
-      databaseProvider).getStages(
-      currentStageComplexity.index, count, nextStageInComplexityIndex);
-    
-    // This line fixes lint warning
-    final bool isQuotaMet = stages.length < count;
-    if (isQuotaMet) {
-      // If there not enought stages to meet the quota, stages from the next
-      // complexity levels are obtained
-      while (stages.length < count) {
-        nextStageInComplexityIndex = 0;
-
-        if (currentStageComplexity.index+1 == Complexity.values.length) {
-          // If there are no more complexity levels, just send remaining stages
-          break;
-        }
-
-        currentStageComplexity = Complexity.values[
-        currentStageComplexity.index+1];
-        final int remaining = count - stages.length;
-      
-        final List<Stage> addlStages = await StageDatabaseRepository(
-        databaseProvider).getStages(
-        currentStageComplexity.index, remaining, nextStageInComplexityIndex);
-        stages.addAll(addlStages);
-        nextStageInComplexityIndex = addlStages.length;
-      }
-    }
-
-    return stages;
-  }
 
   Future<List<Stage>> _fillInStageData(List<Stage> stages, 
     DatabaseProvider databaseProvider) async {

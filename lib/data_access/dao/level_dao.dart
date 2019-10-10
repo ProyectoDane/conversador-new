@@ -16,6 +16,18 @@ class LevelDao implements Dao<Level> {
   /// Is Stage random
   final String columnIsRandom = 'is_random';
 
+  /// The name of the stage guide table
+  final String tableNameSt = 'level_st';
+
+  /// Level id in relation to stage
+  final String columnLevelIdSt = 'level_id';
+
+  /// Stage id related to level
+  final String columnStageIdSt = 'stage_id';
+
+  /// Key for stage list
+  final String stageIdListKey = 'stage_id_list';
+
   @override
   String get createTableQuery => '''
     CREATE TABLE IF NOT EXISTS $tableName ( 
@@ -28,14 +40,15 @@ class LevelDao implements Dao<Level> {
   Level fromMap(Map<String, dynamic> query) => Level(
     id: query[columnId] as int,
     stageCount: query[columnStageCount] as int,
-    isRandom: query[columnIsRandom] as int == 1
+    isRandom: query[columnIsRandom] as int == 1,
+    stageIdsList: query[stageIdListKey] as List<int>
   );
 
   @override
   Map<String, dynamic> toMap(Level object) => <String, dynamic>{
         columnId: object.id,
         columnStageCount: object.stageCount,
-        columnIsRandom: object.isRandom,
+        columnIsRandom: object.isRandom
       };
 
   @override

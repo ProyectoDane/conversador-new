@@ -42,7 +42,27 @@ class LevelDatabaseRepository implements Repository<Level> {
     WHERE ${dao.columnId} = $id;
     ''';
     final List<Map<String, dynamic>> maps = await db.rawQuery(query);
-    return maps.isNotEmpty ? dao.fromMap(maps.first) : null;
+
+    if (maps.isNotEmpty) {
+      final String stageQuery = '''
+      SELECT ${dao.columnStageIdSt}
+      FROM ${dao.tableNameSt}
+      WHERE ${dao.columnLevelIdSt} = $id;
+      ''';
+      final List<Map<String, dynamic>> stageMaps = 
+        await db.rawQuery(stageQuery);
+
+      final Map<String, dynamic> levelQuery = maps.first;
+      final List<int> stageList = stageMaps
+        .map<int>((Map<String, dynamic> _) => _['stage_id'] as int)
+        .toList();
+      final Map<String,dynamic> aux = 
+        <String,dynamic>{dao.stageIdListKey:stageList}
+      ..addAll(levelQuery);
+      return dao.fromMap(aux);
+    } else {
+      return null;
+    }
   }
 
   @override
@@ -58,5 +78,19 @@ class LevelDatabaseRepository implements Repository<Level> {
     final int count = Sqflite.firstIntValue(
       await db.rawQuery('SELECT COUNT(*) FROM ${dao.tableName}'));
     return count;
+  }
+
+  /// Gets level by stage id contained by it
+  Future<Level> getByStageId(int stageId) async {
+    final Database db = await databaseProvider.db();
+    final String query = '''
+    SELECT ${dao.columnLevelIdSt}
+    FROM ${dao.tableNameSt}
+    WHERE ${dao.columnStageIdSt} = $stageId;
+    ''';
+
+    final List<Map<String, dynamic>> maps = await db.rawQuery(query);
+    return maps.isNotEmpty ? 
+      getById(maps.first[dao.columnLevelIdSt] as int) : null;
   }
 }

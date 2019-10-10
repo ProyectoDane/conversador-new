@@ -96,6 +96,21 @@ class StageDatabaseRepository implements Repository<Stage> {
     return dao.fromList(maps);
   }
 
+  /// Get stage list according to id list
+  Future<List<Stage>> getStagesWithIds(List<int> ids) async {
+    final String idsWhere = 
+      ids.map((int _) => '${dao.columnId} = ?')
+      .toList().join(' OR ');
+
+    final Database db = await databaseProvider.db();
+    final List<Map<String, dynamic>> maps = await db.query(
+      dao.tableName, 
+      where: idsWhere,
+      whereArgs: ids,
+      orderBy: '${dao.columnComplexityId}, ${dao.columnComplexityOrder} ASC');
+    return dao.fromList(maps);
+  }
+
     /// Get a random list of stages
   Future<List<Stage>> getRandomStages(int count, List<int>exceptions) async {
     final Database db = await databaseProvider.db();
