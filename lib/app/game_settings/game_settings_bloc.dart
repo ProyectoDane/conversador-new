@@ -76,7 +76,6 @@ class GameSettingsBloc extends Bloc<GameSettingsEvent, GameSettingsState> {
 
   @override
   Stream<GameSettingsState> mapEventToState(
-      final GameSettingsState currentState,
       final GameSettingsEvent event
   ) async* {
     switch (event.type) {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_syntactic_sorter/app/game/game_bloc.dart';
-import 'package:flutter_syntactic_sorter/app/game/game_event.dart';
 import 'package:flutter_syntactic_sorter/app/game/game_state.dart';
 import 'package:flutter_syntactic_sorter/app/game/live_stage/live_stage_widget.dart';
 import 'package:flutter_syntactic_sorter/router.dart';
@@ -45,16 +44,19 @@ class _GameBodyState extends State<_GameBody> {
   }
 
   @override
-  Widget build(BuildContext context) => BlocBuilder<GameEvent, GameState>(
-      bloc: widget.bloc,
+  Widget build(BuildContext context) => BlocProvider<GameBloc>(
+    builder: (BuildContext context) => widget.bloc,
+    child: BlocBuilder<GameBloc, GameState>(
       builder: (BuildContext context, GameState state) {
-        if (state.levelCompleted != null) {
-          WidgetsBinding.instance.addPostFrameCallback(
-              (_) => _showDialog(
-                state.levelCompleted, state.isFinalLevel, context));
-        }
-        return _render(state);
-      });
+         if (state.levelCompleted != null) {
+           WidgetsBinding.instance.addPostFrameCallback(
+               (_) => _showDialog(
+                 state.levelCompleted, state.isFinalLevel, context));
+         }
+       return _render(state);
+       },
+    ),
+  );
 
   void _showDialog(int level, bool isFinalLevel, BuildContext context) {
     // The levels start from 0, so 1 is added to the regular message.

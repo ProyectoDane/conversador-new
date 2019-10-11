@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_syntactic_sorter/app/game/live_stage/live_stage_bloc.dart';
 import 'package:flutter_syntactic_sorter/app/game/live_stage/live_stage_state.dart';
-import 'package:flutter_syntactic_sorter/app/game/live_stage/live_stage_event.dart';
 import 'package:flutter_syntactic_sorter/app/game/util/positions_helper.dart';
 import 'package:flutter_syntactic_sorter/model/piece/piece.dart';
 import 'package:flutter_syntactic_sorter/model/figure/shape/rectangle.dart';
@@ -41,10 +40,12 @@ class _LiveStageState extends State<LiveStageWidget> {
 
   @override
   Widget build(BuildContext context) =>
-    BlocBuilder<LiveStageEvent, LiveStageState>(
+    BlocProvider<LiveStageBloc>(
       key: UniqueKey(),
-      bloc: widget.bloc,
-      builder: (BuildContext context, LiveStageState state) => _render(state),
+      builder:(BuildContext context) => widget.bloc,
+      child: BlocBuilder<LiveStageBloc, LiveStageState>(
+        builder: (BuildContext context, LiveStageState state) => _render(state),
+      ),
     );
 
   Widget _render(final LiveStageState state) =>

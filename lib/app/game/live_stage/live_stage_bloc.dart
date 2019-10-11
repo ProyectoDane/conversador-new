@@ -113,7 +113,6 @@ class LiveStageBloc extends Bloc<LiveStageEvent, LiveStageState> {
 
   @override
   Stream<LiveStageState> mapEventToState(
-    LiveStageState currentState,
     LiveStageEvent event
   ) async* {
     LiveStageState newState;

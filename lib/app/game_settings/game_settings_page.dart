@@ -3,7 +3,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_syntactic_sorter/app/game_settings/game_settings_bloc.dart';
-import 'package:flutter_syntactic_sorter/app/game_settings/game_settings_event.dart';
 import 'package:flutter_syntactic_sorter/app/game_settings/game_settings_stage_selection_helper.dart';
 import 'package:flutter_syntactic_sorter/app/game_settings/game_settings_state.dart';
 import 'package:flutter_syntactic_sorter/model/difficulty/game_difficulty.dart';
@@ -55,10 +54,12 @@ class _SettingsBodyState extends State<_GameSettingsBody> {
 
   @override
   Widget build(BuildContext context) 
-    => BlocBuilder<GameSettingsEvent, GameSettingsState>(
-      bloc: bloc,
+  => BlocProvider<GameSettingsBloc>(
+    builder: (BuildContext context) => bloc,
+    child: BlocBuilder<GameSettingsBloc, GameSettingsState>(
       builder: _render,
-    );
+    ),
+  );
   
   Widget _render(BuildContext context, GameSettingsState state) => Container(
         constraints: const BoxConstraints.expand(),

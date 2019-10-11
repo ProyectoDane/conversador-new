@@ -82,7 +82,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
   @override
   Stream<GameState> mapEventToState(
-      final GameState currentState, final GameEvent event) async* {
+      final GameEvent event) async* {
     yield* event.mutateState(currentState);
   }
 
